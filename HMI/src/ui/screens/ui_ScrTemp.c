@@ -5,12 +5,12 @@
 
 #include "../ui.h"
 
-void ui_Screen2_screen_init(void)
+void ui_ScrTemp_screen_init(void)
 {
-    ui_Screen2 = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_Screen2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_ScrTemp = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_ScrTemp, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_FullScreen1 = ui_FullScreen_create(ui_Screen2);
+    ui_FullScreen1 = ui_FullScreen_create(ui_ScrTemp);
     lv_obj_set_x(ui_FullScreen1, 0);
     lv_obj_set_y(ui_FullScreen1, 0);
 
@@ -29,5 +29,10 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_align(ui_Label3, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label3, "Temp Page");
     lv_obj_set_style_text_font(ui_Label3, &lv_font_montserrat_36, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen1, UI_COMP_FULLSCREEN_SIDEBAR3_BUTHOME2),
+                        ui_event_FullScreen1_Sidebar3_butHome2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen1, UI_COMP_FULLSCREEN_SIDEBAR3_BUTAQ2),
+                        ui_event_FullScreen1_Sidebar3_butAQ2, LV_EVENT_ALL, NULL);
 
 }

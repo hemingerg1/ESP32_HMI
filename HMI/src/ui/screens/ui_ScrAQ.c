@@ -5,12 +5,12 @@
 
 #include "../ui.h"
 
-void ui_Screen3_screen_init(void)
+void ui_ScrAQ_screen_init(void)
 {
-    ui_Screen3 = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_Screen3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_ScrAQ = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_ScrAQ, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_FullScreen2 = ui_FullScreen_create(ui_Screen3);
+    ui_FullScreen2 = ui_FullScreen_create(ui_ScrAQ);
     lv_obj_set_x(ui_FullScreen2, 0);
     lv_obj_set_y(ui_FullScreen2, 0);
 
@@ -29,5 +29,10 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_align(ui_Label4, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label4, "AQ Page");
     lv_obj_set_style_text_font(ui_Label4, &lv_font_montserrat_36, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen2, UI_COMP_FULLSCREEN_SIDEBAR3_BUTHOME2),
+                        ui_event_FullScreen2_Sidebar3_butHome2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen2, UI_COMP_FULLSCREEN_SIDEBAR3_BUTTEMP2),
+                        ui_event_FullScreen2_Sidebar3_butTemp2, LV_EVENT_ALL, NULL);
 
 }

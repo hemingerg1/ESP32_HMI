@@ -7,8 +7,7 @@
 #define _SQUARELINE_PROJECT_UI_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "lvgl.h"
@@ -17,26 +16,41 @@ extern "C"
 #include "components/ui_comp.h"
 #include "components/ui_comp_hook.h"
 #include "ui_events.h"
-    // SCREEN: ui_Screen1
-    void ui_Screen1_screen_init(void);
-    extern lv_obj_t *ui_Screen1;
-    extern lv_obj_t *ui_FullScreen;
-    extern lv_obj_t *ui_Label1;
-    // SCREEN: ui_Screen2
-    void ui_Screen2_screen_init(void);
-    extern lv_obj_t *ui_Screen2;
-    extern lv_obj_t *ui_FullScreen1;
-    extern lv_obj_t *ui_Label3;
-    // SCREEN: ui_Screen3
-    void ui_Screen3_screen_init(void);
-    extern lv_obj_t *ui_Screen3;
-    extern lv_obj_t *ui_FullScreen2;
-    extern lv_obj_t *ui_Label4;
-    extern lv_obj_t *ui____initial_actions0;
+// SCREEN: ui_ScrHome
+void ui_ScrHome_screen_init(void);
+extern lv_obj_t * ui_ScrHome;
+extern lv_obj_t * ui_FullScreen;
+void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e);
+void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e);
+extern lv_obj_t * ui_Label1;
+void ui_event_Button3(lv_event_t * e);
+extern lv_obj_t * ui_Button3;
+extern lv_obj_t * ui_Label2;
+extern lv_obj_t * ui_count;
+void ui_event_Button4(lv_event_t * e);
+extern lv_obj_t * ui_Button4;
+extern lv_obj_t * ui_Label5;
+// SCREEN: ui_ScrTemp
+void ui_ScrTemp_screen_init(void);
+extern lv_obj_t * ui_ScrTemp;
+extern lv_obj_t * ui_FullScreen1;
+void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e);
+void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e);
+extern lv_obj_t * ui_Label3;
+// SCREEN: ui_ScrAQ
+void ui_ScrAQ_screen_init(void);
+extern lv_obj_t * ui_ScrAQ;
+extern lv_obj_t * ui_FullScreen2;
+void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e);
+void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
+extern lv_obj_t * ui_Label4;
+extern lv_obj_t * ui____initial_actions0;
 
-    LV_IMG_DECLARE(ui_img_home_png); // assets\home.png
+LV_IMG_DECLARE(ui_img_home_png);    // assets\home.png
 
-    void ui_init(void);
+
+
+void ui_init(void);
 
 #ifdef __cplusplus
 } /*extern "C"*/

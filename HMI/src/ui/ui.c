@@ -9,24 +9,37 @@
 ///////////////////// VARIABLES ////////////////////
 
 
-// SCREEN: ui_Screen1
-void ui_Screen1_screen_init(void);
-lv_obj_t * ui_Screen1;
+// SCREEN: ui_ScrHome
+void ui_ScrHome_screen_init(void);
+lv_obj_t * ui_ScrHome;
 lv_obj_t * ui_FullScreen;
+void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e);
+void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e);
 lv_obj_t * ui_Label1;
+void ui_event_Button3(lv_event_t * e);
+lv_obj_t * ui_Button3;
+lv_obj_t * ui_Label2;
+lv_obj_t * ui_count;
+void ui_event_Button4(lv_event_t * e);
+lv_obj_t * ui_Button4;
+lv_obj_t * ui_Label5;
 
 
-// SCREEN: ui_Screen2
-void ui_Screen2_screen_init(void);
-lv_obj_t * ui_Screen2;
+// SCREEN: ui_ScrTemp
+void ui_ScrTemp_screen_init(void);
+lv_obj_t * ui_ScrTemp;
 lv_obj_t * ui_FullScreen1;
+void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e);
+void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e);
 lv_obj_t * ui_Label3;
 
 
-// SCREEN: ui_Screen3
-void ui_Screen3_screen_init(void);
-lv_obj_t * ui_Screen3;
+// SCREEN: ui_ScrAQ
+void ui_ScrAQ_screen_init(void);
+lv_obj_t * ui_ScrAQ;
 lv_obj_t * ui_FullScreen2;
+void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e);
+void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
 lv_obj_t * ui_Label4;
 lv_obj_t * ui____initial_actions0;
 
@@ -34,13 +47,77 @@ lv_obj_t * ui____initial_actions0;
 #if LV_COLOR_DEPTH != 16
     #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
 #endif
-#if LV_COLOR_16_SWAP !=1
-    #error "LV_COLOR_16_SWAP should be 1 to match SquareLine Studio's settings"
+#if LV_COLOR_16_SWAP !=0
+    #error "LV_COLOR_16_SWAP should be 0 to match SquareLine Studio's settings"
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
 
 ///////////////////// FUNCTIONS ////////////////////
+void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        _ui_screen_change(&ui_ScrTemp, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTemp_screen_init);
+    }
+}
+void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        _ui_screen_change(&ui_ScrAQ, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrAQ_screen_init);
+    }
+}
+void ui_event_Button3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        add(e);
+    }
+}
+void ui_event_Button4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        sub(e);
+    }
+}
+void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        _ui_screen_change(&ui_ScrHome, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrHome_screen_init);
+    }
+}
+void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        _ui_screen_change(&ui_ScrAQ, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrAQ_screen_init);
+    }
+}
+void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        _ui_screen_change(&ui_ScrHome, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrHome_screen_init);
+    }
+}
+void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        _ui_screen_change(&ui_ScrTemp, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTemp_screen_init);
+    }
+}
 
 ///////////////////// SCREENS ////////////////////
 
@@ -52,9 +129,9 @@ void ui_init(void)
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
                                                true, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
-    ui_Screen1_screen_init();
-    ui_Screen2_screen_init();
-    ui_Screen3_screen_init();
+    ui_ScrHome_screen_init();
+    ui_ScrTemp_screen_init();
+    ui_ScrAQ_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_disp_load_scr(ui_Screen1);
+    lv_disp_load_scr(ui_ScrHome);
 }
