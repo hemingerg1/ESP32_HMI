@@ -6,6 +6,7 @@
 #include "guiFunctions/gui.h"
 
 #include "guiFunctions/ScrHomeFunc.h"
+#include "guiFunctions/ScrChartFunc.h"
 
 void setup()
 {

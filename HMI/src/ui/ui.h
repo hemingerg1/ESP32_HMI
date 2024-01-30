@@ -30,16 +30,27 @@ extern lv_obj_t * ui_count;
 void ui_event_Button4(lv_event_t * e);
 extern lv_obj_t * ui_Button4;
 extern lv_obj_t * ui_Label5;
-// SCREEN: ui_ScrTemp
-void ui_ScrTemp_screen_init(void);
-extern lv_obj_t * ui_ScrTemp;
+// SCREEN: ui_ScrCharts
+void ui_ScrCharts_screen_init(void);
+extern lv_obj_t * ui_ScrCharts;
 extern lv_obj_t * ui_FullScreen1;
 void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e);
+extern lv_obj_t * ui_Chart1;
+void ui_event_Button1(lv_event_t * e);
+extern lv_obj_t * ui_Button1;
+void ui_event_but2H(lv_event_t * e);
+extern lv_obj_t * ui_but2H;
 extern lv_obj_t * ui_Label3;
-// SCREEN: ui_ScrAQ
-void ui_ScrAQ_screen_init(void);
-extern lv_obj_t * ui_ScrAQ;
+void ui_event_but30m(lv_event_t * e);
+extern lv_obj_t * ui_but30m;
+extern lv_obj_t * ui_Label7;
+void ui_event_but1H(lv_event_t * e);
+extern lv_obj_t * ui_but1H;
+extern lv_obj_t * ui_Label6;
+// SCREEN: ui_ScrTBD
+void ui_ScrTBD_screen_init(void);
+extern lv_obj_t * ui_ScrTBD;
 extern lv_obj_t * ui_FullScreen2;
 void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
@@ -47,6 +58,7 @@ extern lv_obj_t * ui_Label4;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_home_png);    // assets\home.png
+LV_IMG_DECLARE(ui_img_2110918543);    // assets\chart-48.png
 
 
 

@@ -25,23 +25,35 @@ lv_obj_t * ui_Button4;
 lv_obj_t * ui_Label5;
 
 
-// SCREEN: ui_ScrTemp
-void ui_ScrTemp_screen_init(void);
-lv_obj_t * ui_ScrTemp;
+// SCREEN: ui_ScrCharts
+void ui_ScrCharts_screen_init(void);
+lv_obj_t * ui_ScrCharts;
 lv_obj_t * ui_FullScreen1;
 void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e);
+lv_obj_t * ui_Chart1;
+void ui_event_Button1(lv_event_t * e);
+lv_obj_t * ui_Button1;
+void ui_event_but2H(lv_event_t * e);
+lv_obj_t * ui_but2H;
 lv_obj_t * ui_Label3;
+void ui_event_but30m(lv_event_t * e);
+lv_obj_t * ui_but30m;
+lv_obj_t * ui_Label7;
+void ui_event_but1H(lv_event_t * e);
+lv_obj_t * ui_but1H;
+lv_obj_t * ui_Label6;
 
 
-// SCREEN: ui_ScrAQ
-void ui_ScrAQ_screen_init(void);
-lv_obj_t * ui_ScrAQ;
+// SCREEN: ui_ScrTBD
+void ui_ScrTBD_screen_init(void);
+lv_obj_t * ui_ScrTBD;
 lv_obj_t * ui_FullScreen2;
 void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
 lv_obj_t * ui_Label4;
 lv_obj_t * ui____initial_actions0;
+const lv_img_dsc_t * ui_imgset_736952691[1] = {&ui_img_2110918543};
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -59,7 +71,7 @@ void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_RELEASED) {
-        _ui_screen_change(&ui_ScrTemp, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTemp_screen_init);
+        _ui_screen_change(&ui_ScrCharts, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrCharts_screen_init);
     }
 }
 void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e)
@@ -67,7 +79,7 @@ void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_RELEASED) {
-        _ui_screen_change(&ui_ScrAQ, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrAQ_screen_init);
+        _ui_screen_change(&ui_ScrTBD, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTBD_screen_init);
     }
 }
 void ui_event_Button3(lv_event_t * e)
@@ -99,7 +111,39 @@ void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_RELEASED) {
-        _ui_screen_change(&ui_ScrAQ, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrAQ_screen_init);
+        _ui_screen_change(&ui_ScrTBD, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTBD_screen_init);
+    }
+}
+void ui_event_Button1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        updateChart(e);
+    }
+}
+void ui_event_but2H(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chart2H(e);
+    }
+}
+void ui_event_but30m(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chart30m(e);
+    }
+}
+void ui_event_but1H(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chart1H(e);
     }
 }
 void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e)
@@ -115,7 +159,7 @@ void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_RELEASED) {
-        _ui_screen_change(&ui_ScrTemp, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTemp_screen_init);
+        _ui_screen_change(&ui_ScrCharts, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrCharts_screen_init);
     }
 }
 
@@ -130,8 +174,8 @@ void ui_init(void)
                                                true, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     ui_ScrHome_screen_init();
-    ui_ScrTemp_screen_init();
-    ui_ScrAQ_screen_init();
+    ui_ScrCharts_screen_init();
+    ui_ScrTBD_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_ScrHome);
 }

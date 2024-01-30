@@ -12,6 +12,10 @@ extern "C" {
 
 void add(lv_event_t * e);
 void sub(lv_event_t * e);
+void updateChart(lv_event_t * e);
+void chart2H(lv_event_t * e);
+void chart30m(lv_event_t * e);
+void chart1H(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

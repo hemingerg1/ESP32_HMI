@@ -5,12 +5,12 @@
 
 #include "../ui.h"
 
-void ui_ScrAQ_screen_init(void)
+void ui_ScrTBD_screen_init(void)
 {
-    ui_ScrAQ = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_ScrAQ, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_ScrTBD = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_ScrTBD, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_FullScreen2 = ui_FullScreen_create(ui_ScrAQ);
+    ui_FullScreen2 = ui_FullScreen_create(ui_ScrTBD);
     lv_obj_set_x(ui_FullScreen2, 0);
     lv_obj_set_y(ui_FullScreen2, 0);
 
