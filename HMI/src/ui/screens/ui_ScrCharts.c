@@ -30,15 +30,14 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_y(ui_Chart1, -25);
     lv_obj_set_align(ui_Chart1, LV_ALIGN_BOTTOM_RIGHT);
     lv_chart_set_type(ui_Chart1, LV_CHART_TYPE_LINE);
-    lv_chart_set_axis_tick(ui_Chart1, LV_CHART_AXIS_PRIMARY_X, 10, 5, 5, 2, true, 50);
+    lv_chart_set_point_count(ui_Chart1, 300);
+    lv_chart_set_div_line_count(ui_Chart1, 10, 10);
+    lv_chart_set_axis_tick(ui_Chart1, LV_CHART_AXIS_PRIMARY_X, 10, 5, 10, 1, true, 50);
     lv_chart_set_axis_tick(ui_Chart1, LV_CHART_AXIS_PRIMARY_Y, 10, 5, 5, 2, true, 50);
     lv_chart_set_axis_tick(ui_Chart1, LV_CHART_AXIS_SECONDARY_Y, 10, 5, 5, 2, false, 25);
-    lv_chart_series_t * ui_Chart1_series_1 = lv_chart_add_series(ui_Chart1, lv_color_hex(0x808080),
-                                                                 LV_CHART_AXIS_PRIMARY_Y);
-    static lv_coord_t ui_Chart1_series_1_array[] = { 0, 10, 20, 40, 80, 80, 40, 20, 10, 0 };
-    lv_chart_set_ext_y_array(ui_Chart1, ui_Chart1_series_1, ui_Chart1_series_1_array);
 
 
+    lv_obj_set_style_size(ui_Chart1, 0, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     ui_Button1 = lv_btn_create(ui_comp_get_child(ui_FullScreen1, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
     lv_obj_set_width(ui_Button1, 100);

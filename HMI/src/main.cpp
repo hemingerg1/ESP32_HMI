@@ -11,6 +11,7 @@
 void setup()
 {
     gui_start();
+    chartDataInt();
 }
 
 void loop()

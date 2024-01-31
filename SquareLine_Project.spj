@@ -7192,6 +7192,7 @@
                       },
                       {
                         "nid": 1521045272,
+                        "flags": 1048576,
                         "strtype": "OBJECT/Layout",
                         "InheritedType": 1
                       },
@@ -7210,6 +7211,7 @@
                       },
                       {
                         "nid": 1254798411,
+                        "flags": 1048576,
                         "strtype": "OBJECT/Transform",
                         "InheritedType": 1
                       },
@@ -7433,7 +7435,6 @@
                       },
                       {
                         "nid": -1389203308,
-                        "flags": 1048576,
                         "strtype": "CHART/Chart",
                         "InheritedType": 1
                       },
@@ -7446,15 +7447,15 @@
                       {
                         "nid": 177257192,
                         "strtype": "CHART/Number_of_points",
-                        "integer": 10,
+                        "integer": 300,
                         "InheritedType": 6
                       },
                       {
                         "nid": 1549353807,
                         "strtype": "CHART/Division_lines",
                         "intarray": [
-                          3,
-                          5
+                          10,
+                          10
                         ],
                         "InheritedType": 7
                       },
@@ -7478,7 +7479,7 @@
                         "strtype": "CHART/XMajor",
                         "intarray": [
                           10,
-                          5
+                          10
                         ],
                         "InheritedType": 7
                       },
@@ -7487,7 +7488,7 @@
                         "strtype": "CHART/XMinor",
                         "intarray": [
                           5,
-                          2
+                          1
                         ],
                         "InheritedType": 7
                       },
@@ -7595,13 +7596,14 @@
                       },
                       {
                         "nid": -1990734191,
+                        "flags": 1048576,
                         "strtype": "CHART/Chart_data",
                         "InheritedType": 1
                       },
                       {
                         "nid": 307857919,
                         "strtype": "CHART/ChartData",
-                        "strval": "[{\"Axis\":0,\"Color\":[128,128,128,255],\"Series\":[0,10,20,40,80,80,40,20,10,0]}]",
+                        "strval": "[]",
                         "InheritedType": 12
                       },
                       {
@@ -7630,7 +7632,21 @@
                       },
                       {
                         "part": "lv.PART.INDICATOR",
-                        "childs": [],
+                        "childs": [
+                          {
+                            "nid": -402670560,
+                            "strtype": "_style/StyleState",
+                            "strval": "DEFAULT",
+                            "childs": [
+                              {
+                                "nid": 188940759,
+                                "strtype": "_style/Size_size",
+                                "InheritedType": 6
+                              }
+                            ],
+                            "InheritedType": 1
+                          }
+                        ],
                         "nid": -932895824,
                         "strtype": "CHART/Style_indicator",
                         "strval": "lv.PART.INDICATOR, Rectangle, Pad, Size",
@@ -8625,138 +8641,6 @@
                                 "strtype": "CALL FUNCTION/Dont_export_function",
                                 "strval": "True",
                                 "InheritedType": 2
-                              }
-                            ],
-                            "InheritedType": 10
-                          },
-                          {
-                            "nid": 1858834251,
-                            "strtype": "_custom/action",
-                            "strval": "MODIFY STATE",
-                            "childs": [
-                              {
-                                "nid": 544432734,
-                                "strtype": "MODIFY STATE/Name",
-                                "strval": "MODIFY STATE",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": -1807628607,
-                                "strtype": "MODIFY STATE/Call",
-                                "strval": "ModifyState( <{Object}>, lv.STATE.<{State}>, \"<{Action}>\")",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": 1422830119,
-                                "strtype": "MODIFY STATE/CallC",
-                                "strval": "_ui_state_modify( <{Object}>, LV_STATE_<{State}>, _UI_MODIFY_STATE_<{Action}>);",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": -1943510457,
-                                "strtype": "MODIFY STATE/Object",
-                                "strval": "GUID96835361-1061980S365329",
-                                "InheritedType": 9
-                              },
-                              {
-                                "nid": 2081375512,
-                                "strtype": "MODIFY STATE/State",
-                                "strval": "CHECKED",
-                                "InheritedType": 3
-                              },
-                              {
-                                "nid": -723445522,
-                                "strtype": "MODIFY STATE/Action",
-                                "strval": "ADD",
-                                "InheritedType": 3
-                              }
-                            ],
-                            "InheritedType": 10
-                          },
-                          {
-                            "nid": -1153608006,
-                            "strtype": "_custom/action",
-                            "strval": "MODIFY STATE",
-                            "childs": [
-                              {
-                                "nid": -1043677622,
-                                "strtype": "MODIFY STATE/Name",
-                                "strval": "MODIFY STATE",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": -1237452091,
-                                "strtype": "MODIFY STATE/Call",
-                                "strval": "ModifyState( <{Object}>, lv.STATE.<{State}>, \"<{Action}>\")",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": -716113027,
-                                "strtype": "MODIFY STATE/CallC",
-                                "strval": "_ui_state_modify( <{Object}>, LV_STATE_<{State}>, _UI_MODIFY_STATE_<{Action}>);",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": -903928611,
-                                "strtype": "MODIFY STATE/Object",
-                                "strval": "GUID16879844-1067555S346329",
-                                "InheritedType": 9
-                              },
-                              {
-                                "nid": 2105331856,
-                                "strtype": "MODIFY STATE/State",
-                                "strval": "CHECKED",
-                                "InheritedType": 3
-                              },
-                              {
-                                "nid": -792527137,
-                                "strtype": "MODIFY STATE/Action",
-                                "strval": "REMOVE",
-                                "InheritedType": 3
-                              }
-                            ],
-                            "InheritedType": 10
-                          },
-                          {
-                            "nid": 1162818606,
-                            "strtype": "_custom/action",
-                            "strval": "MODIFY STATE",
-                            "childs": [
-                              {
-                                "nid": 711953622,
-                                "strtype": "MODIFY STATE/Name",
-                                "strval": "MODIFY STATE",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": 1643153970,
-                                "strtype": "MODIFY STATE/Call",
-                                "strval": "ModifyState( <{Object}>, lv.STATE.<{State}>, \"<{Action}>\")",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": -178611368,
-                                "strtype": "MODIFY STATE/CallC",
-                                "strval": "_ui_state_modify( <{Object}>, LV_STATE_<{State}>, _UI_MODIFY_STATE_<{Action}>);",
-                                "InheritedType": 10
-                              },
-                              {
-                                "nid": 2055463291,
-                                "strtype": "MODIFY STATE/Object",
-                                "strval": "GUID34625953-1068659S500329",
-                                "InheritedType": 9
-                              },
-                              {
-                                "nid": -685210676,
-                                "strtype": "MODIFY STATE/State",
-                                "strval": "CHECKED",
-                                "InheritedType": 3
-                              },
-                              {
-                                "nid": -349107281,
-                                "strtype": "MODIFY STATE/Action",
-                                "strval": "REMOVE",
-                                "InheritedType": 3
                               }
                             ],
                             "InheritedType": 10
@@ -14929,7 +14813,7 @@
     "theme_color2": 0,
     "uiExportFolderPath": "C:\\Users\\grant\\Grant\\Code\\ESP32_HMI\\HMI\\src\\ui",
     "projectExportFolderPath": "",
-    "backup_cnt": 207,
+    "backup_cnt": 497,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.6",
     "callfuncsexport": "C_FILE",
