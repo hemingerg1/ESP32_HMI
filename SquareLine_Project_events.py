@@ -22,3 +22,19 @@ def chart30m(event_struct):
 def chart1H(event_struct):
     return
 
+
+def chartTemp(event_struct):
+    return
+
+
+def chartAQ(event_struct):
+    return
+
+
+def chartPM(event_struct):
+    return
+
+
+def chartHum(event_struct):
+    return
+

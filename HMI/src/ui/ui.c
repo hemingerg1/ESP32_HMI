@@ -32,8 +32,6 @@ lv_obj_t * ui_FullScreen1;
 void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e);
 lv_obj_t * ui_Chart1;
-void ui_event_Button1(lv_event_t * e);
-lv_obj_t * ui_Button1;
 void ui_event_but2H(lv_event_t * e);
 lv_obj_t * ui_but2H;
 lv_obj_t * ui_Label3;
@@ -43,6 +41,18 @@ lv_obj_t * ui_Label7;
 void ui_event_but1H(lv_event_t * e);
 lv_obj_t * ui_but1H;
 lv_obj_t * ui_Label6;
+void ui_event_butTemp(lv_event_t * e);
+lv_obj_t * ui_butTemp;
+lv_obj_t * ui_Label8;
+void ui_event_butAQ(lv_event_t * e);
+lv_obj_t * ui_butAQ;
+lv_obj_t * ui_Label9;
+void ui_event_butPM(lv_event_t * e);
+lv_obj_t * ui_butPM;
+lv_obj_t * ui_Label10;
+void ui_event_butHum(lv_event_t * e);
+lv_obj_t * ui_butHum;
+lv_obj_t * ui_Label11;
 
 
 // SCREEN: ui_ScrTBD
@@ -114,14 +124,6 @@ void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e)
         _ui_screen_change(&ui_ScrTBD, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTBD_screen_init);
     }
 }
-void ui_event_Button1(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_RELEASED) {
-        updateChart(e);
-    }
-}
 void ui_event_but2H(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -144,6 +146,38 @@ void ui_event_but1H(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         chart1H(e);
+    }
+}
+void ui_event_butTemp(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chartTemp(e);
+    }
+}
+void ui_event_butAQ(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chartAQ(e);
+    }
+}
+void ui_event_butPM(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chartPM(e);
+    }
+}
+void ui_event_butHum(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chartHum(e);
     }
 }
 void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e)
