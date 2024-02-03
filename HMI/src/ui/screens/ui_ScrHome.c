@@ -35,7 +35,7 @@ void ui_ScrHome_screen_init(void)
     ui_Button3 = lv_btn_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
     lv_obj_set_width(ui_Button3, 100);
     lv_obj_set_height(ui_Button3, 50);
-    lv_obj_set_x(ui_Button3, 129);
+    lv_obj_set_x(ui_Button3, 132);
     lv_obj_set_y(ui_Button3, -123);
     lv_obj_set_align(ui_Button3, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Button3, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
@@ -78,6 +78,52 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_height(ui_Label5, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Label5, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label5, "-1");
+
+    ui_StartLog = lv_obj_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
+    lv_obj_set_width(ui_StartLog, 235);
+    lv_obj_set_height(ui_StartLog, 126);
+    lv_obj_set_x(ui_StartLog, -162);
+    lv_obj_set_y(ui_StartLog, 116);
+    lv_obj_set_align(ui_StartLog, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_StartLog, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_StartLog, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_clear_flag(ui_StartLog, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_StartLog, lv_color_hex(0x9D9D9D), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_StartLog, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_startLab = lv_label_create(ui_StartLog);
+    lv_obj_set_width(ui_startLab, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_startLab, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_startLab, "******* Starting HMI *******");
+
+    ui_wifiLab = lv_label_create(ui_StartLog);
+    lv_obj_set_width(ui_wifiLab, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_wifiLab, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_wifiLab, "Connecting to WiFi......");
+    lv_obj_add_flag(ui_wifiLab, LV_OBJ_FLAG_HIDDEN);     /// Flags
+
+    ui_ipLab = lv_label_create(ui_StartLog);
+    lv_obj_set_width(ui_ipLab, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_ipLab, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_ipLab, "Connected.  IP = ");
+    lv_obj_add_flag(ui_ipLab, LV_OBJ_FLAG_HIDDEN);     /// Flags
+
+    ui_timeLab = lv_label_create(ui_StartLog);
+    lv_obj_set_width(ui_timeLab, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_timeLab, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_timeLab, "Syncing Time....");
+    lv_obj_add_flag(ui_timeLab, LV_OBJ_FLAG_HIDDEN);     /// Flags
+
+    ui_influxLab = lv_label_create(ui_StartLog);
+    lv_obj_set_width(ui_influxLab, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_influxLab, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_influxLab, "Connected to Influxdb");
+    lv_obj_add_flag(ui_influxLab, LV_OBJ_FLAG_HIDDEN);     /// Flags
 
     lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTTEMP2),
                         ui_event_FullScreen_Sidebar3_butTemp2, LV_EVENT_ALL, NULL);

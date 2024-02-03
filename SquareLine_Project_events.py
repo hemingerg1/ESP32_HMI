@@ -38,3 +38,23 @@ def chartPM(event_struct):
 def chartHum(event_struct):
     return
 
+
+def influxQuery(event_struct):
+    return
+
+
+def hide(event_struct):
+    return
+
+
+def unhide(event_struct):
+    return
+
+
+def chart6H(event_struct):
+    return
+
+
+def chart3H(event_struct):
+    return
+

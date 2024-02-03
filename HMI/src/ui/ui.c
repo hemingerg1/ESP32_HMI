@@ -23,6 +23,12 @@ lv_obj_t * ui_count;
 void ui_event_Button4(lv_event_t * e);
 lv_obj_t * ui_Button4;
 lv_obj_t * ui_Label5;
+lv_obj_t * ui_StartLog;
+lv_obj_t * ui_startLab;
+lv_obj_t * ui_wifiLab;
+lv_obj_t * ui_ipLab;
+lv_obj_t * ui_timeLab;
+lv_obj_t * ui_influxLab;
 
 
 // SCREEN: ui_ScrCharts
@@ -32,14 +38,14 @@ lv_obj_t * ui_FullScreen1;
 void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e);
 lv_obj_t * ui_Chart1;
-void ui_event_but2H(lv_event_t * e);
-lv_obj_t * ui_but2H;
+void ui_event_but6H(lv_event_t * e);
+lv_obj_t * ui_but6H;
 lv_obj_t * ui_Label3;
-void ui_event_but30m(lv_event_t * e);
-lv_obj_t * ui_but30m;
-lv_obj_t * ui_Label7;
 void ui_event_but1H(lv_event_t * e);
 lv_obj_t * ui_but1H;
+lv_obj_t * ui_Label7;
+void ui_event_but3H(lv_event_t * e);
+lv_obj_t * ui_but3H;
 lv_obj_t * ui_Label6;
 void ui_event_butTemp(lv_event_t * e);
 lv_obj_t * ui_butTemp;
@@ -53,6 +59,8 @@ lv_obj_t * ui_Label10;
 void ui_event_butHum(lv_event_t * e);
 lv_obj_t * ui_butHum;
 lv_obj_t * ui_Label11;
+lv_obj_t * ui_LoadingPanel;
+lv_obj_t * ui_loadingLab;
 
 
 // SCREEN: ui_ScrTBD
@@ -124,20 +132,12 @@ void ui_event_FullScreen1_Sidebar3_butAQ2(lv_event_t * e)
         _ui_screen_change(&ui_ScrTBD, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTBD_screen_init);
     }
 }
-void ui_event_but2H(lv_event_t * e)
+void ui_event_but6H(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        chart2H(e);
-    }
-}
-void ui_event_but30m(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        chart30m(e);
+        chart6H(e);
     }
 }
 void ui_event_but1H(lv_event_t * e)
@@ -146,6 +146,14 @@ void ui_event_but1H(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         chart1H(e);
+    }
+}
+void ui_event_but3H(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        chart3H(e);
     }
 }
 void ui_event_butTemp(lv_event_t * e)
