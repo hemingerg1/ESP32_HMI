@@ -66,6 +66,7 @@ extern lv_obj_t * ui_butHum;
 extern lv_obj_t * ui_Label11;
 extern lv_obj_t * ui_LoadingPanel;
 extern lv_obj_t * ui_loadingLab;
+extern lv_obj_t * ui_Label12;
 // SCREEN: ui_ScrTBD
 void ui_ScrTBD_screen_init(void);
 extern lv_obj_t * ui_ScrTBD;

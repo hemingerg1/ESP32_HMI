@@ -61,6 +61,7 @@ lv_obj_t * ui_butHum;
 lv_obj_t * ui_Label11;
 lv_obj_t * ui_LoadingPanel;
 lv_obj_t * ui_loadingLab;
+lv_obj_t * ui_Label12;
 
 
 // SCREEN: ui_ScrTBD

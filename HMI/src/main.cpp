@@ -10,8 +10,8 @@
 // Chart variables
 int chartLen = 1;
 String meas = "Temperature";
-short int soft_min = 0;
-short int soft_max = 100;
+int soft_min = 40;
+int soft_max = 75;
 lv_coord_t data_array[1000];
 
 #include "ui/ui.h"
@@ -26,7 +26,6 @@ lv_coord_t data_array[1000];
 void setup()
 {
     gui_start();
-    chartDataInt();
 
     Serial.begin(115200);
     Serial.println("******Starting HMI******");
@@ -35,8 +34,10 @@ void setup()
     lv_obj_clear_flag(ui_wifiLab, LV_OBJ_FLAG_HIDDEN);
     lv_refr_now(NULL);
     WiFi.mode(WIFI_STA);
+    delay(100);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     Serial.print("Connecting to WiFi ..");
+    delay(500);
     while (WiFi.status() != WL_CONNECTED)
     {
         Serial.print('.');
@@ -47,12 +48,16 @@ void setup()
     lv_obj_clear_flag(ui_timeLab, LV_OBJ_FLAG_HIDDEN);
     lv_refr_now(NULL);
 
+    // sync time with ntp server
     timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
 
     // check connection to influxdb
     influxConnect();
     lv_obj_clear_flag(ui_influxLab, LV_OBJ_FLAG_HIDDEN);
     lv_refr_now(NULL);
+
+    chartDataInt();
+
     delay(1000);
     lv_obj_add_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN);
 }

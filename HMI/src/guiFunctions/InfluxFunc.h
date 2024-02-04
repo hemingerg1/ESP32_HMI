@@ -19,8 +19,8 @@ int influxQuery(String measurement, String time)
 {
     String query = "from(bucket: \"" INFLUXDB_BUCKET "\") |> range(start: -" + time + "h) |> filter(fn: (r) => r._measurement == \"Air\" and r._field == \"" + measurement + "\") |> keep(columns: [\"_time\",\"_value\"])";
 
-    Serial.print("Querying with: ");
-    Serial.println(query);
+    // Serial.print("Querying with: ");
+    // Serial.println(query);
 
     FluxQueryResult result = client.query(query);
 
@@ -32,6 +32,33 @@ int influxQuery(String measurement, String time)
         data_array[i] = result.getValueByName("_value").getDouble();
         i++;
     }
+
+    /*
+    // serial print data_array
+    for (int j = 0; j < 500; j += 10)
+    {
+        Serial.print(data_array[j]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 1]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 2]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 3]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 4]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 5]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 6]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 7]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 8]);
+        Serial.print(", ");
+        Serial.print(data_array[j + 9]);
+        Serial.println();
+    }
+    */
 
     // Check if there was an error
     if (result.getError().length() > 0)
