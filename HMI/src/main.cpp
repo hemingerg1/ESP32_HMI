@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <MQTT.h>
 #include <InfluxDbClient.h>
 #include <algorithm>
 #include <ESP32Time.h>
@@ -7,6 +8,9 @@
 #include <lv_conf.h>
 #include <lvgl.h>
 #include <secrets.h>
+
+WiFiClient wifiClient;
+MQTTClient mqtt;
 
 // Chart variables
 int chartLen = 6;
@@ -21,6 +25,7 @@ ESP32Time rtc(3600);
 #include "guiFunctions/gui.h"
 
 #include "guiFunctions/InfluxFunc.h"
+#include "guiFunctions/mqttFunc.h"
 #include "guiFunctions/ScrHomeFunc.h"
 #include "guiFunctions/ScrChartFunc.h"
 
@@ -59,6 +64,11 @@ void setup()
     lv_obj_clear_flag(ui_influxLab, LV_OBJ_FLAG_HIDDEN);
     lv_refr_now(NULL);
 
+    // connect to mqtt broker
+    mqtt.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
+    mqtt.onMessage(mqttCallback);
+    mqttConnect();
+
     chartDataInt();
 
     delay(1000);
@@ -69,10 +79,11 @@ void loop()
 {
     lv_timer_handler();
     updateTime();
+    mqtt.loop();
 
     // Serial.print("Current time: ");
     // Serial.println(rtc.getTime("%I:%M %p"));
-    delay(10);
+    delay(15);
 }
 
 /* colors
