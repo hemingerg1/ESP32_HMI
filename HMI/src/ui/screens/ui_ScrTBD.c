@@ -17,7 +17,7 @@ void ui_ScrTBD_screen_init(void)
 
 
 
-    lv_obj_set_style_bg_color(ui_comp_get_child(ui_FullScreen2, UI_COMP_FULLSCREEN_SIDEBAR3_BUTAQ2), lv_color_hex(0x84A98C),
+    lv_obj_set_style_bg_color(ui_comp_get_child(ui_FullScreen2, UI_COMP_FULLSCREEN_SIDEBAR3_BUTAQ2), lv_color_hex(0xA6A6A6),
                               LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_comp_get_child(ui_FullScreen2, UI_COMP_FULLSCREEN_SIDEBAR3_BUTAQ2), 255,
                             LV_PART_MAIN | LV_STATE_DEFAULT);

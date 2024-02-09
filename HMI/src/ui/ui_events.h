@@ -10,8 +10,6 @@
 extern "C" {
 #endif
 
-void add(lv_event_t * e);
-void sub(lv_event_t * e);
 void chart6H(lv_event_t * e);
 void chart1H(lv_event_t * e);
 void chart3H(lv_event_t * e);

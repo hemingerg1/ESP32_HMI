@@ -17,7 +17,7 @@ void ui_ScrCharts_screen_init(void)
 
 
     lv_obj_set_style_bg_color(ui_comp_get_child(ui_FullScreen1, UI_COMP_FULLSCREEN_SIDEBAR3_BUTTEMP2),
-                              lv_color_hex(0x84A98C), LV_PART_MAIN | LV_STATE_DEFAULT);
+                              lv_color_hex(0xA6A6A6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_comp_get_child(ui_FullScreen1, UI_COMP_FULLSCREEN_SIDEBAR3_BUTTEMP2), 255,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -47,12 +47,13 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_width(ui_but6H, 50);
     lv_obj_set_height(ui_but6H, 30);
     lv_obj_set_align(ui_but6H, LV_ALIGN_TOP_RIGHT);
+    lv_obj_add_state(ui_but6H, LV_STATE_CHECKED);       /// States
     lv_obj_add_flag(ui_but6H, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_but6H, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_but6H, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_but6H, lv_color_hex(0x292831), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_but6H, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_but6H, lv_color_hex(0x4C8E74), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_but6H, lv_color_hex(0x3876F2), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_but6H, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Label3 = lv_label_create(ui_but6H);
@@ -67,13 +68,12 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_x(ui_but1H, -110);
     lv_obj_set_y(ui_but1H, 0);
     lv_obj_set_align(ui_but1H, LV_ALIGN_TOP_RIGHT);
-    lv_obj_add_state(ui_but1H, LV_STATE_CHECKED);       /// States
     lv_obj_add_flag(ui_but1H, LV_OBJ_FLAG_CHECKABLE | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_but1H, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(ui_but1H, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_but1H, lv_color_hex(0x292831), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_but1H, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_but1H, lv_color_hex(0x4C8E74), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_but1H, lv_color_hex(0x3876F2), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_but1H, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Label7 = lv_label_create(ui_but1H);
@@ -93,7 +93,7 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_style_radius(ui_but3H, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_but3H, lv_color_hex(0x292831), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_but3H, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_but3H, lv_color_hex(0x4C8E74), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_but3H, lv_color_hex(0x3876F2), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_but3H, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Label6 = lv_label_create(ui_but3H);
@@ -113,7 +113,7 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_style_radius(ui_butTemp, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_butTemp, lv_color_hex(0x292831), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_butTemp, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_butTemp, lv_color_hex(0x4C8E74), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_butTemp, lv_color_hex(0x3876F2), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_butTemp, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Label8 = lv_label_create(ui_butTemp);
@@ -132,7 +132,7 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_style_radius(ui_butAQ, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_butAQ, lv_color_hex(0x292831), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_butAQ, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_butAQ, lv_color_hex(0x4C8E74), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_butAQ, lv_color_hex(0x3876F2), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_butAQ, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Label9 = lv_label_create(ui_butAQ);
@@ -151,7 +151,7 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_style_radius(ui_butPM, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_butPM, lv_color_hex(0x292831), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_butPM, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_butPM, lv_color_hex(0x4C8E74), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_butPM, lv_color_hex(0x3876F2), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_butPM, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Label10 = lv_label_create(ui_butPM);
@@ -170,7 +170,7 @@ void ui_ScrCharts_screen_init(void)
     lv_obj_set_style_radius(ui_butHum, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_butHum, lv_color_hex(0x292831), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_butHum, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_butHum, lv_color_hex(0x4C8E74), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_butHum, lv_color_hex(0x3876F2), LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_set_style_bg_opa(ui_butHum, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Label11 = lv_label_create(ui_butHum);

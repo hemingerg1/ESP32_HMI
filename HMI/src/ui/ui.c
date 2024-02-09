@@ -15,20 +15,68 @@ lv_obj_t * ui_ScrHome;
 lv_obj_t * ui_FullScreen;
 void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e);
 void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e);
-lv_obj_t * ui_Label1;
-void ui_event_Button3(lv_event_t * e);
-lv_obj_t * ui_Button3;
-lv_obj_t * ui_Label2;
 lv_obj_t * ui_count;
-void ui_event_Button4(lv_event_t * e);
-lv_obj_t * ui_Button4;
-lv_obj_t * ui_Label5;
 lv_obj_t * ui_StartLog;
 lv_obj_t * ui_startLab;
 lv_obj_t * ui_wifiLab;
 lv_obj_t * ui_ipLab;
-lv_obj_t * ui_timeLab;
+lv_obj_t * ui_timeLabLog;
 lv_obj_t * ui_influxLab;
+lv_obj_t * ui_timeLab;
+lv_obj_t * ui_AirPanel;
+lv_obj_t * ui_tempPanel;
+lv_obj_t * ui_tempTitle;
+lv_obj_t * ui_tempLab;
+lv_obj_t * ui_hmPanel;
+lv_obj_t * ui_humTitle;
+lv_obj_t * ui_humLab;
+lv_obj_t * ui_aqPanel;
+lv_obj_t * ui_aqTitle;
+lv_obj_t * ui_aqLab;
+lv_obj_t * ui_pmPanel;
+lv_obj_t * ui_pmTitle;
+lv_obj_t * ui_pmLab;
+lv_obj_t * ui_DoorsPanel;
+lv_obj_t * ui_doubleGdoorPanel;
+lv_obj_t * ui_doublGdoorTitle;
+lv_obj_t * ui_doubleGdoorLab;
+lv_obj_t * ui_outsidePdoorPanel;
+lv_obj_t * ui_outsidePdoorTitle;
+lv_obj_t * ui_outsidePdoorLab;
+lv_obj_t * ui_shopPdoorPanel;
+lv_obj_t * ui_shopPdoorTitle;
+lv_obj_t * ui_ShopPdoorLab;
+lv_obj_t * ui_singleGdoorPanel;
+lv_obj_t * ui_singleGdoorTitle;
+lv_obj_t * ui_singleGdoorLab;
+lv_obj_t * ui_VentPanel;
+lv_obj_t * ui_ventTitle;
+lv_obj_t * ui_Container5;
+lv_obj_t * ui_Container3;
+lv_obj_t * ui_ventStatTitle;
+lv_obj_t * ui_ventStatLab;
+lv_obj_t * ui_ButVentOff;
+lv_obj_t * ui_Label13;
+lv_obj_t * ui_Container4;
+lv_obj_t * ui_ventTimerTitle;
+lv_obj_t * ui_ventTimerLab;
+lv_obj_t * ui_ButVent5m;
+lv_obj_t * ui_Label5;
+lv_obj_t * ui_HeatPanel;
+lv_obj_t * ui_heatTitle;
+lv_obj_t * ui_ButVent5m1;
+lv_obj_t * ui_Label1;
+lv_obj_t * ui_ButVentOff1;
+lv_obj_t * ui_Label2;
+lv_obj_t * ui_Container1;
+lv_obj_t * ui_ButHeatUp;
+lv_obj_t * ui_heatLab;
+lv_obj_t * ui_ButHeatDown;
+lv_obj_t * ui_Container2;
+lv_obj_t * ui_heatStatTitle;
+lv_obj_t * ui_heatStatLab;
+lv_obj_t * ui_Panel4;
+lv_obj_t * ui_Label14;
 
 
 // SCREEN: ui_ScrCharts
@@ -73,6 +121,9 @@ void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
 lv_obj_t * ui_Label4;
 lv_obj_t * ui____initial_actions0;
 const lv_img_dsc_t * ui_imgset_736952691[1] = {&ui_img_2110918543};
+const lv_img_dsc_t * ui_imgset_1703005419[1] = {&ui_img_267769087};
+const lv_img_dsc_t * ui_imgset_298057525[1] = {&ui_img_2127381671};
+const lv_img_dsc_t * ui_imgset_406222076[1] = {&ui_img_347167274};
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -99,22 +150,6 @@ void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_RELEASED) {
         _ui_screen_change(&ui_ScrTBD, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrTBD_screen_init);
-    }
-}
-void ui_event_Button3(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_RELEASED) {
-        add(e);
-    }
-}
-void ui_event_Button4(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_RELEASED) {
-        sub(e);
     }
 }
 void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e)

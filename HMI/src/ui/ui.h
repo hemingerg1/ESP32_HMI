@@ -22,20 +22,68 @@ extern lv_obj_t * ui_ScrHome;
 extern lv_obj_t * ui_FullScreen;
 void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e);
 void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e);
-extern lv_obj_t * ui_Label1;
-void ui_event_Button3(lv_event_t * e);
-extern lv_obj_t * ui_Button3;
-extern lv_obj_t * ui_Label2;
 extern lv_obj_t * ui_count;
-void ui_event_Button4(lv_event_t * e);
-extern lv_obj_t * ui_Button4;
-extern lv_obj_t * ui_Label5;
 extern lv_obj_t * ui_StartLog;
 extern lv_obj_t * ui_startLab;
 extern lv_obj_t * ui_wifiLab;
 extern lv_obj_t * ui_ipLab;
-extern lv_obj_t * ui_timeLab;
+extern lv_obj_t * ui_timeLabLog;
 extern lv_obj_t * ui_influxLab;
+extern lv_obj_t * ui_timeLab;
+extern lv_obj_t * ui_AirPanel;
+extern lv_obj_t * ui_tempPanel;
+extern lv_obj_t * ui_tempTitle;
+extern lv_obj_t * ui_tempLab;
+extern lv_obj_t * ui_hmPanel;
+extern lv_obj_t * ui_humTitle;
+extern lv_obj_t * ui_humLab;
+extern lv_obj_t * ui_aqPanel;
+extern lv_obj_t * ui_aqTitle;
+extern lv_obj_t * ui_aqLab;
+extern lv_obj_t * ui_pmPanel;
+extern lv_obj_t * ui_pmTitle;
+extern lv_obj_t * ui_pmLab;
+extern lv_obj_t * ui_DoorsPanel;
+extern lv_obj_t * ui_doubleGdoorPanel;
+extern lv_obj_t * ui_doublGdoorTitle;
+extern lv_obj_t * ui_doubleGdoorLab;
+extern lv_obj_t * ui_outsidePdoorPanel;
+extern lv_obj_t * ui_outsidePdoorTitle;
+extern lv_obj_t * ui_outsidePdoorLab;
+extern lv_obj_t * ui_shopPdoorPanel;
+extern lv_obj_t * ui_shopPdoorTitle;
+extern lv_obj_t * ui_ShopPdoorLab;
+extern lv_obj_t * ui_singleGdoorPanel;
+extern lv_obj_t * ui_singleGdoorTitle;
+extern lv_obj_t * ui_singleGdoorLab;
+extern lv_obj_t * ui_VentPanel;
+extern lv_obj_t * ui_ventTitle;
+extern lv_obj_t * ui_Container5;
+extern lv_obj_t * ui_Container3;
+extern lv_obj_t * ui_ventStatTitle;
+extern lv_obj_t * ui_ventStatLab;
+extern lv_obj_t * ui_ButVentOff;
+extern lv_obj_t * ui_Label13;
+extern lv_obj_t * ui_Container4;
+extern lv_obj_t * ui_ventTimerTitle;
+extern lv_obj_t * ui_ventTimerLab;
+extern lv_obj_t * ui_ButVent5m;
+extern lv_obj_t * ui_Label5;
+extern lv_obj_t * ui_HeatPanel;
+extern lv_obj_t * ui_heatTitle;
+extern lv_obj_t * ui_ButVent5m1;
+extern lv_obj_t * ui_Label1;
+extern lv_obj_t * ui_ButVentOff1;
+extern lv_obj_t * ui_Label2;
+extern lv_obj_t * ui_Container1;
+extern lv_obj_t * ui_ButHeatUp;
+extern lv_obj_t * ui_heatLab;
+extern lv_obj_t * ui_ButHeatDown;
+extern lv_obj_t * ui_Container2;
+extern lv_obj_t * ui_heatStatTitle;
+extern lv_obj_t * ui_heatStatLab;
+extern lv_obj_t * ui_Panel4;
+extern lv_obj_t * ui_Label14;
 // SCREEN: ui_ScrCharts
 void ui_ScrCharts_screen_init(void);
 extern lv_obj_t * ui_ScrCharts;
@@ -78,6 +126,9 @@ extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_home_png);    // assets\home.png
 LV_IMG_DECLARE(ui_img_2110918543);    // assets\chart-48.png
+LV_IMG_DECLARE(ui_img_267769087);    // assets\icons8-settings-48.png
+LV_IMG_DECLARE(ui_img_2127381671);    // assets\icons8-chevron-up-48.png
+LV_IMG_DECLARE(ui_img_347167274);    // assets\icons8-chevron-down-48.png
 
 
 

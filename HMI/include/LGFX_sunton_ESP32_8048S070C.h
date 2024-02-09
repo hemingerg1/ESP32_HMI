@@ -44,7 +44,7 @@ public:
       cfg.panel = &_panel_instance;
 
       // V1.1 board
-      /*
+
       cfg.pin_d0 = GPIO_NUM_15;  // B0
       cfg.pin_d1 = GPIO_NUM_7;   // B1
       cfg.pin_d2 = GPIO_NUM_6;   // B2
@@ -61,24 +61,26 @@ public:
       cfg.pin_d13 = GPIO_NUM_47; // R2
       cfg.pin_d14 = GPIO_NUM_48; // R3
       cfg.pin_d15 = GPIO_NUM_45; // R4
-      */
-      // V1.3 board
-      cfg.pin_d0 = GPIO_NUM_14;  // B0
-      cfg.pin_d1 = GPIO_NUM_21;  // B1
-      cfg.pin_d2 = GPIO_NUM_47;  // B2
-      cfg.pin_d3 = GPIO_NUM_48;  // B3
-      cfg.pin_d4 = GPIO_NUM_45;  // B4
-      cfg.pin_d5 = GPIO_NUM_9;   // G0
-      cfg.pin_d6 = GPIO_NUM_46;  // G1
-      cfg.pin_d7 = GPIO_NUM_3;   // G2
-      cfg.pin_d8 = GPIO_NUM_8;   // G3
-      cfg.pin_d9 = GPIO_NUM_16;  // G4
-      cfg.pin_d10 = GPIO_NUM_1;  // G5
-      cfg.pin_d11 = GPIO_NUM_15; // R0
-      cfg.pin_d12 = GPIO_NUM_7;  // R1
-      cfg.pin_d13 = GPIO_NUM_6;  // R2
-      cfg.pin_d14 = GPIO_NUM_5;  // R3
-      cfg.pin_d15 = GPIO_NUM_4;  // R4
+
+      /*
+       // V1.3 board
+       cfg.pin_d0 = GPIO_NUM_14;  // B0
+       cfg.pin_d1 = GPIO_NUM_21;  // B1
+       cfg.pin_d2 = GPIO_NUM_47;  // B2
+       cfg.pin_d3 = GPIO_NUM_48;  // B3
+       cfg.pin_d4 = GPIO_NUM_45;  // B4
+       cfg.pin_d5 = GPIO_NUM_9;   // G0
+       cfg.pin_d6 = GPIO_NUM_46;  // G1
+       cfg.pin_d7 = GPIO_NUM_3;   // G2
+       cfg.pin_d8 = GPIO_NUM_8;   // G3
+       cfg.pin_d9 = GPIO_NUM_16;  // G4
+       cfg.pin_d10 = GPIO_NUM_1;  // G5
+       cfg.pin_d11 = GPIO_NUM_15; // R0
+       cfg.pin_d12 = GPIO_NUM_7;  // R1
+       cfg.pin_d13 = GPIO_NUM_6;  // R2
+       cfg.pin_d14 = GPIO_NUM_5;  // R3
+       cfg.pin_d15 = GPIO_NUM_4;  // R4
+       */
 
       cfg.pin_henable = GPIO_NUM_41;
       cfg.pin_vsync = GPIO_NUM_40;

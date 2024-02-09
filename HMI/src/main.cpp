@@ -2,17 +2,20 @@
 #include <WiFi.h>
 #include <InfluxDbClient.h>
 #include <algorithm>
+#include <ESP32Time.h>
 
 #include <lv_conf.h>
 #include <lvgl.h>
 #include <secrets.h>
 
 // Chart variables
-int chartLen = 1;
+int chartLen = 6;
 String meas = "Temperature";
 int soft_min = 40;
 int soft_max = 75;
 lv_coord_t data_array[1000];
+
+ESP32Time rtc(3600);
 
 #include "ui/ui.h"
 #include "guiFunctions/gui.h"
@@ -21,7 +24,7 @@ lv_coord_t data_array[1000];
 #include "guiFunctions/ScrHomeFunc.h"
 #include "guiFunctions/ScrChartFunc.h"
 
-#define TZ_INFO "EST5EDT"
+#define TZ_INFO "EST+5EDT,M3.2.0/2,M11.1.0/2"
 
 void setup()
 {
@@ -45,7 +48,7 @@ void setup()
     }
     Serial.println(WiFi.localIP());
     lv_obj_clear_flag(ui_ipLab, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_clear_flag(ui_timeLab, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(ui_timeLabLog, LV_OBJ_FLAG_HIDDEN);
     lv_refr_now(NULL);
 
     // sync time with ntp server
@@ -65,5 +68,23 @@ void setup()
 void loop()
 {
     lv_timer_handler();
-    delay(5);
+    updateTime();
+
+    // Serial.print("Current time: ");
+    // Serial.println(rtc.getTime("%I:%M %p"));
+    delay(10);
 }
+
+/* colors
+
+#F2F2F2;
+
+#A6A6A6;
+
+#595959;
+
+#262626;
+
+#0D0D0D;
+
+*/
