@@ -12,89 +12,29 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_flex_flow(ui_ScrHome, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_ScrHome, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER);
 
-    ui_FullScreen = ui_FullScreen_create(ui_ScrHome);
-    lv_obj_set_x(ui_FullScreen, 0);
-    lv_obj_set_y(ui_FullScreen, 0);
+    ui_HomeScreen = ui_FullScreen_create(ui_ScrHome);
+    lv_obj_set_x(ui_HomeScreen, 0);
+    lv_obj_set_y(ui_HomeScreen, 0);
 
 
 
-    lv_obj_set_style_bg_color(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTHOME2),
+    lv_obj_set_style_bg_color(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTHOME2),
                               lv_color_hex(0xA6A6A6), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTHOME2), 255,
+    lv_obj_set_style_bg_opa(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTHOME2), 255,
                             LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
 
-    ui_count = lv_label_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
-    lv_obj_set_width(ui_count, 100);
-    lv_obj_set_height(ui_count, 30);
-    lv_obj_set_x(ui_count, -221);
-    lv_obj_set_y(ui_count, 186);
-    lv_obj_set_align(ui_count, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_count, "");
-    lv_obj_add_flag(ui_count, LV_OBJ_FLAG_HIDDEN);     /// Flags
-    lv_obj_set_style_text_align(ui_count, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(ui_count, 6, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(ui_count, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_opa(ui_count, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(ui_count, 3, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_StartLog = lv_obj_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
-    lv_obj_set_width(ui_StartLog, 235);
-    lv_obj_set_height(ui_StartLog, 126);
-    lv_obj_set_x(ui_StartLog, -49);
-    lv_obj_set_y(ui_StartLog, 336);
-    lv_obj_set_align(ui_StartLog, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_StartLog, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_StartLog, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_clear_flag(ui_StartLog, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_radius(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_StartLog, lv_color_hex(0x9D9D9D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_StartLog, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_startLab = lv_label_create(ui_StartLog);
-    lv_obj_set_width(ui_startLab, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_startLab, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_startLab, "******* Starting HMI *******");
-
-    ui_wifiLab = lv_label_create(ui_StartLog);
-    lv_obj_set_width(ui_wifiLab, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_wifiLab, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_wifiLab, "Connecting to WiFi......");
-    lv_obj_add_flag(ui_wifiLab, LV_OBJ_FLAG_HIDDEN);     /// Flags
-
-    ui_ipLab = lv_label_create(ui_StartLog);
-    lv_obj_set_width(ui_ipLab, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_ipLab, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_ipLab, "Connected.  IP = ");
-    lv_obj_add_flag(ui_ipLab, LV_OBJ_FLAG_HIDDEN);     /// Flags
-
-    ui_timeLabLog = lv_label_create(ui_StartLog);
-    lv_obj_set_width(ui_timeLabLog, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_timeLabLog, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_timeLabLog, "Syncing Time....");
-    lv_obj_add_flag(ui_timeLabLog, LV_OBJ_FLAG_HIDDEN);     /// Flags
-
-    ui_influxLab = lv_label_create(ui_StartLog);
-    lv_obj_set_width(ui_influxLab, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_influxLab, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_influxLab, "Connected to Influxdb");
-    lv_obj_add_flag(ui_influxLab, LV_OBJ_FLAG_HIDDEN);     /// Flags
-
-    ui_timeLab = lv_label_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
+    ui_timeLab = lv_label_create(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
     lv_obj_set_width(ui_timeLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_timeLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_timeLab, LV_ALIGN_TOP_RIGHT);
     lv_label_set_long_mode(ui_timeLab, LV_LABEL_LONG_CLIP);
-    lv_label_set_text(ui_timeLab, "17:30");
+    lv_label_set_text(ui_timeLab, "--:--");
     lv_obj_set_style_text_align(ui_timeLab, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_timeLab, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_AirPanel = lv_obj_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
+    ui_AirPanel = lv_obj_create(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
     lv_obj_set_height(ui_AirPanel, 100);
     lv_obj_set_width(ui_AirPanel, lv_pct(100));
     lv_obj_set_x(ui_AirPanel, 0);
@@ -136,7 +76,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_tempLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_tempLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_tempLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_tempLab, "50");
+    lv_label_set_text(ui_tempLab, "--");
     lv_obj_set_style_text_font(ui_tempLab, &lv_font_montserrat_36, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_hmPanel = lv_obj_create(ui_AirPanel);
@@ -168,7 +108,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_humLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_humLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_humLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_humLab, "50");
+    lv_label_set_text(ui_humLab, "--");
     lv_obj_set_style_text_font(ui_humLab, &lv_font_montserrat_36, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_aqPanel = lv_obj_create(ui_AirPanel);
@@ -200,7 +140,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_aqLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_aqLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_aqLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_aqLab, "100");
+    lv_label_set_text(ui_aqLab, "--");
     lv_obj_set_style_text_font(ui_aqLab, &lv_font_montserrat_36, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_pmPanel = lv_obj_create(ui_AirPanel);
@@ -232,10 +172,10 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_pmLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_pmLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_pmLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_pmLab, "50");
+    lv_label_set_text(ui_pmLab, "--");
     lv_obj_set_style_text_font(ui_pmLab, &lv_font_montserrat_36, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_DoorsPanel = lv_obj_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
+    ui_DoorsPanel = lv_obj_create(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
     lv_obj_set_height(ui_DoorsPanel, 90);
     lv_obj_set_width(ui_DoorsPanel, lv_pct(100));
     lv_obj_set_x(ui_DoorsPanel, 0);
@@ -257,7 +197,6 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_align(ui_doubleGdoorPanel, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_doubleGdoorPanel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_doubleGdoorPanel, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_add_state(ui_doubleGdoorPanel, LV_STATE_CHECKED);       /// States
     lv_obj_add_flag(ui_doubleGdoorPanel, LV_OBJ_FLAG_CHECKABLE);     /// Flags
     lv_obj_clear_flag(ui_doubleGdoorPanel,
                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -277,7 +216,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_doubleGdoorLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_doubleGdoorLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_doubleGdoorLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_doubleGdoorLab, "Closed");
+    lv_label_set_text(ui_doubleGdoorLab, "--");
     lv_obj_set_style_text_font(ui_doubleGdoorLab, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_outsidePdoorPanel = lv_obj_create(ui_DoorsPanel);
@@ -289,7 +228,6 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_align(ui_outsidePdoorPanel, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_outsidePdoorPanel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_outsidePdoorPanel, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_add_state(ui_outsidePdoorPanel, LV_STATE_CHECKED);       /// States
     lv_obj_add_flag(ui_outsidePdoorPanel, LV_OBJ_FLAG_CHECKABLE);     /// Flags
     lv_obj_clear_flag(ui_outsidePdoorPanel,
                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -310,7 +248,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_outsidePdoorLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_outsidePdoorLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_outsidePdoorLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_outsidePdoorLab, "Closed");
+    lv_label_set_text(ui_outsidePdoorLab, "--");
     lv_obj_set_style_text_font(ui_outsidePdoorLab, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_shopPdoorPanel = lv_obj_create(ui_DoorsPanel);
@@ -322,7 +260,6 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_align(ui_shopPdoorPanel, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_shopPdoorPanel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_shopPdoorPanel, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_add_state(ui_shopPdoorPanel, LV_STATE_CHECKED);       /// States
     lv_obj_add_flag(ui_shopPdoorPanel, LV_OBJ_FLAG_CHECKABLE);     /// Flags
     lv_obj_clear_flag(ui_shopPdoorPanel,
                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -342,7 +279,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_ShopPdoorLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_ShopPdoorLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_ShopPdoorLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_ShopPdoorLab, "Closed");
+    lv_label_set_text(ui_ShopPdoorLab, "--");
     lv_obj_set_style_text_font(ui_ShopPdoorLab, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_singleGdoorPanel = lv_obj_create(ui_DoorsPanel);
@@ -354,7 +291,6 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_align(ui_singleGdoorPanel, LV_ALIGN_CENTER);
     lv_obj_set_flex_flow(ui_singleGdoorPanel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_singleGdoorPanel, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_add_state(ui_singleGdoorPanel, LV_STATE_CHECKED);       /// States
     lv_obj_add_flag(ui_singleGdoorPanel, LV_OBJ_FLAG_CHECKABLE);     /// Flags
     lv_obj_clear_flag(ui_singleGdoorPanel,
                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE | LV_OBJ_FLAG_SCROLLABLE);     /// Flags
@@ -374,10 +310,10 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_singleGdoorLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_singleGdoorLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_singleGdoorLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_singleGdoorLab, "Closed");
+    lv_label_set_text(ui_singleGdoorLab, "--");
     lv_obj_set_style_text_font(ui_singleGdoorLab, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_VentPanel = lv_obj_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
+    ui_VentPanel = lv_obj_create(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
     lv_obj_set_width(ui_VentPanel, lv_pct(49));
     lv_obj_set_height(ui_VentPanel, lv_pct(48));
     lv_obj_set_align(ui_VentPanel, LV_ALIGN_BOTTOM_LEFT);
@@ -431,7 +367,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_width(ui_ventStatLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_ventStatLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_ventStatLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_ventStatLab, "Off");
+    lv_label_set_text(ui_ventStatLab, "--");
     lv_obj_set_style_text_font(ui_ventStatLab, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ButVentOff = lv_btn_create(ui_Container5);
@@ -498,7 +434,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_align(ui_Label5, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label5, "+5 min");
 
-    ui_HeatPanel = lv_obj_create(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
+    ui_HeatPanel = lv_obj_create(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
     lv_obj_set_width(ui_HeatPanel, lv_pct(49));
     lv_obj_set_height(ui_HeatPanel, lv_pct(48));
     lv_obj_set_align(ui_HeatPanel, LV_ALIGN_BOTTOM_RIGHT);
@@ -638,9 +574,36 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_style_text_opa(ui_Label14, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label14, &lv_font_montserrat_22, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTTEMP2),
-                        ui_event_FullScreen_Sidebar3_butTemp2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTAQ2),
-                        ui_event_FullScreen_Sidebar3_butAQ2, LV_EVENT_ALL, NULL);
+    ui_StartLog = lv_obj_create(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_CONTENTCONTAINER));
+    lv_obj_set_width(ui_StartLog, lv_pct(105));
+    lv_obj_set_height(ui_StartLog, lv_pct(105));
+    lv_obj_set_align(ui_StartLog, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_StartLog, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_StartLog, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_clear_flag(ui_StartLog, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_StartLog, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_StartLog, lv_color_hex(0x101418), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_StartLog, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_StartLog, 20, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_StartLog, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_startTitle = lv_label_create(ui_StartLog);
+    lv_obj_set_width(ui_startTitle, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_startTitle, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_startTitle, "************ Initializing HMI ************");
+
+    ui_startLab = lv_label_create(ui_StartLog);
+    lv_obj_set_width(ui_startLab, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_startLab, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_startLab, 1);
+    lv_obj_set_y(ui_startLab, 25);
+    lv_label_set_text(ui_startLab, "log");
+
+    lv_obj_add_event_cb(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTTEMP2),
+                        ui_event_HomeScreen_Sidebar3_butTemp2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_comp_get_child(ui_HomeScreen, UI_COMP_FULLSCREEN_SIDEBAR3_BUTAQ2),
+                        ui_event_HomeScreen_Sidebar3_butAQ2, LV_EVENT_ALL, NULL);
 
 }

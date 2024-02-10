@@ -7,11 +7,14 @@ void influxConnect()
     {
         Serial.print("Connected to InfluxDB: ");
         Serial.println(client.getServerUrl());
+        logAdd(true, "Successfully connected to InfluxDB at: " + client.getServerUrl());
     }
     else
     {
         Serial.print("InfluxDB connection failed: ");
         Serial.println(client.getLastErrorMessage());
+        logAdd(true, "Was unable to connect to InfluxDB. Reason...");
+        logAdd(false, client.getLastErrorMessage());
     }
 }
 

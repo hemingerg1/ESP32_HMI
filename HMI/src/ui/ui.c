@@ -12,16 +12,9 @@
 // SCREEN: ui_ScrHome
 void ui_ScrHome_screen_init(void);
 lv_obj_t * ui_ScrHome;
-lv_obj_t * ui_FullScreen;
-void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e);
-void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e);
-lv_obj_t * ui_count;
-lv_obj_t * ui_StartLog;
-lv_obj_t * ui_startLab;
-lv_obj_t * ui_wifiLab;
-lv_obj_t * ui_ipLab;
-lv_obj_t * ui_timeLabLog;
-lv_obj_t * ui_influxLab;
+lv_obj_t * ui_HomeScreen;
+void ui_event_HomeScreen_Sidebar3_butTemp2(lv_event_t * e);
+void ui_event_HomeScreen_Sidebar3_butAQ2(lv_event_t * e);
 lv_obj_t * ui_timeLab;
 lv_obj_t * ui_AirPanel;
 lv_obj_t * ui_tempPanel;
@@ -77,6 +70,9 @@ lv_obj_t * ui_heatStatTitle;
 lv_obj_t * ui_heatStatLab;
 lv_obj_t * ui_Panel4;
 lv_obj_t * ui_Label14;
+lv_obj_t * ui_StartLog;
+lv_obj_t * ui_startTitle;
+lv_obj_t * ui_startLab;
 
 
 // SCREEN: ui_ScrCharts
@@ -119,6 +115,10 @@ lv_obj_t * ui_FullScreen2;
 void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
 lv_obj_t * ui_Label4;
+lv_obj_t * ui_setTabView;
+lv_obj_t * ui_setTabPage;
+lv_obj_t * ui_logTabPage;
+lv_obj_t * ui_logLab;
 lv_obj_t * ui____initial_actions0;
 const lv_img_dsc_t * ui_imgset_736952691[1] = {&ui_img_2110918543};
 const lv_img_dsc_t * ui_imgset_1703005419[1] = {&ui_img_267769087};
@@ -136,7 +136,7 @@ const lv_img_dsc_t * ui_imgset_406222076[1] = {&ui_img_347167274};
 ///////////////////// ANIMATIONS ////////////////////
 
 ///////////////////// FUNCTIONS ////////////////////
-void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e)
+void ui_event_HomeScreen_Sidebar3_butTemp2(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
@@ -144,7 +144,7 @@ void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e)
         _ui_screen_change(&ui_ScrCharts, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrCharts_screen_init);
     }
 }
-void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e)
+void ui_event_HomeScreen_Sidebar3_butAQ2(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);

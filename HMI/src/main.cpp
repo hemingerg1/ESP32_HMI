@@ -12,6 +12,8 @@
 WiFiClient wifiClient;
 MQTTClient mqtt;
 
+String mylog;
+
 // Chart variables
 int chartLen = 6;
 String meas = "Temperature";
@@ -19,11 +21,12 @@ int soft_min = 40;
 int soft_max = 75;
 lv_coord_t data_array[1000];
 
-ESP32Time rtc(3600);
+ESP32Time rtc(0);
 
 #include "ui/ui.h"
 #include "guiFunctions/gui.h"
 
+#include "guiFunctions/logFunc.h"
 #include "guiFunctions/InfluxFunc.h"
 #include "guiFunctions/mqttFunc.h"
 #include "guiFunctions/ScrHomeFunc.h"
@@ -33,38 +36,40 @@ ESP32Time rtc(3600);
 
 void setup()
 {
-    gui_start();
-
     Serial.begin(115200);
-    Serial.println("******Starting HMI******");
+    Serial.println("****** Initializing HMI ******");
+
+    gui_start();
+    logAdd(false, "GUI started.");
 
     // Setup wifi
-    lv_obj_clear_flag(ui_wifiLab, LV_OBJ_FLAG_HIDDEN);
-    lv_refr_now(NULL);
+    WiFi.disconnect(true);
+    delay(500);
     WiFi.mode(WIFI_STA);
-    delay(100);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    Serial.print("Connecting to WiFi ..");
+    Serial.print("Connecting to WiFi...");
+    logAdd(false, "WiFi connecting...");
     delay(500);
     while (WiFi.status() != WL_CONNECTED)
     {
         Serial.print('.');
         delay(500);
     }
+    Serial.print("\nWiFi connected. IP: ");
     Serial.println(WiFi.localIP());
-    lv_obj_clear_flag(ui_ipLab, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_clear_flag(ui_timeLabLog, LV_OBJ_FLAG_HIDDEN);
-    lv_refr_now(NULL);
+    logAdd(false, "WiFi connected. IP: " + WiFi.localIP().toString());
 
     // sync time with ntp server
+    logAdd(false, "Syncing time...");
     timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
+    logAdd(false, "Time synced to: " + rtc.getDateTime());
 
     // check connection to influxdb
+    logAdd(true, "Checking InfluxDB connection...");
     influxConnect();
-    lv_obj_clear_flag(ui_influxLab, LV_OBJ_FLAG_HIDDEN);
-    lv_refr_now(NULL);
 
     // connect to mqtt broker
+    logAdd(true, "Connecting to MQTT broker...");
     mqtt.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
     mqtt.onMessage(mqttCallback);
     mqttConnect();

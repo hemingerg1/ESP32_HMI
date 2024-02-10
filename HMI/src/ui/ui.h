@@ -19,16 +19,9 @@ extern "C" {
 // SCREEN: ui_ScrHome
 void ui_ScrHome_screen_init(void);
 extern lv_obj_t * ui_ScrHome;
-extern lv_obj_t * ui_FullScreen;
-void ui_event_FullScreen_Sidebar3_butTemp2(lv_event_t * e);
-void ui_event_FullScreen_Sidebar3_butAQ2(lv_event_t * e);
-extern lv_obj_t * ui_count;
-extern lv_obj_t * ui_StartLog;
-extern lv_obj_t * ui_startLab;
-extern lv_obj_t * ui_wifiLab;
-extern lv_obj_t * ui_ipLab;
-extern lv_obj_t * ui_timeLabLog;
-extern lv_obj_t * ui_influxLab;
+extern lv_obj_t * ui_HomeScreen;
+void ui_event_HomeScreen_Sidebar3_butTemp2(lv_event_t * e);
+void ui_event_HomeScreen_Sidebar3_butAQ2(lv_event_t * e);
 extern lv_obj_t * ui_timeLab;
 extern lv_obj_t * ui_AirPanel;
 extern lv_obj_t * ui_tempPanel;
@@ -84,6 +77,9 @@ extern lv_obj_t * ui_heatStatTitle;
 extern lv_obj_t * ui_heatStatLab;
 extern lv_obj_t * ui_Panel4;
 extern lv_obj_t * ui_Label14;
+extern lv_obj_t * ui_StartLog;
+extern lv_obj_t * ui_startTitle;
+extern lv_obj_t * ui_startLab;
 // SCREEN: ui_ScrCharts
 void ui_ScrCharts_screen_init(void);
 extern lv_obj_t * ui_ScrCharts;
@@ -122,6 +118,10 @@ extern lv_obj_t * ui_FullScreen2;
 void ui_event_FullScreen2_Sidebar3_butHome2(lv_event_t * e);
 void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
 extern lv_obj_t * ui_Label4;
+extern lv_obj_t * ui_setTabView;
+extern lv_obj_t * ui_setTabPage;
+extern lv_obj_t * ui_logTabPage;
+extern lv_obj_t * ui_logLab;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_home_png);    // assets\home.png
