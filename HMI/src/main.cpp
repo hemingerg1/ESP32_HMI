@@ -22,6 +22,8 @@ int soft_max = 75;
 lv_coord_t data_array[1000];
 
 ESP32Time rtc(0);
+unsigned long ventFanTimer;
+String ventFantState = "--";
 
 #include "ui/ui.h"
 #include "guiFunctions/gui.h"
@@ -31,6 +33,7 @@ ESP32Time rtc(0);
 #include "guiFunctions/mqttFunc.h"
 #include "guiFunctions/ScrHomeFunc.h"
 #include "guiFunctions/ScrChartFunc.h"
+#include "guiFunctions/ScrSettingsFunc.h"
 
 #define TZ_INFO "EST+5EDT,M3.2.0/2,M11.1.0/2"
 
@@ -39,25 +42,12 @@ void setup()
     Serial.begin(115200);
     Serial.println("****** Initializing HMI ******");
 
+    // start the LVGL gui
     gui_start();
     logAdd(false, "GUI started.");
 
-    // Setup wifi
-    WiFi.disconnect(true);
-    delay(500);
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    Serial.print("Connecting to WiFi...");
-    logAdd(false, "WiFi connecting...");
-    delay(500);
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        Serial.print('.');
-        delay(500);
-    }
-    Serial.print("\nWiFi connected. IP: ");
-    Serial.println(WiFi.localIP());
-    logAdd(false, "WiFi connected. IP: " + WiFi.localIP().toString());
+    // Setup wifi (from ScrSettingsFunc.h)
+    wificon(NULL);
 
     // sync time with ntp server
     logAdd(false, "Syncing time...");
@@ -68,27 +58,36 @@ void setup()
     logAdd(true, "Checking InfluxDB connection...");
     influxConnect();
 
-    // connect to mqtt broker
-    logAdd(true, "Connecting to MQTT broker...");
-    mqtt.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
-    mqtt.onMessage(mqttCallback);
-    mqttConnect();
+    // connect to mqtt broker (from ScrSettingsFunc.h)
+    mqttCon(NULL);
 
+    // initialize the chart data (from ScrChartFunc.h)
     chartDataInt();
 
-    delay(1000);
+    // delay then hide the start log screen
+    delay(2000);
     lv_obj_add_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN);
 }
 
 void loop()
 {
     lv_timer_handler();
+
+    // update the time on screen (from ScrHomeFunc.h)
     updateTime();
+
+    // check if MQTT is still connected
+    if (!mqtt.connected())
+    {
+        mqttCon(NULL);
+    }
+    // send and receive MQTT messages
     mqtt.loop();
 
-    // Serial.print("Current time: ");
-    // Serial.println(rtc.getTime("%I:%M %p"));
-    delay(15);
+    // check if the vent fan should be on or off
+    ventFanTimerCheck();
+
+    delay(20);
 }
 
 /* colors

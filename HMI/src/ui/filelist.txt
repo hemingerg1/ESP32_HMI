@@ -2,7 +2,7 @@ components/ui_comp_fullscreen.c
 components/ui_comp.c
 screens/ui_ScrHome.c
 screens/ui_ScrCharts.c
-screens/ui_ScrTBD.c
+screens/ui_ScrSettings.c
 ui.c
 components/ui_comp_hook.c
 ui_helpers.c

@@ -17,6 +17,7 @@ void mqttConnect()
     mqtt.subscribe("Garage/Doors/SmallGarageDoor");
     mqtt.subscribe("Garage/Doors/OutsideDoor");
     mqtt.subscribe("Garage/Doors/ShopDoor");
+    mqtt.subscribe("Garage/Mech/VentFan");
 }
 
 void mqttCallback(String &topic, String &payload)
@@ -88,6 +89,19 @@ void mqttCallback(String &topic, String &payload)
         else if (state == "closed")
         {
             lv_obj_add_state(ui_ShopPdoorLab, LV_STATE_CHECKED);
+        }
+    }
+    else if (topic == "Garage/Mech/VentFan")
+    {
+        ventFantState = payload;
+        lv_label_set_text_fmt(ui_ventStatLab, "%s", ventFantState);
+        if (ventFantState == "off")
+        {
+            lv_obj_clear_state(ui_ventStatCont, LV_STATE_CHECKED);
+        }
+        else if (ventFantState == "on")
+        {
+            lv_obj_add_state(ui_ventStatCont, LV_STATE_CHECKED);
         }
     }
 }

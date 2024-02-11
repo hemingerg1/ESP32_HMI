@@ -58,3 +58,27 @@ def chart6H(event_struct):
 def chart3H(event_struct):
     return
 
+
+def reboot(event_struct):
+    return
+
+
+def wificon(event_struct):
+    return
+
+
+def reMQTT(event_struct):
+    return
+
+
+def mqttCon(event_struct):
+    return
+
+
+def butVentFanOff(event_struct):
+    return
+
+
+def butVentFan5m(event_struct):
+    return
+

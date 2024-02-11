@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+void butVentFanOff(lv_event_t * e);
+void butVentFan5m(lv_event_t * e);
 void chart6H(lv_event_t * e);
 void chart1H(lv_event_t * e);
 void chart3H(lv_event_t * e);
@@ -17,6 +19,9 @@ void chartTemp(lv_event_t * e);
 void chartAQ(lv_event_t * e);
 void chartPM(lv_event_t * e);
 void chartHum(lv_event_t * e);
+void reboot(lv_event_t * e);
+void wificon(lv_event_t * e);
+void mqttCon(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/
