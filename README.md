@@ -3,9 +3,9 @@ This project is an HMI for displaying data and interfacing with a separate micro
 
 This project was designed for a Sunton ESP32-8048S070C display board and uses the LVGL library for creating a UI. The UI was designed in Squarline Studio and the files are included in this repository.
 
-<!--
-<p align="center"><img src="images/Home_page.png"></p>
--->
+<p align="center"><img src="images/HomeScreen.png"></p>
+<p align="center"><img src="images/ChartScreen.png"></p>
+<p align="center"><img src="images/SettingsScreen.png"></p>
 
 ## Hardware Requirements
 To run this project, you will need the following hardware components:
