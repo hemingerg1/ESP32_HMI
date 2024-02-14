@@ -51,7 +51,7 @@ lv_obj_t * ui_ventStatLab;
 void ui_event_ButVentOff(lv_event_t * e);
 lv_obj_t * ui_ButVentOff;
 lv_obj_t * ui_Label13;
-lv_obj_t * ui_Container4;
+lv_obj_t * ui_ventTimerCont;
 lv_obj_t * ui_ventTimerTitle;
 lv_obj_t * ui_ventTimerLab;
 void ui_event_ButVent5m(lv_event_t * e);
@@ -131,6 +131,12 @@ lv_obj_t * ui_butRemqtt;
 lv_obj_t * ui_Label17;
 lv_obj_t * ui_logTabPage;
 lv_obj_t * ui_logLab;
+
+
+// SCREEN: ui_ScrSleep
+void ui_ScrSleep_screen_init(void);
+lv_obj_t * ui_ScrSleep;
+lv_obj_t * ui_sleepTimeLab;
 lv_obj_t * ui____initial_actions0;
 const lv_img_dsc_t * ui_imgset_736952691[1] = {&ui_img_2110918543};
 const lv_img_dsc_t * ui_imgset_1703005419[1] = {&ui_img_267769087};
@@ -306,6 +312,7 @@ void ui_init(void)
     ui_ScrHome_screen_init();
     ui_ScrCharts_screen_init();
     ui_ScrSettings_screen_init();
+    ui_ScrSleep_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_ScrHome);
 }

@@ -1,7 +1,14 @@
 
 void updateTime()
 {
-    lv_label_set_text_fmt(ui_timeLab, "%s", rtc.getTime("%I:%M"));
+    if (!screenSleep)
+    {
+        lv_label_set_text_fmt(ui_timeLab, "%d:%02d", rtc.getHour(), rtc.getMinute());
+    }
+    else
+    {
+        lv_label_set_text_fmt(ui_sleepTimeLab, "%d:%02d", rtc.getHour(), rtc.getMinute());
+    }
 }
 
 void ventFanOn(bool req)
@@ -37,16 +44,20 @@ void ventFanTimerCheck()
     {
         ventFanOn(false);
         lv_label_set_text(ui_ventTimerLab, "--");
+        lv_obj_clear_state(ui_ventTimerCont, LV_STATE_CHECKED);
     }
     else if (ventFanTimer > millis())
     {
         if (ventFantState == "off")
         {
             ventFanOn(true);
+            lv_obj_add_state(ui_ventTimerCont, LV_STATE_CHECKED);
         }
 
         int secRemain = (ventFanTimer - millis()) / 1000;
-        lv_label_set_text_fmt(ui_ventTimerLab, "%d", secRemain);
+        int minRemain = secRemain / 60;
+        secRemain = secRemain % 60;
+        lv_label_set_text_fmt(ui_ventTimerLab, "%d:%02d", minRemain, secRemain);
     }
 }
 

@@ -4,13 +4,16 @@
 #include <InfluxDbClient.h>
 #include <algorithm>
 #include <ESP32Time.h>
+#include "LGFX_sunton_ESP32_8048S070C.h"
 
 #include <lv_conf.h>
 #include <lvgl.h>
 #include <secrets.h>
 
+LGFX gfx;
 WiFiClient wifiClient;
 MQTTClient mqtt;
+ESP32Time rtc(0);
 
 String mylog;
 
@@ -21,7 +24,11 @@ int soft_min = 40;
 int soft_max = 75;
 lv_coord_t data_array[1000];
 
-ESP32Time rtc(0);
+// screen timeout variables
+int screenTimeout = 1;
+bool screenSleep = false;
+
+// Vent fan variables
 unsigned long ventFanTimer;
 String ventFantState = "--";
 
@@ -87,7 +94,17 @@ void loop()
     // check if the vent fan should be on or off
     ventFanTimerCheck();
 
-    delay(20);
+    // check for inactivity
+    displaySleep();
+
+    if (screenSleep)
+    {
+        delay(250);
+    }
+    else
+    {
+        delay(20);
+    }
 }
 
 /* colors

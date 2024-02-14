@@ -392,18 +392,21 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_align(ui_Label13, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label13, "OFF");
 
-    ui_Container4 = lv_obj_create(ui_Container5);
-    lv_obj_remove_style_all(ui_Container4);
-    lv_obj_set_height(ui_Container4, 60);
-    lv_obj_set_width(ui_Container4, lv_pct(40));
-    lv_obj_set_x(ui_Container4, -82);
-    lv_obj_set_y(ui_Container4, 33);
-    lv_obj_set_align(ui_Container4, LV_ALIGN_CENTER);
-    lv_obj_set_flex_flow(ui_Container4, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(ui_Container4, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_Container4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_ventTimerCont = lv_obj_create(ui_Container5);
+    lv_obj_remove_style_all(ui_ventTimerCont);
+    lv_obj_set_height(ui_ventTimerCont, 60);
+    lv_obj_set_width(ui_ventTimerCont, lv_pct(40));
+    lv_obj_set_x(ui_ventTimerCont, -82);
+    lv_obj_set_y(ui_ventTimerCont, 33);
+    lv_obj_set_align(ui_ventTimerCont, LV_ALIGN_CENTER);
+    lv_obj_set_flex_flow(ui_ventTimerCont, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(ui_ventTimerCont, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_ventTimerCont, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_ventTimerCont, 15, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_color(ui_ventTimerCont, lv_color_hex(0x11580E), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_ventTimerCont, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
-    ui_ventTimerTitle = lv_label_create(ui_Container4);
+    ui_ventTimerTitle = lv_label_create(ui_ventTimerCont);
     lv_obj_set_width(ui_ventTimerTitle, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_ventTimerTitle, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_ventTimerTitle, LV_ALIGN_CENTER);
@@ -411,7 +414,7 @@ void ui_ScrHome_screen_init(void)
     lv_obj_set_style_text_color(ui_ventTimerTitle, lv_color_hex(0xA4A5A4), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_ventTimerTitle, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_ventTimerLab = lv_label_create(ui_Container4);
+    ui_ventTimerLab = lv_label_create(ui_ventTimerCont);
     lv_obj_set_width(ui_ventTimerLab, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_ventTimerLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_ventTimerLab, LV_ALIGN_CENTER);

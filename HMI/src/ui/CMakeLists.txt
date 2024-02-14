@@ -3,6 +3,7 @@ SET(SOURCES components/ui_comp_fullscreen.c
     screens/ui_ScrHome.c
     screens/ui_ScrCharts.c
     screens/ui_ScrSettings.c
+    screens/ui_ScrSleep.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c

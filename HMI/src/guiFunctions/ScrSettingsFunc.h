@@ -25,7 +25,7 @@ void wificon(lv_event_t *e)
         if (t > 20)
         {
             logAdd(false, "Unable to connect to WiFi.");
-            break;
+            reboot(NULL);
         }
     }
     logAdd(false, "WiFi connected. IP: " + WiFi.localIP().toString());
@@ -45,4 +45,22 @@ void mqttCon(lv_event_t *e)
     mqtt.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
     mqtt.onMessage(mqttCallback);
     mqttConnect();
+}
+
+void displaySleep()
+{
+    int inactMin = lv_disp_get_inactive_time(NULL) / 1000 / 60;
+
+    if (!screenSleep and inactMin >= screenTimeout)
+    {
+        gfx.setBrightness(30);
+        lv_scr_load(ui_ScrSleep);
+        screenSleep = true;
+    }
+    else if (screenSleep and inactMin < screenTimeout)
+    {
+        gfx.setBrightness(127);
+        lv_scr_load(ui_ScrHome);
+        screenSleep = false;
+    }
 }

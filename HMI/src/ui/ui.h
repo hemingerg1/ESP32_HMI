@@ -58,7 +58,7 @@ extern lv_obj_t * ui_ventStatLab;
 void ui_event_ButVentOff(lv_event_t * e);
 extern lv_obj_t * ui_ButVentOff;
 extern lv_obj_t * ui_Label13;
-extern lv_obj_t * ui_Container4;
+extern lv_obj_t * ui_ventTimerCont;
 extern lv_obj_t * ui_ventTimerTitle;
 extern lv_obj_t * ui_ventTimerLab;
 void ui_event_ButVent5m(lv_event_t * e);
@@ -134,6 +134,10 @@ extern lv_obj_t * ui_butRemqtt;
 extern lv_obj_t * ui_Label17;
 extern lv_obj_t * ui_logTabPage;
 extern lv_obj_t * ui_logLab;
+// SCREEN: ui_ScrSleep
+void ui_ScrSleep_screen_init(void);
+extern lv_obj_t * ui_ScrSleep;
+extern lv_obj_t * ui_sleepTimeLab;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_home_png);    // assets\home.png
