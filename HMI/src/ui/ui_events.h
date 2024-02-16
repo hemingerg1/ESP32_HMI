@@ -19,9 +19,11 @@ void chartTemp(lv_event_t * e);
 void chartAQ(lv_event_t * e);
 void chartPM(lv_event_t * e);
 void chartHum(lv_event_t * e);
-void reboot(lv_event_t * e);
+void keyboardEnter(lv_event_t * e);
+void timeoutChange(lv_event_t * e);
 void wificon(lv_event_t * e);
 void mqttCon(lv_event_t * e);
+void reboot(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

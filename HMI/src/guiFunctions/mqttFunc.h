@@ -10,6 +10,7 @@ void mqttConnect()
     Serial.println("mqtt connected!");
     logAdd(true, "Successfully connected to MQTT broker.");
     mqtt.subscribe("Garage/Air/Temp");
+    mqtt.subscribe("Garage/Air/OutTemp");
     mqtt.subscribe("Garage/Air/Humidity");
     mqtt.subscribe("Garage/Air/PM25");
     mqtt.subscribe("Garage/Air/AQ");
@@ -26,6 +27,14 @@ void mqttCallback(String &topic, String &payload)
     if (topic == "Garage/Air/Temp")
     {
         lv_label_set_text_fmt(ui_tempLab, "%s", payload);
+        insideTemp = payload.toInt();
+        tempStrategy();
+    }
+    else if (topic == "Garage/Air/OutTemp")
+    {
+        lv_label_set_text_fmt(ui_outTempLab, "%s", payload);
+        outsideTemp = payload.toInt();
+        tempStrategy();
     }
     else if (topic == "Garage/Air/Humidity")
     {

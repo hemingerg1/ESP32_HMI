@@ -22,19 +22,32 @@ int chartLen = 6;
 String meas = "Temperature";
 int soft_min = 40;
 int soft_max = 75;
-lv_coord_t data_array[1000];
+lv_coord_t data_array[750];
 
 // screen timeout variables
-int screenTimeout = 1;
+int screenTimeout = 10;
 bool screenSleep = false;
 
 // Vent fan variables
 unsigned long ventFanTimer;
 String ventFantState = "--";
+int tarMinTemp = 60;
+int absMinTemp = 40;
+int fanOnTempTime = 5;
+int fanOffTempTime = 20;
+int aqFanOnLevel = 75;
+int aqFanOnTime = 5;
+int aqFanOffTime = 10;
+
+// temperature variables
+int insideTemp;
+int outsideTemp;
+int tempControl = 0; // 0 = off, 1 = vent fan, 2 = electric heater
 
 #include "ui/ui.h"
 #include "guiFunctions/gui.h"
 
+#include "guiFunctions/tempFunc.h"
 #include "guiFunctions/logFunc.h"
 #include "guiFunctions/InfluxFunc.h"
 #include "guiFunctions/mqttFunc.h"
@@ -74,6 +87,12 @@ void setup()
     // delay then hide the start log screen
     delay(2000);
     lv_obj_add_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN);
+
+    // set sleep screen time to custom font
+    lv_obj_set_style_text_font(ui_sleepTimeLab, &montserrat_250, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    // initialize the values on the settings screens (from ScrSettingsFunc.h)
+    settingsInit();
 }
 
 void loop()

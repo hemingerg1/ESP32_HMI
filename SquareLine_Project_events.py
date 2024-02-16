@@ -82,3 +82,15 @@ def butVentFanOff(event_struct):
 def butVentFan5m(event_struct):
     return
 
+
+def setEnter(event_struct):
+    return
+
+
+def timeoutChange(event_struct):
+    return
+
+
+def keyboardEnter(event_struct):
+    return
+

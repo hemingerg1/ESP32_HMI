@@ -8,12 +8,12 @@
 void ui_ScrSleep_screen_init(void)
 {
     ui_ScrSleep = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_ScrSleep, LV_OBJ_FLAG_SCROLLABLE); /// Flags
+    lv_obj_clear_flag(ui_ScrSleep, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_sleepTimeLab = lv_label_create(ui_ScrSleep);
-    lv_obj_set_width(ui_sleepTimeLab, LV_SIZE_CONTENT);  /// 1
-    lv_obj_set_height(ui_sleepTimeLab, LV_SIZE_CONTENT); /// 1
+    lv_obj_set_width(ui_sleepTimeLab, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_sleepTimeLab, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_sleepTimeLab, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_sleepTimeLab, "--");
-    lv_obj_set_style_text_font(ui_sleepTimeLab, &montserrat_250, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_label_set_text(ui_sleepTimeLab, "00:00");
+
 }
