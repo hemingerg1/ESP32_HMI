@@ -12,6 +12,13 @@ extern "C" {
 
 void butVentFanOff(lv_event_t * e);
 void butVentFan5m(lv_event_t * e);
+void disableVentFan(lv_event_t * e);
+void enableVentFan(lv_event_t * e);
+void butManHeatUp(lv_event_t * e);
+void butManHeatDown(lv_event_t * e);
+void butManHeat15m(lv_event_t * e);
+void disableHeater(lv_event_t * e);
+void enableHeater(lv_event_t * e);
 void chart6H(lv_event_t * e);
 void chart1H(lv_event_t * e);
 void chart3H(lv_event_t * e);

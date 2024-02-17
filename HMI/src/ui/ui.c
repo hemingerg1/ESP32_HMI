@@ -48,6 +48,9 @@ lv_obj_t * ui_singleGdoorLab;
 lv_obj_t * ui_VentPanel;
 lv_obj_t * ui_ventTitle;
 lv_obj_t * ui_Container5;
+lv_obj_t * ui_ventReqCont;
+lv_obj_t * ui_ventReqTitle;
+lv_obj_t * ui_ventReqLab;
 lv_obj_t * ui_ventStatCont;
 lv_obj_t * ui_ventStatTitle;
 lv_obj_t * ui_ventStatLab;
@@ -60,21 +63,34 @@ lv_obj_t * ui_ventTimerLab;
 void ui_event_ButVent5m(lv_event_t * e);
 lv_obj_t * ui_ButVent5m;
 lv_obj_t * ui_Label5;
+lv_obj_t * ui_ventOffPanel;
+void ui_event_venfFanSwitch(lv_event_t * e);
+lv_obj_t * ui_venfFanSwitch;
 lv_obj_t * ui_HeatPanel;
 lv_obj_t * ui_heatTitle;
-lv_obj_t * ui_ButVent5m1;
-lv_obj_t * ui_Label1;
-lv_obj_t * ui_ButVentOff1;
-lv_obj_t * ui_Label2;
-lv_obj_t * ui_Container1;
+lv_obj_t * ui_manualHeater;
+lv_obj_t * ui_heatTempCont;
+void ui_event_ButHeatUp(lv_event_t * e);
 lv_obj_t * ui_ButHeatUp;
-lv_obj_t * ui_heatLab;
+lv_obj_t * ui_heatTempLab;
+void ui_event_ButHeatDown(lv_event_t * e);
 lv_obj_t * ui_ButHeatDown;
-lv_obj_t * ui_Container2;
+void ui_event_butHeat15m(lv_event_t * e);
+lv_obj_t * ui_butHeat15m;
+lv_obj_t * ui_Label1;
+lv_obj_t * ui_heatTimerCont;
+lv_obj_t * ui_heatTimerTitle;
+lv_obj_t * ui_heatTimerLab;
+lv_obj_t * ui_manualLab;
+lv_obj_t * ui_heatReqCont;
+lv_obj_t * ui_heatReqTitle;
+lv_obj_t * ui_heatReqLab;
+lv_obj_t * ui_heatStatCont;
 lv_obj_t * ui_heatStatTitle;
 lv_obj_t * ui_heatStatLab;
-lv_obj_t * ui_Panel4;
-lv_obj_t * ui_Label14;
+lv_obj_t * ui_heaterOffPanel;
+void ui_event_heaterSwitch(lv_event_t * e);
+lv_obj_t * ui_heaterSwitch;
 lv_obj_t * ui_StartLog;
 lv_obj_t * ui_startTitle;
 lv_obj_t * ui_startLab;
@@ -122,9 +138,9 @@ void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e);
 lv_obj_t * ui_Label4;
 lv_obj_t * ui_setTabView;
 lv_obj_t * ui_ventTabPage;
-lv_obj_t * ui_ventSetPanel;
-lv_obj_t * ui_tempCont;
-lv_obj_t * ui_Panel2;
+void ui_event_KeyboardVent(lv_event_t * e);
+lv_obj_t * ui_KeyboardVent;
+lv_obj_t * ui_tempSettPanel;
 lv_obj_t * ui_Container10;
 lv_obj_t * ui_Label21;
 void ui_event_targTempMinTA(lv_event_t * e);
@@ -141,9 +157,8 @@ lv_obj_t * ui_Container8;
 lv_obj_t * ui_Label26;
 void ui_event_fanOffTempTA(lv_event_t * e);
 lv_obj_t * ui_fanOffTempTA;
-lv_obj_t * ui_Label20;
-lv_obj_t * ui_aqCont;
-lv_obj_t * ui_Panel1;
+lv_obj_t * ui_tempSettLab;
+lv_obj_t * ui_aqSettPanel;
 lv_obj_t * ui_Container4;
 lv_obj_t * ui_Label19;
 void ui_event_aqMinTA(lv_event_t * e);
@@ -156,9 +171,7 @@ lv_obj_t * ui_Container13;
 lv_obj_t * ui_Label24;
 void ui_event_fanOffAqTA(lv_event_t * e);
 lv_obj_t * ui_fanOffAqTA;
-lv_obj_t * ui_Label28;
-void ui_event_KeyboardVent(lv_event_t * e);
-lv_obj_t * ui_KeyboardVent;
+lv_obj_t * ui_aqSettLab;
 lv_obj_t * ui_setTabPage;
 lv_obj_t * ui_Container9;
 lv_obj_t * ui_Label18;
@@ -228,6 +241,56 @@ void ui_event_ButVent5m(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_RELEASED) {
         butVentFan5m(e);
+    }
+}
+void ui_event_venfFanSwitch(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_VALUE_CHANGED &&  !lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        _ui_flag_modify(ui_ventOffPanel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        disableVentFan(e);
+    }
+    if(event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        _ui_flag_modify(ui_ventOffPanel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        enableVentFan(e);
+    }
+}
+void ui_event_ButHeatUp(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        butManHeatUp(e);
+    }
+}
+void ui_event_ButHeatDown(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        butManHeatDown(e);
+    }
+}
+void ui_event_butHeat15m(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_RELEASED) {
+        butManHeat15m(e);
+    }
+}
+void ui_event_heaterSwitch(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_VALUE_CHANGED &&  !lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        _ui_flag_modify(ui_heaterOffPanel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        disableHeater(e);
+    }
+    if(event_code == LV_EVENT_VALUE_CHANGED &&  lv_obj_has_state(target, LV_STATE_CHECKED)) {
+        _ui_flag_modify(ui_heaterOffPanel, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        enableHeater(e);
     }
 }
 void ui_event_FullScreen1_Sidebar3_butHome2(lv_event_t * e)
@@ -318,6 +381,14 @@ void ui_event_FullScreen2_Sidebar3_butTemp2(lv_event_t * e)
         _ui_screen_change(&ui_ScrCharts, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_ScrCharts_screen_init);
     }
 }
+void ui_event_KeyboardVent(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_READY) {
+        keyboardEnter(e);
+    }
+}
 void ui_event_targTempMinTA(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -372,14 +443,6 @@ void ui_event_fanOffAqTA(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         _ui_keyboard_set_target(ui_KeyboardVent,  ui_fanOffAqTA);
-    }
-}
-void ui_event_KeyboardVent(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_READY) {
-        keyboardEnter(e);
     }
 }
 void ui_event_screenTimeDrop(lv_event_t * e)

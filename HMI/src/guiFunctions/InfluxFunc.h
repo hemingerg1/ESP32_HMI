@@ -5,15 +5,15 @@ void influxConnect()
 {
     if (client.validateConnection())
     {
-        Serial.print("Connected to InfluxDB: ");
+        Serial.print(F("Connected to InfluxDB: "));
         Serial.println(client.getServerUrl());
         logAdd(true, "Successfully connected to InfluxDB at: " + client.getServerUrl());
     }
     else
     {
-        Serial.print("InfluxDB connection failed: ");
+        Serial.print(F("InfluxDB connection failed: "));
         Serial.println(client.getLastErrorMessage());
-        logAdd(true, "Was unable to connect to InfluxDB. Reason...");
+        logAdd(true, F("Was unable to connect to InfluxDB. Reason..."));
         logAdd(false, client.getLastErrorMessage());
     }
 }
@@ -66,7 +66,7 @@ int influxQuery(String measurement, String time)
     // Check if there was an error
     if (result.getError().length() > 0)
     {
-        Serial.print("Query result error: ");
+        Serial.print(F("Query result error: "));
         Serial.println(result.getError());
 
         lv_label_set_text_fmt(ui_loadingLab, "Query result error: %s", String(result.getError())); //.c_str()

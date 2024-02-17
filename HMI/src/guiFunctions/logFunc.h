@@ -1,15 +1,18 @@
 
 void logAdd(bool time, String text)
 {
-    mylog += "\n";
+    mylog += F("\n");
     if (time)
     {
-        mylog += "[";
+        mylog += F("[");
         mylog += rtc.getTime("%D %T");
-        mylog += "]  ";
+        mylog += F("]  ");
     }
     mylog += text;
-    lv_label_set_text(ui_startLab, mylog.c_str());
-    lv_refr_now(NULL);
+    if (start)
+    {
+        lv_label_set_text(ui_startLab, mylog.c_str());
+        lv_refr_now(NULL);
+    }
     lv_label_set_text(ui_logLab, mylog.c_str());
 }

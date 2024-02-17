@@ -8,8 +8,8 @@ void updateChart()
     lv_refr_now(NULL);
 
     // get data from influxdb
-    int len = influxQuery(meas, String(chartLen));
-    Serial.println("Influx return length: " + String(len));
+    short int len = influxQuery(meas, String(chartLen));
+    // Serial.println("Influx return length: " + String(len));
 
     if (len != 0)
     {
@@ -34,8 +34,8 @@ void updateChart()
         // adjust Y axis range
         short int *loc_min = std::min_element(data_array, data_array + len - 1);
         short int *loc_max = std::max_element(data_array, data_array + len - 1);
-        int data_min = *loc_min - 2;
-        int data_max = *loc_max + 2;
+        short int data_min = *loc_min - 2;
+        short int data_max = *loc_max + 2;
         uint cmax = max(data_max, soft_max);
         uint cmin = min(data_min, soft_min);
         lv_chart_set_range(ui_Chart1, LV_CHART_AXIS_PRIMARY_Y, cmin, cmax);
@@ -91,7 +91,7 @@ void chartTemp(lv_event_t *e)
     lv_obj_clear_state(ui_butAQ, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butPM, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butHum, LV_STATE_CHECKED);
-    meas = "Temperature";
+    meas = F("Temperature");
     soft_max = 75;
     soft_min = 40;
     updateChart();
@@ -102,7 +102,7 @@ void chartAQ(lv_event_t *e)
     lv_obj_clear_state(ui_butTemp, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butPM, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butHum, LV_STATE_CHECKED);
-    meas = "AQ";
+    meas = F("AQ");
     soft_max = 100;
     soft_min = 60;
     updateChart();
@@ -113,7 +113,7 @@ void chartPM(lv_event_t *e)
     lv_obj_clear_state(ui_butAQ, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butTemp, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butHum, LV_STATE_CHECKED);
-    meas = "PM25";
+    meas = F("PM25");
     soft_max = 50;
     soft_min = 0;
     updateChart();
@@ -124,7 +124,7 @@ void chartHum(lv_event_t *e)
     lv_obj_clear_state(ui_butAQ, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butPM, LV_STATE_CHECKED);
     lv_obj_clear_state(ui_butTemp, LV_STATE_CHECKED);
-    meas = "Humidity";
+    meas = F("Humidity");
     soft_max = 75;
     soft_min = 25;
     updateChart();

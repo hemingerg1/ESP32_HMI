@@ -16,41 +16,57 @@ MQTTClient mqtt;
 ESP32Time rtc(0);
 
 String mylog;
+bool start = true;
 
 // Chart variables
-int chartLen = 6;
-String meas = "Temperature";
-int soft_min = 40;
-int soft_max = 75;
+short int chartLen = 6;
+String meas = F("Temperature");
+short int soft_min = 40;
+short int soft_max = 75;
 lv_coord_t data_array[750];
 
 // screen timeout variables
-int screenTimeout = 10;
+short int screenTimeout = 10;
 bool screenSleep = false;
 
 // Vent fan variables
-unsigned long ventFanTimer;
-String ventFantState = "--";
-int tarMinTemp = 60;
-int absMinTemp = 40;
-int fanOnTempTime = 5;
-int fanOffTempTime = 20;
-int aqFanOnLevel = 75;
-int aqFanOnTime = 5;
-int aqFanOffTime = 10;
+unsigned long manVentFanTimer;
+unsigned long autoVentFanOnTimer = 0;
+unsigned long autoVentFanOffTimer = 0;
+bool ventFanEnabled = true;
+bool manVentFanCon = false;
+bool reqVentFan = false;
+short int aq = 100;
+String ventFanState = F("--");
+short int tarMinTemp = 60;
+short int absMinTemp = 40;
+short int fanOnTempTime = 5;
+short int fanOffTempTime = 20;
+short int aqFanOnLevel = 75;
+short int aqFanOnTime = 5;
+short int aqFanOffTime = 10;
 
 // temperature variables
-int insideTemp;
-int outsideTemp;
-int tempControl = 0; // 0 = off, 1 = vent fan, 2 = electric heater
+short int insideTemp = 100;
+short int outsideTemp = 0;
+short int tempControl = 0; // 0 = off, 1 = vent fan, 2 = electric heater
+unsigned long manHeatTimer;
+short int manHeatTemp = 60;
+bool heaterEnabled = true;
+bool manHeatCon = false;
+bool reqHeat = false;
+
+// timer variables
+short int secR;
+short int minR;
 
 #include "ui/ui.h"
 #include "guiFunctions/gui.h"
 
-#include "guiFunctions/tempFunc.h"
 #include "guiFunctions/logFunc.h"
 #include "guiFunctions/InfluxFunc.h"
 #include "guiFunctions/mqttFunc.h"
+#include "guiFunctions/mechanicalFunc.h"
 #include "guiFunctions/ScrHomeFunc.h"
 #include "guiFunctions/ScrChartFunc.h"
 #include "guiFunctions/ScrSettingsFunc.h"
@@ -60,22 +76,23 @@ int tempControl = 0; // 0 = off, 1 = vent fan, 2 = electric heater
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("****** Initializing HMI ******");
+    Serial.println(F("****** Initializing HMI ******"));
 
     // start the LVGL gui
     gui_start();
-    logAdd(false, "GUI started.");
+    lv_obj_clear_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN); // Show the start log screen
+    logAdd(false, F("GUI started."));
 
     // Setup wifi (from ScrSettingsFunc.h)
     wificon(NULL);
 
     // sync time with ntp server
-    logAdd(false, "Syncing time...");
+    logAdd(false, F("Syncing time..."));
     timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
     logAdd(false, "Time synced to: " + rtc.getDateTime());
 
     // check connection to influxdb
-    logAdd(true, "Checking InfluxDB connection...");
+    logAdd(true, F("Checking InfluxDB connection..."));
     influxConnect();
 
     // connect to mqtt broker (from ScrSettingsFunc.h)
@@ -93,6 +110,10 @@ void setup()
 
     // initialize the values on the settings screens (from ScrSettingsFunc.h)
     settingsInit();
+    // initialize the values on the home screen (from ScrHomeFunc.h)
+    homeInit();
+
+    start = false;
 }
 
 void loop()
@@ -110,8 +131,8 @@ void loop()
     // send and receive MQTT messages
     mqtt.loop();
 
-    // check if the vent fan should be on or off
-    ventFanTimerCheck();
+    // check mechaicals (fan, heater) for on/off
+    mechLoop();
 
     // check for inactivity
     displaySleep();
@@ -125,17 +146,3 @@ void loop()
         delay(20);
     }
 }
-
-/* colors
-
-#F2F2F2;
-
-#A6A6A6;
-
-#595959;
-
-#262626;
-
-#0D0D0D;
-
-*/

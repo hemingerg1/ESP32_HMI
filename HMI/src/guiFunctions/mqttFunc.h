@@ -1,114 +1,113 @@
 
 void mqttConnect()
 {
-    Serial.print("connecting to mqtt broker...");
+    Serial.print(F("connecting to mqtt broker..."));
     while (!mqtt.connect("espHMI", MQTT_USER, MQTT_PASSWORD))
     {
-        Serial.print(".");
+        Serial.print(F("."));
         delay(500);
     }
-    Serial.println("mqtt connected!");
+    Serial.println(F("mqtt connected!"));
     logAdd(true, "Successfully connected to MQTT broker.");
-    mqtt.subscribe("Garage/Air/Temp");
-    mqtt.subscribe("Garage/Air/OutTemp");
-    mqtt.subscribe("Garage/Air/Humidity");
-    mqtt.subscribe("Garage/Air/PM25");
-    mqtt.subscribe("Garage/Air/AQ");
-    mqtt.subscribe("Garage/Doors/LargeGarageDoor");
-    mqtt.subscribe("Garage/Doors/SmallGarageDoor");
-    mqtt.subscribe("Garage/Doors/OutsideDoor");
-    mqtt.subscribe("Garage/Doors/ShopDoor");
-    mqtt.subscribe("Garage/Mech/VentFan");
+    mqtt.subscribe(F("Garage/Air/Temp"));
+    mqtt.subscribe(F("Garage/Air/OutTemp"));
+    mqtt.subscribe(F("Garage/Air/Humidity"));
+    mqtt.subscribe(F("Garage/Air/PM25"));
+    mqtt.subscribe(F("Garage/Air/AQ"));
+    mqtt.subscribe(F("Garage/Doors/LargeGarageDoor"));
+    mqtt.subscribe(F("Garage/Doors/SmallGarageDoor"));
+    mqtt.subscribe(F("Garage/Doors/OutsideDoor"));
+    mqtt.subscribe(F("Garage/Doors/ShopDoor"));
+    mqtt.subscribe(F("Garage/Mech/VentFan"));
 }
 
 void mqttCallback(String &topic, String &payload)
 {
     // Serial.println("incoming: " + topic + " - " + payload);
-    if (topic == "Garage/Air/Temp")
+    if (topic == F("Garage/Air/Temp"))
     {
         lv_label_set_text_fmt(ui_tempLab, "%s", payload);
         insideTemp = payload.toInt();
-        tempStrategy();
     }
-    else if (topic == "Garage/Air/OutTemp")
+    else if (topic == F("Garage/Air/OutTemp"))
     {
         lv_label_set_text_fmt(ui_outTempLab, "%s", payload);
         outsideTemp = payload.toInt();
-        tempStrategy();
     }
-    else if (topic == "Garage/Air/Humidity")
+    else if (topic == F("Garage/Air/Humidity"))
     {
         lv_label_set_text_fmt(ui_humLab, "%s", payload);
     }
-    else if (topic == "Garage/Air/PM25")
+    else if (topic == F("Garage/Air/PM25"))
     {
         lv_label_set_text_fmt(ui_pmLab, "%s", payload);
     }
-    else if (topic == "Garage/Air/AQ")
+    else if (topic == F("Garage/Air/AQ"))
     {
         lv_label_set_text_fmt(ui_aqLab, "%s", payload);
+        aq = payload.toInt();
     }
-    else if (topic == "Garage/Doors/LargeGarageDoor")
+    else if (topic == F("Garage/Doors/LargeGarageDoor"))
     {
         String state = payload;
         lv_label_set_text_fmt(ui_doubleGdoorLab, "%s", state);
-        if (state == "open")
+        if (state == F("open"))
         {
             lv_obj_clear_state(ui_doubleGdoorLab, LV_STATE_CHECKED);
         }
-        else if (state == "closed")
+        else if (state == F("closed"))
         {
             lv_obj_add_state(ui_doubleGdoorLab, LV_STATE_CHECKED);
         }
     }
-    else if (topic == "Garage/Doors/SmallGarageDoor")
+    else if (topic == F("Garage/Doors/SmallGarageDoor"))
     {
         String state = payload;
         lv_label_set_text_fmt(ui_singleGdoorLab, "%s", state);
-        if (state == "open")
+        if (state == F("open"))
         {
             lv_obj_clear_state(ui_singleGdoorLab, LV_STATE_CHECKED);
         }
-        else if (state == "closed")
+        else if (state == F("closed"))
         {
             lv_obj_add_state(ui_singleGdoorLab, LV_STATE_CHECKED);
         }
     }
-    else if (topic == "Garage/Doors/OutsideDoor")
+    else if (topic == F("Garage/Doors/OutsideDoor"))
     {
         String state = payload;
         lv_label_set_text_fmt(ui_outsidePdoorLab, "%s", state);
-        if (state == "open")
+        if (state == F("open"))
         {
             lv_obj_clear_state(ui_outsidePdoorLab, LV_STATE_CHECKED);
         }
-        else if (state == "closed")
+        else if (state == F("closed"))
         {
             lv_obj_add_state(ui_outsidePdoorLab, LV_STATE_CHECKED);
         }
     }
-    else if (topic == "Garage/Doors/ShopDoor")
+    else if (topic == F("Garage/Doors/ShopDoor"))
     {
         String state = payload;
         lv_label_set_text_fmt(ui_ShopPdoorLab, "%s", state);
-        if (state == "open")
+        if (state == F("open"))
         {
             lv_obj_clear_state(ui_ShopPdoorLab, LV_STATE_CHECKED);
         }
-        else if (state == "closed")
+        else if (state == F("closed"))
         {
             lv_obj_add_state(ui_ShopPdoorLab, LV_STATE_CHECKED);
         }
     }
-    else if (topic == "Garage/Mech/VentFan")
+    else if (topic == F("Garage/Mech/VentFan"))
     {
-        ventFantState = payload;
-        lv_label_set_text_fmt(ui_ventStatLab, "%s", ventFantState);
-        if (ventFantState == "off")
+        ventFanState = payload;
+        lv_label_set_text_fmt(ui_ventStatLab, "%s", ventFanState);
+        if (ventFanState == F("off"))
         {
             lv_obj_clear_state(ui_ventStatCont, LV_STATE_CHECKED);
         }
-        else if (ventFantState == "on")
+        else if (ventFanState == F("on"))
         {
             lv_obj_add_state(ui_ventStatCont, LV_STATE_CHECKED);
         }
