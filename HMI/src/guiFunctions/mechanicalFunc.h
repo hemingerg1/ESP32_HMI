@@ -5,18 +5,38 @@ void ventFanOn(bool req, String reason)
     {
         if (ventFanEnabled)
         {
-            reqVentFan = true;
-            logAdd(true, "vent fan ON (" + reason + ")");
-            lv_label_set_text(ui_ventReqLab, "ON");
-            lv_obj_add_state(ui_ventReqCont, LV_STATE_CHECKED);
+            ventFanKeepAlive = 1;
+            if (mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive)))
+            {
+                ventFanKATimer = millis() + 60000;
+                reqVentFan = true;
+                logAdd(true, "vent fan ON (" + reason + ")");
+                lv_label_set_text(ui_ventReqLab, "ON");
+                lv_obj_add_state(ui_ventReqCont, LV_STATE_CHECKED);
+            }
+            else
+            {
+                logAdd(true, "MQTT FAILED: vent fan ON (" + reason + ")");
+                lv_label_set_text(ui_ventReqLab, "ERR");
+            }
         }
     }
     else
     {
-        reqVentFan = false;
-        logAdd(true, "vent fan OFF (" + reason + ")");
-        lv_label_set_text(ui_ventReqLab, "OFF");
-        lv_obj_clear_state(ui_ventReqCont, LV_STATE_CHECKED);
+        ventFanKeepAlive = 0;
+        if (mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive)))
+        {
+            ventFanKATimer = 0;
+            reqVentFan = false;
+            logAdd(true, "vent fan OFF (" + reason + ")");
+            lv_label_set_text(ui_ventReqLab, "OFF");
+            lv_obj_clear_state(ui_ventReqCont, LV_STATE_CHECKED);
+        }
+        else
+        {
+            logAdd(true, "MQTT FAILED: vent fan OFF (" + reason + ")");
+            lv_label_set_text(ui_ventReqLab, "ERR");
+        }
     }
 }
 void heaterOn(bool req, String reason)
@@ -25,18 +45,38 @@ void heaterOn(bool req, String reason)
     {
         if (heaterEnabled)
         {
-            reqHeat = true;
-            logAdd(true, "heater ON (" + reason + ")");
-            lv_label_set_text(ui_heatReqLab, "ON");
-            lv_obj_add_state(ui_heatReqCont, LV_STATE_CHECKED);
+            heatKeepAlive = 1;
+            if (mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive)))
+            {
+                heatKATimer = millis() + 60000;
+                reqHeat = true;
+                logAdd(true, "heater ON (" + reason + ")");
+                lv_label_set_text(ui_heatReqLab, "ON");
+                lv_obj_add_state(ui_heatReqCont, LV_STATE_CHECKED);
+            }
+            else
+            {
+                logAdd(true, "MQTT FAILED: heater ON (" + reason + ")");
+                lv_label_set_text(ui_heatReqLab, "ERR");
+            }
         }
     }
     else
     {
-        reqHeat = false;
-        logAdd(true, "heater OFF (" + reason + ")");
-        lv_label_set_text(ui_heatReqLab, "OFF");
-        lv_obj_clear_state(ui_heatReqCont, LV_STATE_CHECKED);
+        heatKeepAlive = 0;
+        if (mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive)))
+        {
+            heatKATimer = 0;
+            reqHeat = false;
+            logAdd(true, "heater OFF (" + reason + ")");
+            lv_label_set_text(ui_heatReqLab, "OFF");
+            lv_obj_clear_state(ui_heatReqCont, LV_STATE_CHECKED);
+        }
+        else
+        {
+            logAdd(true, "MQTT FAILED: heater OFF (" + reason + ")");
+            lv_label_set_text(ui_heatReqLab, "ERR");
+        }
     }
 }
 
@@ -176,5 +216,19 @@ void mechLoop()
         autoVentFanOffTimer += millis();
         ventFanOn(false, F("Auto timer expired"));
         autoVentFanOnTimer = 0;
+    }
+
+    // update keep alive counters on MQTT broker every minute so that PLCs know the HMI is still alive
+    if (reqVentFan and ventFanKeepAlive > 0 and ventFanKATimer < millis())
+    {
+        ventFanKeepAlive++;
+        ventFanKATimer = millis() + 60000;
+        mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive));
+    }
+    if (reqHeat and heatKeepAlive > 0 and heatKATimer < millis())
+    {
+        heatKeepAlive++;
+        heatKATimer = millis() + 60000;
+        mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive));
     }
 }

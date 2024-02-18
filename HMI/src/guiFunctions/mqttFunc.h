@@ -18,7 +18,7 @@ void mqttConnect()
     mqtt.subscribe(F("Garage/Doors/SmallGarageDoor"));
     mqtt.subscribe(F("Garage/Doors/OutsideDoor"));
     mqtt.subscribe(F("Garage/Doors/ShopDoor"));
-    mqtt.subscribe(F("Garage/Mech/VentFan"));
+    mqtt.subscribe(F("Garage/Mech/VentFan/Status"));
 }
 
 void mqttCallback(String &topic, String &payload)
@@ -99,7 +99,7 @@ void mqttCallback(String &topic, String &payload)
             lv_obj_add_state(ui_ShopPdoorLab, LV_STATE_CHECKED);
         }
     }
-    else if (topic == F("Garage/Mech/VentFan"))
+    else if (topic == F("Garage/Mech/VentFanStatus"))
     {
         ventFanState = payload;
         lv_label_set_text_fmt(ui_ventStatLab, "%s", ventFanState);

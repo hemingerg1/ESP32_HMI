@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <MQTT.h>
+#include <Preferences.h>
 #include <InfluxDbClient.h>
 #include <algorithm>
 #include <ESP32Time.h>
@@ -10,6 +11,7 @@
 #include <lvgl.h>
 #include <secrets.h>
 
+Preferences prefs;
 LGFX gfx;
 WiFiClient wifiClient;
 MQTTClient mqtt;
@@ -23,7 +25,7 @@ short int chartLen = 6;
 String meas = F("Temperature");
 short int soft_min = 40;
 short int soft_max = 75;
-lv_coord_t data_array[750];
+lv_coord_t data_array[1000];
 
 // screen timeout variables
 short int screenTimeout = 10;
@@ -36,6 +38,8 @@ unsigned long autoVentFanOffTimer = 0;
 bool ventFanEnabled = true;
 bool manVentFanCon = false;
 bool reqVentFan = false;
+short int ventFanKeepAlive = 0;
+unsigned long ventFanKATimer = 0;
 short int aq = 100;
 String ventFanState = F("--");
 short int tarMinTemp = 60;
@@ -44,7 +48,7 @@ short int fanOnTempTime = 5;
 short int fanOffTempTime = 20;
 short int aqFanOnLevel = 75;
 short int aqFanOnTime = 5;
-short int aqFanOffTime = 10;
+short int aqFanOffTime = 30;
 
 // temperature variables
 short int insideTemp = 100;
@@ -55,6 +59,8 @@ short int manHeatTemp = 60;
 bool heaterEnabled = true;
 bool manHeatCon = false;
 bool reqHeat = false;
+short int heatKeepAlive = 0;
+unsigned long heatKATimer = 0;
 
 // timer variables
 short int secR;
@@ -114,6 +120,10 @@ void setup()
     homeInit();
 
     start = false;
+    Serial.printf("Total heap: %d \n", ESP.getHeapSize());
+    Serial.printf("Free heap: %d \n", ESP.getFreeHeap());
+    Serial.printf("Total PSRAM: %d \n", ESP.getPsramSize());
+    Serial.printf("Free PSRAM: %d \n", ESP.getFreePsram());
 }
 
 void loop()
