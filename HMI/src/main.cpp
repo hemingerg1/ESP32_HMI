@@ -45,8 +45,8 @@ String ventFanState = F("--");
 short int tarMinTemp = 60;
 short int absMinTemp = 40;
 short int fanOnTempTime = 5;
-short int fanOffTempTime = 20;
-short int aqFanOnLevel = 75;
+short int fanOffTempTime = 30;
+short int aqFanOnLevel = 50;
 short int aqFanOnTime = 5;
 short int aqFanOffTime = 30;
 

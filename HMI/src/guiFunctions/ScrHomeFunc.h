@@ -79,7 +79,7 @@ void disableHeater(lv_event_t *e)
     manHeatCon = false;
     manHeatTimer = 0;
     prefs.begin("settings", false);
-    prefs.putBool("heatEnabled", heaterEnabled);
+    prefs.putBool("heaterEnabled", heaterEnabled);
     prefs.end();
 }
 
@@ -88,7 +88,7 @@ void enableHeater(lv_event_t *e)
     heaterEnabled = true;
     logAdd(true, F("Heater enabled"));
     prefs.begin("settings", false);
-    prefs.putBool("heatEnabled", heaterEnabled);
+    prefs.putBool("heaterEnabled", heaterEnabled);
     prefs.end();
 }
 

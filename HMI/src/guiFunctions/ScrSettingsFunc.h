@@ -2,30 +2,15 @@ void settingsInit()
 {
     prefs.begin("settings", false);
 
-    if (prefs.getShort("tarMinTemp") == 0) // first time setup
-    {
-        logAdd(true, F("NVS settings not found. Setting defaults now."));
-        prefs.putShort("tarMinTemp", tarMinTemp);
-        prefs.putShort("absMinTemp", absMinTemp);
-        prefs.putShort("fanOnTempTime", fanOnTempTime);
-        prefs.putShort("fanOffTempTime", fanOffTempTime);
-        prefs.putShort("aqFanOnLevel", aqFanOnLevel);
-        prefs.putShort("aqFanOnTime", aqFanOnTime);
-        prefs.putShort("aqFanOffTime", aqFanOffTime);
-        prefs.putShort("screenTimeout", screenTimeout);
-        prefs.putBool("ventFanEnabled", ventFanEnabled);
-        prefs.putBool("heatEnabled", heaterEnabled);
-    }
+    lv_textarea_set_text(ui_targTempMinTA, String(prefs.getShort("tarMinTemp", tarMinTemp)).c_str());
+    lv_textarea_set_text(ui_absTempMinTA, String(prefs.getShort("absMinTemp", absMinTemp)).c_str());
+    lv_textarea_set_text(ui_fanOnTempTA, String(prefs.getShort("fanOnTempTime", fanOnTempTime)).c_str());
+    lv_textarea_set_text(ui_fanOffTempTA, String(prefs.getShort("fanOffTempTime", fanOffTempTime)).c_str());
+    lv_textarea_set_text(ui_aqMinTA, String(prefs.getShort("aqFanOnLevel", aqFanOnLevel)).c_str());
+    lv_textarea_set_text(ui_fanOnAqTA, String(prefs.getShort("aqFanOnTime", aqFanOnTime)).c_str());
+    lv_textarea_set_text(ui_fanOffAqTA, String(prefs.getShort("aqFanOffTime", aqFanOffTime)).c_str());
 
-    lv_textarea_set_text(ui_targTempMinTA, String(prefs.getShort("tarMinTemp")).c_str());
-    lv_textarea_set_text(ui_absTempMinTA, String(prefs.getShort("absMinTemp")).c_str());
-    lv_textarea_set_text(ui_fanOnTempTA, String(prefs.getShort("fanOnTempTime")).c_str());
-    lv_textarea_set_text(ui_fanOffTempTA, String(prefs.getShort("fanOffTempTime")).c_str());
-    lv_textarea_set_text(ui_aqMinTA, String(prefs.getShort("aqFanOnLevel")).c_str());
-    lv_textarea_set_text(ui_fanOnAqTA, String(prefs.getShort("aqFanOnTime")).c_str());
-    lv_textarea_set_text(ui_fanOffAqTA, String(prefs.getShort("aqFanOffTime")).c_str());
-
-    short int s = prefs.getShort("screenTimeout");
+    short int s = prefs.getShort("screenTimeout", screenTimeout);
     if (s == 0)
     {
         lv_dropdown_set_selected(ui_screenTimeDrop, 0);
@@ -43,7 +28,7 @@ void settingsInit()
         lv_dropdown_set_selected(ui_screenTimeDrop, 3);
     }
 
-    ventFanEnabled = prefs.getBool("ventFanEnabled");
+    ventFanEnabled = prefs.getBool("ventFanEnabled", ventFanEnabled);
     Serial.printf("ventFanEnabled: %d\n", ventFanEnabled);
     if (ventFanEnabled)
     {
@@ -57,8 +42,9 @@ void settingsInit()
         disableVentFan(NULL);
     }
 
-    heaterEnabled = prefs.getBool("heatEnabled");
-    Serial.printf("heatEnabled: %d\n", heaterEnabled);
+    heaterEnabled = prefs.getBool("heaterEnabled", heaterEnabled);
+    Serial.println("heaterEnabled type: " + String(prefs.getType("heaterEnabled")));
+    Serial.println("heaterEnabled: " + String(heaterEnabled));
     if (heaterEnabled)
     {
         lv_obj_add_state(ui_heaterSwitch, LV_STATE_CHECKED);
