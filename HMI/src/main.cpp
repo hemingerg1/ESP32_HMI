@@ -59,6 +59,7 @@ short int manHeatTemp = 60;
 bool heaterEnabled = true;
 bool manHeatCon = false;
 bool reqHeat = false;
+String heaterState = F("--");
 short int heatKeepAlive = 0;
 unsigned long heatKATimer = 0;
 

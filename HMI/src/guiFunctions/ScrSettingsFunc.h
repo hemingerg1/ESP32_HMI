@@ -13,6 +13,8 @@ void settingsInit()
         prefs.putShort("aqFanOnTime", aqFanOnTime);
         prefs.putShort("aqFanOffTime", aqFanOffTime);
         prefs.putShort("screenTimeout", screenTimeout);
+        prefs.putBool("ventFanEnabled", ventFanEnabled);
+        prefs.putBool("heatEnabled", heaterEnabled);
     }
 
     lv_textarea_set_text(ui_targTempMinTA, String(prefs.getShort("tarMinTemp")).c_str());
@@ -39,6 +41,34 @@ void settingsInit()
     else if (s == 30)
     {
         lv_dropdown_set_selected(ui_screenTimeDrop, 3);
+    }
+
+    ventFanEnabled = prefs.getBool("ventFanEnabled");
+    Serial.printf("ventFanEnabled: %d\n", ventFanEnabled);
+    if (ventFanEnabled)
+    {
+        lv_obj_add_state(ui_venfFanSwitch, LV_STATE_CHECKED);
+        enableVentFan(NULL);
+    }
+    else
+    {
+        lv_obj_clear_state(ui_venfFanSwitch, LV_STATE_CHECKED);
+        lv_obj_clear_flag(ui_ventOffPanel, LV_OBJ_FLAG_HIDDEN);
+        disableVentFan(NULL);
+    }
+
+    heaterEnabled = prefs.getBool("heatEnabled");
+    Serial.printf("heatEnabled: %d\n", heaterEnabled);
+    if (heaterEnabled)
+    {
+        lv_obj_add_state(ui_heaterSwitch, LV_STATE_CHECKED);
+        enableHeater(NULL);
+    }
+    else
+    {
+        lv_obj_clear_state(ui_heaterSwitch, LV_STATE_CHECKED);
+        lv_obj_clear_flag(ui_heaterOffPanel, LV_OBJ_FLAG_HIDDEN);
+        disableHeater(NULL);
     }
 
     prefs.end();

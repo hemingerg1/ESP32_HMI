@@ -8,17 +8,19 @@ void wificon()
 
     Serial.print(F("Connecting to WiFi..."));
     delay(500);
-    int t = 0;
+    // int t = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
-        t++;
-        Serial.print(F('.'));
+        // t++;
+        Serial.print('.');
         delay(500);
+        /*
         if (t > 20)
         {
             Serial.print("\nUnable to connect to WiFi. Rebooting...");
             ESP.restart();
         }
+        */
     }
     Serial.println("\nWiFi connected. IP: " + WiFi.localIP().toString());
 }
@@ -57,7 +59,7 @@ void mqttCon()
     mqtt.onMessage(mqttCallback);
 
     Serial.print("Connecting to mqtt broker...");
-    while (!mqtt.connect("espHMI", MQTT_USER, MQTT_PASSWORD))
+    while (!mqtt.connect("espVentFanPLC", MQTT_USER, MQTT_PASSWORD))
     {
         Serial.print(F("."));
         delay(500);

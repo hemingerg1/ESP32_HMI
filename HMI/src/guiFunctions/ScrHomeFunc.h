@@ -26,12 +26,18 @@ void disableVentFan(lv_event_t *e)
     manVentFanTimer = 0;
     autoVentFanOffTimer = 0;
     autoVentFanOnTimer = 0;
+    prefs.begin("settings", false);
+    prefs.putBool("ventFanEnabled", ventFanEnabled);
+    prefs.end();
 }
 
 void enableVentFan(lv_event_t *e)
 {
     ventFanEnabled = true;
     logAdd(true, F("Vent fan enabled"));
+    prefs.begin("settings", false);
+    prefs.putBool("ventFanEnabled", ventFanEnabled);
+    prefs.end();
 }
 
 void ventFanTimerAdd(int sec)
@@ -72,12 +78,18 @@ void disableHeater(lv_event_t *e)
     lv_obj_clear_state(ui_heatTimerCont, LV_STATE_CHECKED);
     manHeatCon = false;
     manHeatTimer = 0;
+    prefs.begin("settings", false);
+    prefs.putBool("heatEnabled", heaterEnabled);
+    prefs.end();
 }
 
 void enableHeater(lv_event_t *e)
 {
     heaterEnabled = true;
     logAdd(true, F("Heater enabled"));
+    prefs.begin("settings", false);
+    prefs.putBool("heatEnabled", heaterEnabled);
+    prefs.end();
 }
 
 void butManHeatUp(lv_event_t *e)

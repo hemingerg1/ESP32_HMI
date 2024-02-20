@@ -1,22 +1,20 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include <Servo.h>
+#include <ESP32Servo.h>
 #include <MQTT.h>
 #include <secrets.h>
 
 WiFiClient wifiClient;
 MQTTClient mqtt;
 
-#include "connectionFunc.hpp"
-
 Servo damper1;
 Servo damper2;
 
-#define FANPIN 10
+#define FANPIN 2
 #define DAMPER1PIN 12
 #define DAMPER2PIN 13
-#define DAMPEROPEN 100
-#define DAMPERCLOSED 90
+#define DAMPEROPEN 68
+#define DAMPERCLOSED 0
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
@@ -27,6 +25,7 @@ String fanStatus = "off";
 String damper1Status = "closed";
 String damper2Status = "closed";
 
+#include "connectionFunc.hpp"
 void turnFanOn();
 void turnFanOff();
 void getStatus();
@@ -37,8 +36,6 @@ void setup()
   Serial.println(F("****** Initializing PLC ******"));
 
   pinMode(FANPIN, OUTPUT);
-  damper1.attach(DAMPER1PIN);
-  damper2.attach(DAMPER2PIN);
 
   turnFanOff();
 
@@ -86,16 +83,19 @@ void turnFanOn()
 {
   Serial.println("Turning fan on");
   // open dampers
-  for (int i = 0; i <= DAMPEROPEN; i += 2)
+  damper1.attach(DAMPER1PIN);
+  damper2.attach(DAMPER2PIN);
+  for (int i = DAMPERCLOSED; i <= DAMPEROPEN; i += 1)
   {
     damper1.write(i);
     damper2.write(i);
     delay(10);
   }
-  delay(1000);
+  delay(500);
   // turn on fan
   digitalWrite(FANPIN, HIGH);
-
+  damper1.detach();
+  damper2.detach();
   fanOn = true;
 }
 
@@ -106,20 +106,21 @@ void turnFanOff()
   digitalWrite(FANPIN, LOW);
   delay(1000);
   // close dampers
-  for (int i = 0; i >= DAMPERCLOSED; i -= 2)
+  damper1.attach(DAMPER1PIN);
+  damper2.attach(DAMPER2PIN);
+  for (int i = DAMPEROPEN; i >= DAMPERCLOSED; i -= 1)
   {
     damper1.write(i);
     damper2.write(i);
     delay(10);
   }
-
+  damper1.detach();
+  damper2.detach();
   fanOn = false;
 }
 
 void getStatus()
 {
-  Serial.println("Getting statuses");
-
   if (digitalRead(FANPIN) == HIGH)
   {
     fanStatus = "on";
@@ -129,41 +130,11 @@ void getStatus()
     fanStatus = "off";
   }
 
-  if (damper1.read() > DAMPEROPEN - 5)
-  {
-    damper1Status = "open";
-  }
-  else if (damper1.read() < DAMPERCLOSED + 5)
-  {
-    damper1Status = "closed";
-  }
-  else
-  {
-    damper1Status = "ERROR";
-  }
-
-  if (damper2.read() > DAMPEROPEN - 5)
-  {
-    damper2Status = "open";
-  }
-  else if (damper2.read() < DAMPERCLOSED + 5)
-  {
-    damper2Status = "closed";
-  }
-  else
-  {
-    damper2Status = "ERROR";
-  }
-
-  Serial.println("  Fan status: " + fanStatus);
-  Serial.println("  Damper 1 status: " + damper1Status);
-  Serial.println("  Damper 2 status: " + damper2Status);
-
-  if (fanStatus == "on" and damper1Status == "open" and damper2Status == "open")
+  if (fanStatus == "on" and fanOn)
   {
     mqtt.publish("Garage/Mech/VentFan/Status", "ON");
   }
-  else if (fanStatus == "off" and damper1Status == "closed" and damper2Status == "closed")
+  else if (fanStatus == "off" and !fanOn)
   {
     mqtt.publish("Garage/Mech/VentFan/Status", "OFF");
   }

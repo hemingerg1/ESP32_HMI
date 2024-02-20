@@ -19,6 +19,7 @@ void mqttConnect()
     mqtt.subscribe(F("Garage/Doors/OutsideDoor"));
     mqtt.subscribe(F("Garage/Doors/ShopDoor"));
     mqtt.subscribe(F("Garage/Mech/VentFan/Status"));
+    mqtt.subscribe(F("Garage/Mech/Heater/Status"));
 }
 
 void mqttCallback(String &topic, String &payload)
@@ -99,17 +100,30 @@ void mqttCallback(String &topic, String &payload)
             lv_obj_add_state(ui_ShopPdoorLab, LV_STATE_CHECKED);
         }
     }
-    else if (topic == F("Garage/Mech/VentFanStatus"))
+    else if (topic == F("Garage/Mech/VentFan/Status"))
     {
         ventFanState = payload;
         lv_label_set_text_fmt(ui_ventStatLab, "%s", ventFanState);
-        if (ventFanState == F("off"))
+        if (ventFanState == F("OFF"))
         {
             lv_obj_clear_state(ui_ventStatCont, LV_STATE_CHECKED);
         }
-        else if (ventFanState == F("on"))
+        else if (ventFanState == F("ON"))
         {
             lv_obj_add_state(ui_ventStatCont, LV_STATE_CHECKED);
+        }
+    }
+    else if (topic == F("Garage/Mech/Heater/Status"))
+    {
+        heaterState = payload;
+        lv_label_set_text_fmt(ui_heatStatLab, "%s", heaterState);
+        if (heaterState == F("OFF"))
+        {
+            lv_obj_clear_state(ui_heatStatLab, LV_STATE_CHECKED);
+        }
+        else if (heaterState == F("ON"))
+        {
+            lv_obj_add_state(ui_heatStatLab, LV_STATE_CHECKED);
         }
     }
 }
