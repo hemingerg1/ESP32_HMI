@@ -26,18 +26,38 @@ void disableVentFan(lv_event_t *e)
     manVentFanTimer = 0;
     autoVentFanOffTimer = 0;
     autoVentFanOnTimer = 0;
-    prefs.begin("settings", false);
-    prefs.putBool("ventFanEnabled", ventFanEnabled);
-    prefs.end();
+
+    if (prefs.begin("settings", false))
+    {
+        if (!prefs.putBool("ventFanEnabled", ventFanEnabled))
+        {
+            logAdd(F("Failed to save vent fan disable into nvs"));
+        }
+        prefs.end();
+    }
+    else
+    {
+        logAdd(F("Failed to open nvs for vent fan disable"));
+    }
 }
 
 void enableVentFan(lv_event_t *e)
 {
     ventFanEnabled = true;
     logAdd(true, F("Vent fan enabled"));
-    prefs.begin("settings", false);
-    prefs.putBool("ventFanEnabled", ventFanEnabled);
-    prefs.end();
+
+    if (prefs.begin("settings", false))
+    {
+        if (!prefs.putBool("ventFanEnabled", ventFanEnabled))
+        {
+            logAdd(F("Failed to save vent fan enable into nvs"));
+        }
+        prefs.end();
+    }
+    else
+    {
+        logAdd(F("Failed to open nvs for vent fan enable"));
+    }
 }
 
 void ventFanTimerAdd(int sec)
@@ -78,18 +98,38 @@ void disableHeater(lv_event_t *e)
     lv_obj_clear_state(ui_heatTimerCont, LV_STATE_CHECKED);
     manHeatCon = false;
     manHeatTimer = 0;
-    prefs.begin("settings", false);
-    prefs.putBool("heaterEnabled", heaterEnabled);
-    prefs.end();
+
+    if (prefs.begin("settings", false))
+    {
+        if (!prefs.putBool("heaterEnabled", heaterEnabled))
+        {
+            logAdd(F("Failed to save heater disable into nvs"));
+        }
+        prefs.end();
+    }
+    else
+    {
+        logAdd(F("Failed to open nvs for heater disable"));
+    }
 }
 
 void enableHeater(lv_event_t *e)
 {
     heaterEnabled = true;
     logAdd(true, F("Heater enabled"));
-    prefs.begin("settings", false);
-    prefs.putBool("heaterEnabled", heaterEnabled);
-    prefs.end();
+
+    if (prefs.begin("settings", false))
+    {
+        if (!prefs.putBool("heaterEnabled", heaterEnabled))
+        {
+            logAdd(F("Failed to save heater enable into nvs"));
+        }
+        prefs.end();
+    }
+    else
+    {
+        logAdd(F("Failed to open nvs for heater enable"));
+    }
 }
 
 void butManHeatUp(lv_event_t *e)

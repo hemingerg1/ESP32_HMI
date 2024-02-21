@@ -1,63 +1,69 @@
 void settingsInit()
 {
-    prefs.begin("settings", false);
+    if (prefs.begin("settings", false))
+    {
+        lv_textarea_set_text(ui_targTempMinTA, String(prefs.getShort("tarMinTemp", tarMinTemp)).c_str());
+        lv_textarea_set_text(ui_absTempMinTA, String(prefs.getShort("absMinTemp", absMinTemp)).c_str());
+        lv_textarea_set_text(ui_fanOnTempTA, String(prefs.getShort("fanOnTempTime", fanOnTempTime)).c_str());
+        lv_textarea_set_text(ui_fanOffTempTA, String(prefs.getShort("fanOffTempTime", fanOffTempTime)).c_str());
+        lv_textarea_set_text(ui_aqMinTA, String(prefs.getShort("aqFanOnLevel", aqFanOnLevel)).c_str());
+        lv_textarea_set_text(ui_fanOnAqTA, String(prefs.getShort("aqFanOnTime", aqFanOnTime)).c_str());
+        lv_textarea_set_text(ui_fanOffAqTA, String(prefs.getShort("aqFanOffTime", aqFanOffTime)).c_str());
 
-    lv_textarea_set_text(ui_targTempMinTA, String(prefs.getShort("tarMinTemp", tarMinTemp)).c_str());
-    lv_textarea_set_text(ui_absTempMinTA, String(prefs.getShort("absMinTemp", absMinTemp)).c_str());
-    lv_textarea_set_text(ui_fanOnTempTA, String(prefs.getShort("fanOnTempTime", fanOnTempTime)).c_str());
-    lv_textarea_set_text(ui_fanOffTempTA, String(prefs.getShort("fanOffTempTime", fanOffTempTime)).c_str());
-    lv_textarea_set_text(ui_aqMinTA, String(prefs.getShort("aqFanOnLevel", aqFanOnLevel)).c_str());
-    lv_textarea_set_text(ui_fanOnAqTA, String(prefs.getShort("aqFanOnTime", aqFanOnTime)).c_str());
-    lv_textarea_set_text(ui_fanOffAqTA, String(prefs.getShort("aqFanOffTime", aqFanOffTime)).c_str());
+        short int s = prefs.getShort("screenTimeout", screenTimeout);
+        if (s == 0)
+        {
+            lv_dropdown_set_selected(ui_screenTimeDrop, 0);
+        }
+        else if (s == 10)
+        {
+            lv_dropdown_set_selected(ui_screenTimeDrop, 1);
+        }
+        else if (s == 20)
+        {
+            lv_dropdown_set_selected(ui_screenTimeDrop, 2);
+        }
+        else if (s == 30)
+        {
+            lv_dropdown_set_selected(ui_screenTimeDrop, 3);
+        }
 
-    short int s = prefs.getShort("screenTimeout", screenTimeout);
-    if (s == 0)
-    {
-        lv_dropdown_set_selected(ui_screenTimeDrop, 0);
-    }
-    else if (s == 10)
-    {
-        lv_dropdown_set_selected(ui_screenTimeDrop, 1);
-    }
-    else if (s == 20)
-    {
-        lv_dropdown_set_selected(ui_screenTimeDrop, 2);
-    }
-    else if (s == 30)
-    {
-        lv_dropdown_set_selected(ui_screenTimeDrop, 3);
-    }
+        ventFanEnabled = prefs.getBool("ventFanEnabled", ventFanEnabled);
+        Serial.print("ventFanEnabled type: " + String(prefs.getType("ventFanEnabled")));
+        Serial.println(",  ventFanEnabled: " + String(ventFanEnabled));
+        if (ventFanEnabled)
+        {
+            lv_obj_add_state(ui_venfFanSwitch, LV_STATE_CHECKED);
+            enableVentFan(NULL);
+        }
+        else
+        {
+            lv_obj_clear_state(ui_venfFanSwitch, LV_STATE_CHECKED);
+            lv_obj_clear_flag(ui_ventOffPanel, LV_OBJ_FLAG_HIDDEN);
+            disableVentFan(NULL);
+        }
 
-    ventFanEnabled = prefs.getBool("ventFanEnabled", ventFanEnabled);
-    Serial.printf("ventFanEnabled: %d\n", ventFanEnabled);
-    if (ventFanEnabled)
-    {
-        lv_obj_add_state(ui_venfFanSwitch, LV_STATE_CHECKED);
-        enableVentFan(NULL);
+        heaterEnabled = prefs.getBool("heaterEnabled", heaterEnabled);
+        Serial.print("heaterEnabled type: " + String(prefs.getType("heaterEnabled")));
+        Serial.println(",  heaterEnabled: " + String(heaterEnabled));
+        if (heaterEnabled)
+        {
+            lv_obj_add_state(ui_heaterSwitch, LV_STATE_CHECKED);
+            enableHeater(NULL);
+        }
+        else
+        {
+            lv_obj_clear_state(ui_heaterSwitch, LV_STATE_CHECKED);
+            lv_obj_clear_flag(ui_heaterOffPanel, LV_OBJ_FLAG_HIDDEN);
+            disableHeater(NULL);
+        }
+
+        prefs.end();
     }
     else
     {
-        lv_obj_clear_state(ui_venfFanSwitch, LV_STATE_CHECKED);
-        lv_obj_clear_flag(ui_ventOffPanel, LV_OBJ_FLAG_HIDDEN);
-        disableVentFan(NULL);
+        logAdd(F("Failed to open nvs for settings init"));
     }
-
-    heaterEnabled = prefs.getBool("heaterEnabled", heaterEnabled);
-    Serial.println("heaterEnabled type: " + String(prefs.getType("heaterEnabled")));
-    Serial.println("heaterEnabled: " + String(heaterEnabled));
-    if (heaterEnabled)
-    {
-        lv_obj_add_state(ui_heaterSwitch, LV_STATE_CHECKED);
-        enableHeater(NULL);
-    }
-    else
-    {
-        lv_obj_clear_state(ui_heaterSwitch, LV_STATE_CHECKED);
-        lv_obj_clear_flag(ui_heaterOffPanel, LV_OBJ_FLAG_HIDDEN);
-        disableHeater(NULL);
-    }
-
-    prefs.end();
 
     keyboardEnter(NULL);
     timeoutChange(NULL);
@@ -82,9 +88,19 @@ void timeoutChange(lv_event_t *e)
     {
         screenTimeout = 30;
     }
-    prefs.begin("settings", false);
-    prefs.putShort("screenTimeout", screenTimeout);
-    prefs.end();
+
+    if (prefs.begin("settings", false))
+    {
+        if (!prefs.putShort("screenTimeout", screenTimeout))
+        {
+            logAdd(F("Failed to save screenTimeout into nvs"));
+        }
+        prefs.end();
+    }
+    else
+    {
+        logAdd(F("Failed to open nvs for screenTimeout change"));
+    }
 
     logAdd(true, "Screen timeout changed to " + String(screenTimeout) + " minutes.");
 }
@@ -167,13 +183,19 @@ void keyboardEnter(lv_event_t *e)
     aqFanOnTime = atoi(lv_textarea_get_text(ui_fanOnAqTA));
     aqFanOffTime = atoi(lv_textarea_get_text(ui_fanOffAqTA));
 
-    prefs.begin("settings", false);
-    prefs.putShort("tarMinTemp", tarMinTemp);
-    prefs.putShort("absMinTemp", absMinTemp);
-    prefs.putShort("fanOnTempTime", fanOnTempTime);
-    prefs.putShort("fanOffTempTime", fanOffTempTime);
-    prefs.putShort("aqFanOnLevel", aqFanOnLevel);
-    prefs.putShort("aqFanOnTime", aqFanOnTime);
-    prefs.putShort("aqFanOffTime", aqFanOffTime);
-    prefs.end();
+    if (prefs.begin("settings", false))
+    {
+        prefs.putShort("tarMinTemp", tarMinTemp);
+        prefs.putShort("absMinTemp", absMinTemp);
+        prefs.putShort("fanOnTempTime", fanOnTempTime);
+        prefs.putShort("fanOffTempTime", fanOffTempTime);
+        prefs.putShort("aqFanOnLevel", aqFanOnLevel);
+        prefs.putShort("aqFanOnTime", aqFanOnTime);
+        prefs.putShort("aqFanOffTime", aqFanOffTime);
+        prefs.end();
+    }
+    else
+    {
+        logAdd(F("Failed to open nvs for settings change"));
+    }
 }
