@@ -29,8 +29,7 @@ void settingsInit()
         }
 
         ventFanEnabled = prefs.getBool("ventFanEnabled", ventFanEnabled);
-        Serial.print("ventFanEnabled type: " + String(prefs.getType("ventFanEnabled")));
-        Serial.println(",  ventFanEnabled: " + String(ventFanEnabled));
+        Serial.println("ventFanEnabled: " + String(ventFanEnabled));
         if (ventFanEnabled)
         {
             lv_obj_add_state(ui_venfFanSwitch, LV_STATE_CHECKED);
@@ -44,8 +43,7 @@ void settingsInit()
         }
 
         heaterEnabled = prefs.getBool("heaterEnabled", heaterEnabled);
-        Serial.print("heaterEnabled type: " + String(prefs.getType("heaterEnabled")));
-        Serial.println(",  heaterEnabled: " + String(heaterEnabled));
+        Serial.println("heaterEnabled: " + String(heaterEnabled));
         if (heaterEnabled)
         {
             lv_obj_add_state(ui_heaterSwitch, LV_STATE_CHECKED);
@@ -62,7 +60,7 @@ void settingsInit()
     }
     else
     {
-        logAdd(F("Failed to open nvs for settings init"));
+        logAdd(true, F("Failed to open nvs for settings init"));
     }
 
     keyboardEnter(NULL);
@@ -93,13 +91,13 @@ void timeoutChange(lv_event_t *e)
     {
         if (!prefs.putShort("screenTimeout", screenTimeout))
         {
-            logAdd(F("Failed to save screenTimeout into nvs"));
+            logAdd(true, F("Failed to save screenTimeout into nvs"));
         }
         prefs.end();
     }
     else
     {
-        logAdd(F("Failed to open nvs for screenTimeout change"));
+        logAdd(true, F("Failed to open nvs for screenTimeout change"));
     }
 
     logAdd(true, "Screen timeout changed to " + String(screenTimeout) + " minutes.");
@@ -196,6 +194,6 @@ void keyboardEnter(lv_event_t *e)
     }
     else
     {
-        logAdd(F("Failed to open nvs for settings change"));
+        logAdd(true, F("Failed to open nvs for settings change"));
     }
 }

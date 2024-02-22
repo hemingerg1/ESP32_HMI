@@ -28,6 +28,7 @@ short int soft_max = 75;
 lv_coord_t data_array[1000];
 
 // screen timeout variables
+short int lMin = 0;
 short int screenTimeout = 10;
 bool screenSleep = false;
 
@@ -152,7 +153,7 @@ void loop()
 
     if (screenSleep)
     {
-        delay(250);
+        delay(200);
     }
     else
     {
