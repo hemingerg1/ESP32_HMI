@@ -19,6 +19,7 @@ Servo damper2;
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
 bool fanOn = false;
+bool lostHMI = false;
 short int ii = 0;
 
 String fanStatus = "off";
@@ -55,18 +56,26 @@ void loop()
   // send and receive MQTT messages
   mqtt.loop();
 
-  // keep alive timer has expired without refresh so turn fan off
-  if (fanOn and (millis() - kaTimer > 75000))
+  // mqtt requested fan off
+  if (fanOn and kaCount == 0)
   {
     turnFanOff();
   }
-  // mqtt requested fan off
-  else if (fanOn and kaCount == 0)
+  // keep alive timer has expired without refresh so turn fan off
+  else if (fanOn and (millis() - kaTimer > 75000))
   {
+    Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
     turnFanOff();
+    lostHMI = true;
+  }
+  // HMI reconnected
+  else if (lostHMI and kaCount == 0)
+  {
+    Serial.println("HMI regained control.");
+    lostHMI = false;
   }
   // mqtt requested fan on
-  else if (!fanOn and kaCount > 0)
+  else if (!fanOn and kaCount > 0 and !lostHMI)
   {
     turnFanOn();
   }

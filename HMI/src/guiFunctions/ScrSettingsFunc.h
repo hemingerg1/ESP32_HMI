@@ -2,6 +2,7 @@ void settingsInit()
 {
     if (prefs.begin("settings", false))
     {
+        logAdd(true, F("Initializing settings from NVS memory."));
         lv_textarea_set_text(ui_targTempMinTA, String(prefs.getShort("tarMinTemp", tarMinTemp)).c_str());
         lv_textarea_set_text(ui_absTempMinTA, String(prefs.getShort("absMinTemp", absMinTemp)).c_str());
         lv_textarea_set_text(ui_fanOnTempTA, String(prefs.getShort("fanOnTempTime", fanOnTempTime)).c_str());
@@ -100,7 +101,7 @@ void timeoutChange(lv_event_t *e)
         logAdd(true, F("Failed to open nvs for screenTimeout change"));
     }
 
-    logAdd(true, "Screen timeout changed to " + String(screenTimeout) + " minutes.");
+    logAdd(true, "Screen timeout set to " + String(screenTimeout) + " minutes.");
 }
 
 void reboot(lv_event_t *e)

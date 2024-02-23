@@ -27,7 +27,7 @@ void wificon()
 
 void mqttCallback(String &topic, String &payload)
 {
-    if (topic == "Garage/Mech/VentFan/KA")
+    if (topic == "Garage/Mech/Heater/KA")
     {
         if (payload.toInt() > kaCount)
         {

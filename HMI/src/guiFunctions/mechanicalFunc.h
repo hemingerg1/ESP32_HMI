@@ -159,6 +159,13 @@ void tempAutoStrategy()
     }
 }
 
+/********************* Mechanicals Initialization *********************/
+void mechInit()
+{
+    heaterOn(false, F("Init"));
+    ventFanOn(false, F("Init"));
+}
+
 /********************* Main Mechanicals Control Loop *********************/
 void mechLoop()
 {

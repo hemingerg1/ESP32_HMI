@@ -9,6 +9,7 @@ void updateChart()
 
     // get data from influxdb
     short int len = influxQuery(meas, String(chartLen));
+    delay(10);
     // Serial.println("Influx return length: " + String(len));
 
     if (len != 0)
@@ -56,6 +57,7 @@ void chartDataInt()
                                                                 LV_CHART_AXIS_PRIMARY_Y);
     lv_chart_set_ext_y_array(ui_Chart1, ui_Chart1_series_1, data_array);
     updateChart();
+    logAdd(true, F("Chart data initialized."));
 }
 
 // Set chart length

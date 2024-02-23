@@ -12,6 +12,7 @@ MQTTClient mqtt;
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
 bool heatOn = false;
+bool lostHMI = false;
 short int ii = 0;
 
 bool heaterStatus = false;
@@ -48,18 +49,26 @@ void loop()
   // send and receive MQTT messages
   mqtt.loop();
 
-  // keep alive timer has expired without refresh so turn heater off
-  if (heatOn and (millis() - kaTimer > 75000))
+  // mqtt requested heater off
+  if (heatOn and kaCount == 0)
   {
     turnHeaterOff();
   }
-  // mqtt requested heater off
-  else if (heatOn and kaCount == 0)
+  // keep alive timer has expired without refresh so turn heater off
+  else if (heatOn and (millis() - kaTimer > 75000))
   {
+    Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
     turnHeaterOff();
+    lostHMI = true;
+  }
+  // HMI reconnected
+  else if (lostHMI and kaCount == 0)
+  {
+    Serial.println("HMI regained control.");
+    lostHMI = false;
   }
   // mqtt requested heater on
-  else if (!heatOn and kaCount > 0)
+  else if (!heatOn and kaCount > 0 and !lostHMI)
   {
     turnHeaterOn();
   }

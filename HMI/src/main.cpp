@@ -105,21 +105,23 @@ void setup()
 
     // connect to mqtt broker (from ScrSettingsFunc.h)
     mqttCon(NULL);
-
     // initialize the chart data (from ScrChartFunc.h)
     chartDataInt();
-
-    // delay then hide the start log screen
-    delay(2000);
-    lv_obj_add_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN);
-
-    // set sleep screen time to custom font
-    lv_obj_set_style_text_font(ui_sleepTimeLab, &montserrat_250, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     // initialize the values on the settings screens (from ScrSettingsFunc.h)
     settingsInit();
     // initialize the values on the home screen (from ScrHomeFunc.h)
     homeInit();
+    // initialize the mechaincals (from mechanicalFunc.h)
+    mechInit();
+
+    logAdd(false, F("********* HMI Initialization complete *********"));
+
+    // delay then hide the start log screen
+    delay(1000);
+    lv_obj_add_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN);
+
+    // set sleep screen time to custom font
+    lv_obj_set_style_text_font(ui_sleepTimeLab, &montserrat_250, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     start = false;
     /*

@@ -26,6 +26,7 @@ int influxQuery(String measurement, String time)
     // Serial.println(query);
 
     FluxQueryResult result = client.query(query);
+    delay(20);
 
     uint i = 0;
     while (result.next())
@@ -68,6 +69,8 @@ int influxQuery(String measurement, String time)
     {
         Serial.print(F("Query result error: "));
         Serial.println(result.getError());
+
+        logAdd(true, "Query result error: " + result.getError());
 
         lv_label_set_text_fmt(ui_loadingLab, "Query result error: %s", String(result.getError())); //.c_str()
         lv_refr_now(NULL);

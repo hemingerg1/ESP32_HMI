@@ -31,7 +31,14 @@ void disableVentFan(lv_event_t *e)
     autoVentFanOffTimer = 0;
     autoVentFanOnTimer = 0;
 
-    if (prefs.begin("settings", false))
+    if (start)
+    {
+        if (!prefs.putBool("ventFanEnabled", ventFanEnabled))
+        {
+            logAdd(true, F("Failed to save vent fan disable into nvs on startup"));
+        }
+    }
+    else if (prefs.begin("settings", false))
     {
         if (!prefs.putBool("ventFanEnabled", ventFanEnabled))
         {
@@ -50,7 +57,14 @@ void enableVentFan(lv_event_t *e)
     ventFanEnabled = true;
     logAdd(true, F("Vent fan enabled"));
 
-    if (prefs.begin("settings", false))
+    if (start)
+    {
+        if (!prefs.putBool("ventFanEnabled", ventFanEnabled))
+        {
+            logAdd(true, F("Failed to save vent fan enable into nvs on startup"));
+        }
+    }
+    else if (prefs.begin("settings", false))
     {
         if (!prefs.putBool("ventFanEnabled", ventFanEnabled))
         {
@@ -103,7 +117,14 @@ void disableHeater(lv_event_t *e)
     manHeatCon = false;
     manHeatTimer = 0;
 
-    if (prefs.begin("settings", false))
+    if (start)
+    {
+        if (!prefs.putBool("heaterEnabled", heaterEnabled))
+        {
+            logAdd(true, F("Failed to save heater disable into nvs on startup"));
+        }
+    }
+    else if (prefs.begin("settings", false))
     {
         if (!prefs.putBool("heaterEnabled", heaterEnabled))
         {
@@ -122,7 +143,14 @@ void enableHeater(lv_event_t *e)
     heaterEnabled = true;
     logAdd(true, F("Heater enabled"));
 
-    if (prefs.begin("settings", false))
+    if (start)
+    {
+        if (!prefs.putBool("heaterEnabled", heaterEnabled))
+        {
+            logAdd(true, F("Failed to save heater disable into nvs on startup"));
+        }
+    }
+    else if (prefs.begin("settings", false))
     {
         if (!prefs.putBool("heaterEnabled", heaterEnabled))
         {
