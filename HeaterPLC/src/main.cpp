@@ -7,7 +7,7 @@ WiFiClient wifiClient;
 MQTTClient mqtt;
 
 #define HEATERPIN 2
-#define FANPIN 12
+#define FANPIN 13
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;

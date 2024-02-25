@@ -66,5 +66,5 @@ void mqttCon()
     }
     Serial.println("mqtt connected!");
 
-    mqtt.subscribe("Garage/Mech/VentFan/KA");
+    mqtt.subscribe("Garage/Mech/Heater/KA");
 }
