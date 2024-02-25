@@ -89,15 +89,15 @@ void setup()
     // start the LVGL gui
     gui_start();
     lv_obj_clear_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN); // Show the start log screen
-    logAdd(false, F("GUI started."));
+    logAdd(true, F("GUI started."));
 
     // Setup wifi (from ScrSettingsFunc.h)
     wificon(NULL);
 
     // sync time with ntp server
-    logAdd(false, F("Syncing time..."));
+    logAdd(true, F("Syncing time..."));
     timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
-    logAdd(false, "Time synced to: " + rtc.getDateTime());
+    logAdd(true, "Time synced to: " + rtc.getDateTime());
 
     // check connection to influxdb
     logAdd(true, F("Checking InfluxDB connection..."));
@@ -114,8 +114,6 @@ void setup()
     // initialize the mechaincals (from mechanicalFunc.h)
     mechInit();
 
-    logAdd(false, F("********* HMI Initialization complete *********"));
-
     // delay then hide the start log screen
     delay(1000);
     lv_obj_add_flag(ui_StartLog, LV_OBJ_FLAG_HIDDEN);
@@ -124,6 +122,7 @@ void setup()
     lv_obj_set_style_text_font(ui_sleepTimeLab, &montserrat_250, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     start = false;
+    logAdd(true, F("********* HMI Initialization complete *********"));
     /*
     Serial.printf("Total heap: %d \n", ESP.getHeapSize());
     Serial.printf("Free heap: %d \n", ESP.getFreeHeap());

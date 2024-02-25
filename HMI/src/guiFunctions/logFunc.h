@@ -5,7 +5,15 @@ void logAdd(bool time, String text)
     if (time)
     {
         mylog += F("[");
-        mylog += rtc.getTime("%D %T");
+        if (start)
+        {
+            mylog += String(millis() / 1000.0, 3);
+            mylog += F("s");
+        }
+        else
+        {
+            mylog += rtc.getTime("%D %T");
+        }
         mylog += F("]  ");
     }
     mylog += text;

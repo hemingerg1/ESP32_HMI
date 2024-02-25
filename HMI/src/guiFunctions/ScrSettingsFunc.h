@@ -113,13 +113,13 @@ void reboot(lv_event_t *e)
 
 void wificon(lv_event_t *e)
 {
-    logAdd(false, F("Reconnecting to WiFi..."));
+    logAdd(true, F("Connecting to WiFi."));
     WiFi.disconnect(true);
     delay(1000);
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     Serial.print(F("Connecting to WiFi..."));
-    logAdd(false, F("WiFi connecting..."));
+    logAdd(true, F("Waiting for WiFi connection..."));
     delay(500);
     int t = 0;
     while (WiFi.status() != WL_CONNECTED)
@@ -133,13 +133,13 @@ void wificon(lv_event_t *e)
             reboot(NULL);
         }
     }
-    logAdd(false, "WiFi connected. IP: " + WiFi.localIP().toString());
+    logAdd(true, "WiFi connected. IP: " + WiFi.localIP().toString());
 }
 
 void mqttCon(lv_event_t *e)
 {
-    Serial.println(F("Reconnecting to MQTT broker..."));
-    logAdd(true, F("Reconnecting to MQTT broker..."));
+    Serial.println(F("Connecting to MQTT broker..."));
+    logAdd(true, F("Connecting to MQTT broker..."));
     mqtt.disconnect();
     delay(200);
     if (WiFi.status() != WL_CONNECTED)
