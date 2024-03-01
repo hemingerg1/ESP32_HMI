@@ -6,8 +6,9 @@
 WiFiClient wifiClient;
 MQTTClient mqtt;
 
-#define HEATERPIN 2
-#define FANPIN 13
+#define HEATERPIN 7
+#define FANPIN 9
+#define STATUSPIN 15
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
@@ -26,12 +27,15 @@ void getStatus();
 void setup()
 {
   Serial.begin(115200);
-  Serial.println(F("****** Initializing PLC ******"));
+  delay(2000);
+  Serial.println("****** Initializing PLC ******");
 
   pinMode(HEATERPIN, OUTPUT);
   pinMode(FANPIN, OUTPUT);
+  pinMode(STATUSPIN, OUTPUT);
   digitalWrite(HEATERPIN, LOW);
   digitalWrite(FANPIN, LOW);
+  digitalWrite(STATUSPIN, LOW);
 
   wificon();
   mqttCon();
@@ -96,13 +100,16 @@ void turnHeaterOff()
   // turn off heating element off
   digitalWrite(HEATERPIN, LOW);
   // leave fan on too cool heater down befor turning off
+  Serial.println("Fan cool down delay");
   delay(30000);
   digitalWrite(FANPIN, LOW);
+  Serial.println("Fan off");
   heatOn = false;
 }
 
 void getStatus()
 {
+  // Serial.println("Getting status");
   if (digitalRead(HEATERPIN) == HIGH)
   {
     heaterStatus = true;
@@ -123,14 +130,16 @@ void getStatus()
 
   if (heaterStatus and fanStatus and heatOn)
   {
-    mqtt.publish("Garage/Mech/VentFan/Status", "ON");
+    digitalWrite(STATUSPIN, HIGH);
+    mqtt.publish("Garage/Mech/Heater/Status", "ON");
   }
   else if (fanStatus)
   {
-    mqtt.publish("Garage/Mech/VentFan/Status", "FAN ON");
+    mqtt.publish("Garage/Mech/Heater/Status", "FAN ON");
   }
   else
   {
-    mqtt.publish("Garage/Mech/VentFan/Status", "OFF");
+    digitalWrite(STATUSPIN, LOW);
+    mqtt.publish("Garage/Mech/Heater/Status", "OFF");
   }
 }

@@ -119,11 +119,11 @@ void mqttCallback(String &topic, String &payload)
         lv_label_set_text_fmt(ui_heatStatLab, "%s", heaterState);
         if (heaterState == F("OFF"))
         {
-            lv_obj_clear_state(ui_heatStatLab, LV_STATE_CHECKED);
+            lv_obj_clear_state(ui_heatStatCont, LV_STATE_CHECKED);
         }
         else if (heaterState == F("ON"))
         {
-            lv_obj_add_state(ui_heatStatLab, LV_STATE_CHECKED);
+            lv_obj_add_state(ui_heatStatCont, LV_STATE_CHECKED);
         }
     }
 }
