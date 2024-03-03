@@ -6,15 +6,24 @@
 WiFiClient wifiClient;
 MQTTClient mqtt;
 
-#define HEATERPIN 7
-#define FANPIN 9
+#define HEATERPIN 35
+#define FANPIN 18
 #define STATUSPIN 15
+#define THERMPIN 5
+
+// coefficients for converstion of volts to temperature in F
+#define C1 -24.7470
+#define C2 130.0242
+#define C3 -245.2369
+#define C4 254.0483
+#define C5 -32.2890
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
 bool heatOn = false;
 bool lostHMI = false;
 short int ii = 0;
+short int temp = 0;
 
 bool heaterStatus = false;
 bool fanStatus = false;
@@ -23,6 +32,7 @@ bool fanStatus = false;
 void turnHeaterOn();
 void turnHeaterOff();
 void getStatus();
+void getTemp();
 
 void setup()
 {
@@ -36,6 +46,9 @@ void setup()
   digitalWrite(HEATERPIN, LOW);
   digitalWrite(FANPIN, LOW);
   digitalWrite(STATUSPIN, LOW);
+
+  analogReadResolution(12);
+  pinMode(THERMPIN, INPUT);
 
   wificon();
   mqttCon();
@@ -81,6 +94,7 @@ void loop()
   {
     getStatus();
     ii = 0;
+    Serial.println(", RSSI: " + String(WiFi.RSSI()));
   }
   delay(250);
 }
@@ -128,6 +142,8 @@ void getStatus()
     fanStatus = false;
   }
 
+  getTemp();
+
   if (heaterStatus and fanStatus and heatOn)
   {
     digitalWrite(STATUSPIN, HIGH);
@@ -142,4 +158,20 @@ void getStatus()
     digitalWrite(STATUSPIN, LOW);
     mqtt.publish("Garage/Mech/Heater/Status", "OFF");
   }
+}
+
+void getTemp()
+{
+  float V = 0.0;
+  float Vsum = 0.0;
+  for (int i = 0; i < 5; i++)
+  {
+    Vsum += analogRead(THERMPIN);
+  }
+  Vsum = Vsum / 5.0;
+  V = (Vsum * 2.5) / 4095.0;
+  temp = round(V * (V * (V * (V * C1 + C2) + C3) + C4) + C5);
+
+  Serial.print("T: " + String(temp));
+  mqtt.publish("Garage/Mech/Heater/Temp", String(temp));
 }
