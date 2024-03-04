@@ -20,25 +20,26 @@ MQTTClient mqtt;
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
-bool heatOn = false;
-bool lostHMI = false;
+unsigned long coolDownTimer = 0;
 short int ii = 0;
 short int temp = 0;
 
+bool heatOn = false;
+bool lostHMI = false;
 bool heaterStatus = false;
 bool fanStatus = false;
+bool coolDown = false;
 
 #include "connectionFunc.hpp"
 void turnHeaterOn();
 void turnHeaterOff();
+void heaterCoolDown();
 void getStatus();
 void getTemp();
 
 void setup()
 {
   Serial.begin(115200);
-  delay(2000);
-  Serial.println("****** Initializing PLC ******");
 
   pinMode(HEATERPIN, OUTPUT);
   pinMode(FANPIN, OUTPUT);
@@ -58,6 +59,7 @@ void loop()
 {
   ii++;
 
+  /*************** MQTT Functions ***************/
   // check if MQTT is still connected
   if (!mqtt.connected())
   {
@@ -66,13 +68,14 @@ void loop()
   // send and receive MQTT messages
   mqtt.loop();
 
+  /*************** Main Control Functions ***************/
   // mqtt requested heater off
-  if (heatOn and kaCount == 0)
+  if (heatOn and kaCount == 0 and !coolDown)
   {
     turnHeaterOff();
   }
   // keep alive timer has expired without refresh so turn heater off
-  else if (heatOn and (millis() - kaTimer > 75000))
+  else if (heatOn and (millis() - kaTimer > 75000) and !coolDown)
   {
     Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
     turnHeaterOff();
@@ -85,17 +88,23 @@ void loop()
     lostHMI = false;
   }
   // mqtt requested heater on
-  else if (!heatOn and kaCount > 0 and !lostHMI)
+  else if (!heatOn and kaCount > 0 and !lostHMI and !coolDown)
   {
     turnHeaterOn();
   }
 
+  /*************** Get Current Status Functions ***************/
   if (ii >= 20)
   {
+    getTemp();
+    if (coolDown)
+    {
+      heaterCoolDown();
+    }
     getStatus();
     ii = 0;
-    Serial.println(", RSSI: " + String(WiFi.RSSI()));
   }
+
   delay(250);
 }
 
@@ -103,7 +112,7 @@ void turnHeaterOn()
 {
   Serial.println("Turning heater on");
   digitalWrite(HEATERPIN, HIGH);
-  delay(1000);
+  delay(500);
   digitalWrite(FANPIN, HIGH);
   heatOn = true;
 }
@@ -111,14 +120,28 @@ void turnHeaterOn()
 void turnHeaterOff()
 {
   Serial.println("Turning heater off");
-  // turn off heating element off
   digitalWrite(HEATERPIN, LOW);
-  // leave fan on too cool heater down befor turning off
   Serial.println("Fan cool down delay");
-  delay(30000);
-  digitalWrite(FANPIN, LOW);
-  Serial.println("Fan off");
-  heatOn = false;
+  coolDown = true;
+  coolDownTimer = millis();
+}
+
+void heaterCoolDown()
+{
+  if (temp < 100)
+  {
+    digitalWrite(FANPIN, LOW);
+    Serial.println("Fan off: temp cooled down");
+    coolDown = false;
+    heatOn = false;
+  }
+  else if (millis() - coolDownTimer > 90000 and !heaterStatus)
+  {
+    digitalWrite(FANPIN, LOW);
+    Serial.println("Fan off: cooldown timer expired");
+    coolDown = false;
+    heatOn = false;
+  }
 }
 
 void getStatus()
@@ -142,16 +165,19 @@ void getStatus()
     fanStatus = false;
   }
 
-  getTemp();
-
-  if (heaterStatus and fanStatus and heatOn)
+  /*************** Send status to MQTT ***************/
+  if (heaterStatus and fanStatus and heatOn and temp > 100)
   {
     digitalWrite(STATUSPIN, HIGH);
     mqtt.publish("Garage/Mech/Heater/Status", "ON");
   }
+  else if (heaterStatus and fanStatus and heatOn)
+  {
+    mqtt.publish("Garage/Mech/Heater/Status", "Starting");
+  }
   else if (fanStatus)
   {
-    mqtt.publish("Garage/Mech/Heater/Status", "FAN ON");
+    mqtt.publish("Garage/Mech/Heater/Status", "FanOn");
   }
   else
   {
@@ -167,11 +193,12 @@ void getTemp()
   for (int i = 0; i < 5; i++)
   {
     Vsum += analogRead(THERMPIN);
+    delay(10);
   }
   Vsum = Vsum / 5.0;
   V = (Vsum * 2.5) / 4095.0;
   temp = round(V * (V * (V * (V * C1 + C2) + C3) + C4) + C5);
 
-  Serial.print("T: " + String(temp));
+  // Serial.print("T: " + String(temp));
   mqtt.publish("Garage/Mech/Heater/Temp", String(temp));
 }
