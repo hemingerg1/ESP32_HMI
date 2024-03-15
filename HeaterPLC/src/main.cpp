@@ -11,12 +11,11 @@ MQTTClient mqtt;
 #define STATUSPIN 15
 #define THERMPIN 5
 
-// coefficients for converstion of volts to temperature in F
-#define C1 -24.7470
-#define C2 130.0242
-#define C3 -245.2369
-#define C4 254.0483
-#define C5 -32.2890
+// Thermistor specs
+#define THERMISTORNOMINAL 10000
+#define TEMPERATURENOMINAL 25
+#define B 3977
+#define SERIESRESISTOR 3830
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
@@ -188,16 +187,30 @@ void getStatus()
 
 void getTemp()
 {
-  float V = 0.0;
-  float Vsum = 0.0;
+  float r = 0;
+  float adc = 0.0;
+
+  // take 5 readings and average them
   for (int i = 0; i < 5; i++)
   {
-    Vsum += analogRead(THERMPIN);
+    adc += analogRead(THERMPIN);
     delay(10);
   }
-  Vsum = Vsum / 5.0;
-  V = (Vsum * 2.5) / 4095.0;
-  temp = round(V * (V * (V * (V * C1 + C2) + C3) + C4) + C5);
+  adc = adc / 5.0;
+
+  // get resistance of thermistor
+  r = (5405.4 / adc) - 1.0;
+  r = SERIESRESISTOR / r;
+
+  // calculate temperature
+  float steinhart;
+  steinhart = r / THERMISTORNOMINAL;                // (R/Ro)
+  steinhart = log(steinhart);                       // ln(R/Ro)
+  steinhart /= B;                                   // 1/B * ln(R/Ro)
+  steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15); // + (1/To)
+  steinhart = 1.0 / steinhart;                      // Invert
+  steinhart -= 273.15;                              // convert absolute temp to C
+  temp = (steinhart * 1.8) + 32;                    // convert to F
 
   // Serial.print("T: " + String(temp));
   mqtt.publish("Garage/Mech/Heater/Temp", String(temp));
