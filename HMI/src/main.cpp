@@ -96,7 +96,7 @@ void setup()
 
     // sync time with ntp server
     logAdd(true, F("Syncing time..."));
-    timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
+    timeSync(TZ_INFO, "time1.google.com", "time2.google.com");
     logAdd(true, "Time synced to: " + rtc.getDateTime());
 
     // check connection to influxdb
