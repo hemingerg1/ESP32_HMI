@@ -197,10 +197,13 @@ void getTemp()
     delay(10);
   }
   adc = adc / 5.0;
+  adc = (adc * 2.5) / 4095.0;
+  // Serial.print("V: " + String(adc));
 
   // get resistance of thermistor
-  r = (5405.4 / adc) - 1.0;
-  r = SERIESRESISTOR / r;
+  r = (3.3 / adc) - 1.0;
+  r = SERIESRESISTOR * r;
+  // Serial.print(",  R: " + String(r));
 
   // calculate temperature
   float steinhart;
@@ -210,7 +213,8 @@ void getTemp()
   steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15); // + (1/To)
   steinhart = 1.0 / steinhart;                      // Invert
   steinhart -= 273.15;                              // convert absolute temp to C
-  temp = (steinhart * 1.8) + 32;                    // convert to F
+  temp = (steinhart * 1.8) + 32 - 2;                // convert to F (-2 is correction factor my sensor)
+  // Serial.println(",  T: " + String(temp));
 
   // Serial.print("T: " + String(temp));
   mqtt.publish("Garage/Mech/Heater/Temp", String(temp));
