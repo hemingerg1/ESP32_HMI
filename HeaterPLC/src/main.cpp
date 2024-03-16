@@ -127,7 +127,7 @@ void turnHeaterOff()
 
 void heaterCoolDown()
 {
-  if (temp < 100)
+  if (temp < 80)
   {
     digitalWrite(FANPIN, LOW);
     Serial.println("Fan off: temp cooled down");
