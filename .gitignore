@@ -12,7 +12,7 @@
 
 backup/
 cache/
-components/
+/components/
 autosave/
 assests/
 .vscode/
