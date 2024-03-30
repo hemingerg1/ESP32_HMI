@@ -27,13 +27,13 @@ void mqttCallback(String &topic, String &payload)
     // Serial.println("incoming: " + topic + " - " + payload);
     if (topic == F("Garage/Air/Temp"))
     {
-        lv_label_set_text_fmt(ui_tempLab, "%s", payload);
-        insideTemp = payload.toInt();
+        insideTemp = round(payload.toFloat());
+        lv_label_set_text_fmt(ui_tempLab, "%u", insideTemp);
     }
     else if (topic == F("Garage/Air/OutTemp"))
     {
-        lv_label_set_text_fmt(ui_outTempLab, "%s", payload);
-        outsideTemp = payload.toInt();
+        outsideTemp = round(payload.toFloat());
+        lv_label_set_text_fmt(ui_outTempLab, "%u", outsideTemp);
     }
     else if (topic == F("Garage/Air/Humidity"))
     {
