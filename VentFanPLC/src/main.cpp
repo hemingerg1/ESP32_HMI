@@ -10,21 +10,18 @@ MQTTClient mqtt;
 Servo damper1;
 Servo damper2;
 
-#define FANPIN 2
-#define DAMPER1PIN 12
-#define DAMPER2PIN 13
+#define FANPIN 16
+#define DAMPER1PIN 26
+#define DAMPER2PIN 33
 #define DAMPEROPEN 68
 #define DAMPERCLOSED 0
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
 bool fanOn = false;
+bool fanStatus = false;
 bool lostHMI = false;
 short int ii = 0;
-
-String fanStatus = "off";
-String damper1Status = "closed";
-String damper2Status = "closed";
 
 #include "connectionFunc.hpp"
 void turnFanOn();
@@ -34,7 +31,6 @@ void getStatus();
 void setup()
 {
   Serial.begin(115200);
-  Serial.println(F("****** Initializing PLC ******"));
 
   pinMode(FANPIN, OUTPUT);
 
@@ -48,6 +44,7 @@ void loop()
 {
   ii++;
 
+  /*************** MQTT Functions ***************/
   // check if MQTT is still connected
   if (!mqtt.connected())
   {
@@ -56,6 +53,7 @@ void loop()
   // send and receive MQTT messages
   mqtt.loop();
 
+  /*************** Main Control Functions ***************/
   // mqtt requested fan off
   if (fanOn and kaCount == 0)
   {
@@ -80,11 +78,13 @@ void loop()
     turnFanOn();
   }
 
+  /*************** Get Current Status Functions ***************/
   if (ii >= 20)
   {
     getStatus();
     ii = 0;
   }
+
   delay(250);
 }
 
@@ -100,7 +100,7 @@ void turnFanOn()
     damper2.write(i);
     delay(10);
   }
-  delay(500);
+  delay(100);
   // turn on fan
   digitalWrite(FANPIN, HIGH);
   damper1.detach();
@@ -113,7 +113,7 @@ void turnFanOff()
   Serial.println("Turning fan off");
   // turn off fan
   digitalWrite(FANPIN, LOW);
-  delay(1000);
+  delay(2000);
   // close dampers
   damper1.attach(DAMPER1PIN);
   damper2.attach(DAMPER2PIN);
@@ -132,18 +132,18 @@ void getStatus()
 {
   if (digitalRead(FANPIN) == HIGH)
   {
-    fanStatus = "on";
+    fanStatus = true;
   }
   else
   {
-    fanStatus = "off";
+    fanStatus = false;
   }
 
-  if (fanStatus == "on" and fanOn)
+  if (fanStatus and fanOn)
   {
     mqtt.publish("Garage/Mech/VentFan/Status", "ON");
   }
-  else if (fanStatus == "off" and !fanOn)
+  else if (!fanStatus and !fanOn)
   {
     mqtt.publish("Garage/Mech/VentFan/Status", "OFF");
   }
