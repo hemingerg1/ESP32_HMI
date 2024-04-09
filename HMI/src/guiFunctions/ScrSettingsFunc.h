@@ -113,23 +113,23 @@ void reboot(lv_event_t *e)
 
 void wificon(lv_event_t *e)
 {
-    logAdd(true, F("Connecting to WiFi."));
+    logAdd(true, "Connecting to WiFi.");
     WiFi.disconnect(true);
     delay(1000);
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    Serial.print(F("Connecting to WiFi..."));
+    Serial.print("Connecting to WiFi...");
     logAdd(true, F("Waiting for WiFi connection..."));
     delay(500);
     int t = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
         t++;
-        Serial.print(F('.'));
+        Serial.print('.');
         delay(500);
         if (t > 20)
         {
-            logAdd(false, F("Unable to connect to WiFi."));
+            logAdd(false, "Unable to connect to WiFi.");
             reboot(NULL);
         }
     }
