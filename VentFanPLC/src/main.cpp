@@ -33,6 +33,8 @@ void setup()
   Serial.begin(115200);
 
   pinMode(FANPIN, OUTPUT);
+  pinMode(DAMPER1PIN, OUTPUT);
+  pinMode(DAMPER2PIN, OUTPUT);
 
   turnFanOff();
 
@@ -91,20 +93,28 @@ void loop()
 void turnFanOn()
 {
   Serial.println("Turning fan on");
-  // open dampers
+  // open damper1
   damper1.attach(DAMPER1PIN);
-  damper2.attach(DAMPER2PIN);
   for (int i = DAMPERCLOSED; i <= DAMPEROPEN; i += 1)
   {
     damper1.write(i);
+    delay(10);
+  }
+  damper1.detach();
+  delay(50);
+
+  // open damper2
+  damper2.attach(DAMPER2PIN);
+  for (int i = DAMPERCLOSED; i <= DAMPEROPEN; i += 1)
+  {
     damper2.write(i);
     delay(10);
   }
+  damper2.detach();
   delay(100);
+
   // turn on fan
   digitalWrite(FANPIN, HIGH);
-  damper1.detach();
-  damper2.detach();
   fanOn = true;
 }
 
@@ -116,14 +126,19 @@ void turnFanOff()
   delay(2000);
   // close dampers
   damper1.attach(DAMPER1PIN);
-  damper2.attach(DAMPER2PIN);
   for (int i = DAMPEROPEN; i >= DAMPERCLOSED; i -= 1)
   {
     damper1.write(i);
-    damper2.write(i);
     delay(10);
   }
   damper1.detach();
+  delay(50);
+  damper2.attach(DAMPER2PIN);
+  for (int i = DAMPEROPEN; i >= DAMPERCLOSED; i -= 1)
+  {
+    damper2.write(i);
+    delay(10);
+  }
   damper2.detach();
   fanOn = false;
 }

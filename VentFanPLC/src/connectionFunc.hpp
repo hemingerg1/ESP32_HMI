@@ -6,7 +6,7 @@ void wificon()
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-    Serial.print(F("Connecting to WiFi..."));
+    Serial.print("Connecting to WiFi...");
     delay(500);
     // int t = 0;
     while (WiFi.status() != WL_CONNECTED)
@@ -61,7 +61,7 @@ void mqttCon()
     Serial.print("Connecting to mqtt broker...");
     while (!mqtt.connect("espVentFanPLC", MQTT_USER, MQTT_PASSWORD))
     {
-        Serial.print(F("."));
+        Serial.print(".");
         delay(500);
     }
     Serial.println("mqtt connected!");
