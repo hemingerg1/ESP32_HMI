@@ -3,6 +3,7 @@ void settingsInit()
     if (prefs.begin("settings", false))
     {
         logAdd(true, F("Initializing settings from NVS memory."));
+        lv_textarea_set_text(ui_targTempMaxTA, String(prefs.getShort("tarMaxTemp", tarMaxTemp)).c_str());
         lv_textarea_set_text(ui_targTempMinTA, String(prefs.getShort("tarMinTemp", tarMinTemp)).c_str());
         lv_textarea_set_text(ui_absTempMinTA, String(prefs.getShort("absMinTemp", absMinTemp)).c_str());
         lv_textarea_set_text(ui_fanOnTempTA, String(prefs.getShort("fanOnTempTime", fanOnTempTime)).c_str());
@@ -174,6 +175,7 @@ void displaySleep()
 
 void keyboardEnter(lv_event_t *e)
 {
+    tarMaxTemp = atoi(lv_textarea_get_text(ui_targTempMaxTA));
     tarMinTemp = atoi(lv_textarea_get_text(ui_targTempMinTA));
     absMinTemp = atoi(lv_textarea_get_text(ui_absTempMinTA));
     fanOnTempTime = atoi(lv_textarea_get_text(ui_fanOnTempTA));
@@ -184,6 +186,7 @@ void keyboardEnter(lv_event_t *e)
 
     if (prefs.begin("settings", false))
     {
+        prefs.putShort("tarMaxTemp", tarMaxTemp);
         prefs.putShort("tarMinTemp", tarMinTemp);
         prefs.putShort("absMinTemp", absMinTemp);
         prefs.putShort("fanOnTempTime", fanOnTempTime);

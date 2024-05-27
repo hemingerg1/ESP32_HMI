@@ -134,22 +134,32 @@ void manHeatTimerUpdate()
 /********************* Select Automatic Control Strategy *********************/
 void tempAutoStrategy()
 {
-    if (tarMinTemp > absMinTemp)
+    if (tarMinTemp > absMinTemp and tarMaxTemp > tarMinTemp)
     {
-        if (insideTemp > tarMinTemp)
+        if (insideTemp > tarMaxTemp and outsideTemp < insideTemp + 3)
         {
-            // No temperature control (inside temp is warmer than target)
+            // Use vent fan to blow out the hotter inside air
+            tempControl = 1;
+        }
+        else if (insideTemp > tarMinTemp and insideTemp < tarMaxTemp)
+        {
+            // No temperature control (inside temp is within the target range)
             tempControl = 0;
         }
-        else if (insideTemp < tarMinTemp and outsideTemp > insideTemp + 2 and outsideTemp > absMinTemp)
+        else if (insideTemp < tarMinTemp and outsideTemp > insideTemp + 3 and outsideTemp > absMinTemp)
         {
             // Use vent fan to bring in the warmer outside air
             tempControl = 1;
         }
-        else
+        else if (outsideTemp < absMinTemp)
         {
             // Use electric heater
             tempControl = 2;
+        }
+        else
+        {
+            // No temperature control
+            tempControl = 0;
         }
     }
     else
@@ -184,11 +194,11 @@ void mechLoop()
         {
             if (reqHeat)
             {
-                heaterOn(false, F("Auto mode 1. Temp above abs min target"));
+                heaterOn(false, F("Auto temp mode 1. Temp above abs min target"));
             }
             if (!reqVentFan and autoVentFanOffTimer < millis() and ventFanEnabled)
             {
-                ventFanOn(true, F("Auto temp mode 1. Increase temp"));
+                ventFanOn(true, F("Auto temp mode 1. Using vent fan for temp control"));
                 autoVentFanOnTimer = millis() + (fanOnTempTime * 60000);
                 autoVentFanOffTimer = fanOffTempTime * 60000;
             }
