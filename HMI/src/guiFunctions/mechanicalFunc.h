@@ -136,7 +136,7 @@ void tempAutoStrategy()
 {
     if (tarMinTemp > absMinTemp and tarMaxTemp > tarMinTemp)
     {
-        if (insideTemp > tarMaxTemp and outsideTemp < insideTemp + 3)
+        if (insideTemp > tarMaxTemp and outsideTemp < insideTemp - 3)
         {
             // Use vent fan to blow out the hotter inside air
             tempControl = 1;
