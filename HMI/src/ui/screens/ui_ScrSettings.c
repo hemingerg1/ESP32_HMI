@@ -555,6 +555,11 @@ void ui_ScrSettings_screen_init(void)
     lv_obj_set_scrollbar_mode(ui_logLab, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_scroll_dir(ui_logLab, LV_DIR_VER);
 
+    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen2, UI_COMP_FULLSCREEN_SIDEBAR3_BUTHOME2),
+                        ui_event_FullScreen2_Sidebar3_butHome2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_comp_get_child(ui_FullScreen2, UI_COMP_FULLSCREEN_SIDEBAR3_BUTTEMP2),
+                        ui_event_FullScreen2_Sidebar3_butTemp2, LV_EVENT_ALL, NULL);
+
     lv_obj_add_event_cb(ui_KeyboardVent, ui_event_KeyboardVent, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_targTempMaxTA, ui_event_targTempMaxTA, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_targTempMinTA, ui_event_targTempMinTA, LV_EVENT_ALL, NULL);
