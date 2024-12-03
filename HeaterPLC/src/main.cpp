@@ -72,11 +72,13 @@ void loop()
   if (heatOn and kaCount == 0 and !coolDown)
   {
     turnHeaterOff();
+    mqtt.publish("Garage/Mech/Heater/Log", "Main control: request off");
   }
   // keep alive timer has expired without refresh so turn heater off
   else if (heatOn and (millis() - kaTimer > 75000) and !coolDown)
   {
     Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
+    mqtt.publish("Garage/Mech/Heater/Log", "Main control: KaTimer expired");
     turnHeaterOff();
     lostHMI = true;
   }
@@ -84,12 +86,14 @@ void loop()
   else if (lostHMI and kaCount == 0)
   {
     Serial.println("HMI regained control.");
+    mqtt.publish("Garage/Mech/Heater/Log", "Main control: HMI back");
     lostHMI = false;
   }
   // mqtt requested heater on
   else if (!heatOn and kaCount > 0 and !lostHMI and !coolDown)
   {
     turnHeaterOn();
+    mqtt.publish("Garage/Mech/Heater/Log", "Main control: reuest on");
   }
 
   /*************** Get Current Status Functions ***************/
@@ -101,6 +105,7 @@ void loop()
       heaterCoolDown();
     }
     getStatus();
+    mqtt.publish("Garage/Mech/Heater/Log", printf("kaCount: %d, lostHMI: %d, heatOn: %d, coolDown: %d", kaCount, lostHMI, heatOn, coolDown));
     ii = 0;
   }
 
@@ -131,6 +136,7 @@ void heaterCoolDown()
   {
     digitalWrite(FANPIN, LOW);
     Serial.println("Fan off: temp cooled down");
+    mqtt.publish("Garage/Mech/Heater/Log", "Cool down: temp cooled down");
     coolDown = false;
     heatOn = false;
   }
@@ -138,6 +144,7 @@ void heaterCoolDown()
   {
     digitalWrite(FANPIN, LOW);
     Serial.println("Fan off: cooldown timer expired");
+    mqtt.publish("Garage/Mech/Heater/Log", "Cool down: timer expired");
     coolDown = false;
     heatOn = false;
   }
@@ -165,7 +172,7 @@ void getStatus()
   }
 
   /*************** Send status to MQTT ***************/
-  if (heaterStatus and fanStatus and heatOn and temp > 100)
+  if (heaterStatus and fanStatus and heatOn and temp > 90)
   {
     digitalWrite(STATUSPIN, HIGH);
     mqtt.publish("Garage/Mech/Heater/Status", "ON");
