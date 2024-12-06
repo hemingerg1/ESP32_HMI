@@ -45,7 +45,7 @@ void mqttCallback(String &topic, String &payload)
 
 void mqttCon()
 {
-    mqtt.disconnect();
+    //mqtt.disconnect();
     delay(200);
 
     if (WiFi.status() != WL_CONNECTED)

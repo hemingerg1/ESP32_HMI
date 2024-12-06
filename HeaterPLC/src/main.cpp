@@ -29,6 +29,8 @@ bool heaterStatus = false;
 bool fanStatus = false;
 bool coolDown = false;
 
+String mqttMes = "";
+
 #include "connectionFunc.hpp"
 void turnHeaterOn();
 void turnHeaterOff();
@@ -59,14 +61,11 @@ void loop()
   ii++;
 
   /*************** MQTT Functions ***************/
-  // check if MQTT is still connected
-  if (!mqtt.connected())
+  // send and receive MQTT messages. Returns false if not connected
+  if (!mqtt.loop())
   {
     mqttCon();
   }
-  // send and receive MQTT messages
-  mqtt.loop();
-
   /*************** Main Control Functions ***************/
   // mqtt requested heater off
   if (heatOn and kaCount == 0 and !coolDown)
@@ -75,7 +74,7 @@ void loop()
     mqtt.publish("Garage/Mech/Heater/Log", "Main control: request off");
   }
   // keep alive timer has expired without refresh so turn heater off
-  else if (heatOn and (millis() - kaTimer > 75000) and !coolDown)
+  else if (heatOn and (millis() - kaTimer > 120000) and !coolDown)
   {
     Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
     mqtt.publish("Garage/Mech/Heater/Log", "Main control: KaTimer expired");
@@ -83,11 +82,14 @@ void loop()
     lostHMI = true;
   }
   // HMI reconnected
-  else if (lostHMI and kaCount == 0)
+  else if (lostHMI)
   {
-    Serial.println("HMI regained control.");
-    mqtt.publish("Garage/Mech/Heater/Log", "Main control: HMI back");
-    lostHMI = false;
+    if ((millis() - kaTimer > 75000) or kaCount == 0)
+    {
+      Serial.println("HMI regained control.");
+      mqtt.publish("Garage/Mech/Heater/Log", "Main control: HMI back");
+      lostHMI = false;
+    }
   }
   // mqtt requested heater on
   else if (!heatOn and kaCount > 0 and !lostHMI and !coolDown)
@@ -97,7 +99,7 @@ void loop()
   }
 
   /*************** Get Current Status Functions ***************/
-  if (ii >= 20)
+  if (ii >= 50)
   {
     getTemp();
     if (coolDown)
@@ -105,11 +107,12 @@ void loop()
       heaterCoolDown();
     }
     getStatus();
-    mqtt.publish("Garage/Mech/Heater/Log", printf("kaCount: %d, lostHMI: %d, heatOn: %d, coolDown: %d", kaCount, lostHMI, heatOn, coolDown));
+    mqttMes = "kaCount: " + String(kaCount) + ", lostHMI: " + String(lostHMI) + ", heatOn: " + String(heatOn) + ", coolDown: " + String(coolDown);
+    mqtt.publish("Garage/Mech/Heater/Log", mqttMes);
     ii = 0;
   }
 
-  delay(250);
+  delay(100);
 }
 
 void turnHeaterOn()
