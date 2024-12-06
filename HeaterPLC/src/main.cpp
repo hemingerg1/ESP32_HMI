@@ -29,6 +29,8 @@ bool heaterStatus = false;
 bool fanStatus = false;
 bool coolDown = false;
 
+String mqttMes = "";
+
 #include "connectionFunc.hpp"
 void turnHeaterOn();
 void turnHeaterOff();
@@ -59,41 +61,45 @@ void loop()
   ii++;
 
   /*************** MQTT Functions ***************/
-  // check if MQTT is still connected
-  if (!mqtt.connected())
+  // send and receive MQTT messages. Returns false if not connected
+  if (!mqtt.loop())
   {
     mqttCon();
   }
-  // send and receive MQTT messages
-  mqtt.loop();
-
   /*************** Main Control Functions ***************/
   // mqtt requested heater off
   if (heatOn and kaCount == 0 and !coolDown)
   {
     turnHeaterOff();
+    mqtt.publish("Garage/Mech/Heater/Log", "Main control: request off");
   }
   // keep alive timer has expired without refresh so turn heater off
-  else if (heatOn and (millis() - kaTimer > 75000) and !coolDown)
+  else if (heatOn and (millis() - kaTimer > 120000) and !coolDown)
   {
     Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
+    mqtt.publish("Garage/Mech/Heater/Log", "Main control: KaTimer expired");
     turnHeaterOff();
     lostHMI = true;
   }
   // HMI reconnected
-  else if (lostHMI and kaCount == 0)
+  else if (lostHMI)
   {
-    Serial.println("HMI regained control.");
-    lostHMI = false;
+    if ((millis() - kaTimer > 75000) or kaCount == 0)
+    {
+      Serial.println("HMI regained control.");
+      mqtt.publish("Garage/Mech/Heater/Log", "Main control: HMI back");
+      lostHMI = false;
+    }
   }
   // mqtt requested heater on
   else if (!heatOn and kaCount > 0 and !lostHMI and !coolDown)
   {
     turnHeaterOn();
+    mqtt.publish("Garage/Mech/Heater/Log", "Main control: reuest on");
   }
 
   /*************** Get Current Status Functions ***************/
-  if (ii >= 20)
+  if (ii >= 50)
   {
     getTemp();
     if (coolDown)
@@ -101,10 +107,12 @@ void loop()
       heaterCoolDown();
     }
     getStatus();
+    mqttMes = "kaCount: " + String(kaCount) + ", lostHMI: " + String(lostHMI) + ", heatOn: " + String(heatOn) + ", coolDown: " + String(coolDown);
+    mqtt.publish("Garage/Mech/Heater/Log", mqttMes);
     ii = 0;
   }
 
-  delay(250);
+  delay(100);
 }
 
 void turnHeaterOn()
@@ -131,6 +139,7 @@ void heaterCoolDown()
   {
     digitalWrite(FANPIN, LOW);
     Serial.println("Fan off: temp cooled down");
+    mqtt.publish("Garage/Mech/Heater/Log", "Cool down: temp cooled down");
     coolDown = false;
     heatOn = false;
   }
@@ -138,6 +147,7 @@ void heaterCoolDown()
   {
     digitalWrite(FANPIN, LOW);
     Serial.println("Fan off: cooldown timer expired");
+    mqtt.publish("Garage/Mech/Heater/Log", "Cool down: timer expired");
     coolDown = false;
     heatOn = false;
   }
@@ -165,7 +175,7 @@ void getStatus()
   }
 
   /*************** Send status to MQTT ***************/
-  if (heaterStatus and fanStatus and heatOn and temp > 100)
+  if (heaterStatus and fanStatus and heatOn and temp > 90)
   {
     digitalWrite(STATUSPIN, HIGH);
     mqtt.publish("Garage/Mech/Heater/Status", "ON");

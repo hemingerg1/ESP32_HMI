@@ -3,24 +3,23 @@ void wificon()
     WiFi.disconnect(true);
     delay(1000);
 
+    WiFi.setHostname("heaterPLC");
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
     Serial.print("Connecting to WiFi...");
     delay(500);
-    // int t = 0;
+    int t = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
-        // t++;
+        t++;
         Serial.print('.');
         delay(500);
-        /*
         if (t > 20)
         {
             Serial.print("\nUnable to connect to WiFi. Rebooting...");
             ESP.restart();
         }
-        */
     }
     Serial.println("\nWiFi connected. IP: " + WiFi.localIP().toString());
 }
@@ -46,7 +45,7 @@ void mqttCallback(String &topic, String &payload)
 
 void mqttCon()
 {
-    mqtt.disconnect();
+    //mqtt.disconnect();
     delay(200);
 
     if (WiFi.status() != WL_CONNECTED)
