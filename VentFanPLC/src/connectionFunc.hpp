@@ -3,24 +3,23 @@ void wificon()
     WiFi.disconnect(true);
     delay(1000);
 
+    WiFi.setHostname("ventFanPLC");
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
     Serial.print("Connecting to WiFi...");
     delay(500);
-    // int t = 0;
+    int t = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
-        // t++;
+        t++;
         Serial.print('.');
         delay(500);
-        /*
         if (t > 20)
         {
             Serial.print("\nUnable to connect to WiFi. Rebooting...");
             ESP.restart();
         }
-        */
     }
     Serial.println("\nWiFi connected. IP: " + WiFi.localIP().toString());
 }
@@ -57,6 +56,7 @@ void mqttCon()
 
     mqtt.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
     mqtt.onMessage(mqttCallback);
+    mqtt.setWill("Garage/Mech/VentFan/Status", "Disconnected", true, 1);
 
     Serial.print("Connecting to mqtt broker...");
     while (!mqtt.connect("espVentFanPLC", MQTT_USER, MQTT_PASSWORD))
@@ -66,5 +66,5 @@ void mqttCon()
     }
     Serial.println("mqtt connected!");
 
-    mqtt.subscribe("Garage/Mech/VentFan/KA");
+    mqtt.subscribe("Garage/Mech/VentFan/KA", 1);
 }

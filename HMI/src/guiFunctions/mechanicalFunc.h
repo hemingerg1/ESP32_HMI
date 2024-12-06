@@ -6,7 +6,7 @@ void ventFanOn(bool req, String reason)
         if (ventFanEnabled)
         {
             ventFanKeepAlive = 1;
-            if (mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive)))
+            if (mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive), true, 1))
             {
                 ventFanKATimer = millis() + 60000;
                 reqVentFan = true;
@@ -24,7 +24,7 @@ void ventFanOn(bool req, String reason)
     else
     {
         ventFanKeepAlive = 0;
-        if (mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive)))
+        if (mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive), true, 1))
         {
             ventFanKATimer = 0;
             reqVentFan = false;
@@ -46,7 +46,7 @@ void heaterOn(bool req, String reason)
         if (heaterEnabled)
         {
             heatKeepAlive = 1;
-            if (mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive)))
+            if (mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive), true, 1))
             {
                 heatKATimer = millis() + 60000;
                 reqHeat = true;
@@ -64,7 +64,7 @@ void heaterOn(bool req, String reason)
     else
     {
         heatKeepAlive = 0;
-        if (mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive)))
+        if (mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive), true, 1))
         {
             heatKATimer = 0;
             reqHeat = false;
@@ -240,12 +240,12 @@ void mechLoop()
     {
         ventFanKeepAlive++;
         ventFanKATimer = millis() + 60000;
-        mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive));
+        mqtt.publish("Garage/Mech/VentFan/KA", String(ventFanKeepAlive), true, 1);
     }
     if (reqHeat and heatKeepAlive > 0 and heatKATimer < millis())
     {
         heatKeepAlive++;
         heatKATimer = millis() + 60000;
-        mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive));
+        mqtt.publish("Garage/Mech/Heater/KA", String(heatKeepAlive), true, 1);
     }
 }

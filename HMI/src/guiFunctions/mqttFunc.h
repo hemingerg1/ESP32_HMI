@@ -18,8 +18,8 @@ void mqttConnect()
     mqtt.subscribe(F("Garage/Doors/SmallGarageDoor"));
     mqtt.subscribe(F("Garage/Doors/OutsideDoor"));
     mqtt.subscribe(F("Garage/Doors/ShopDoor"));
-    mqtt.subscribe(F("Garage/Mech/VentFan/Status"));
-    mqtt.subscribe(F("Garage/Mech/Heater/Status"));
+    mqtt.subscribe(F("Garage/Mech/VentFan/Status, 1"));
+    mqtt.subscribe(F("Garage/Mech/Heater/Status, 1"));
 }
 
 void mqttCallback(String &topic, String &payload)

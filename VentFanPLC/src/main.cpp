@@ -18,6 +18,8 @@ Servo damper2;
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
+bool kaStatus = false;
+unsigned long now = 0;
 bool fanOn = false;
 bool fanStatus = false;
 bool lostHMI = false;
@@ -26,6 +28,7 @@ short int ii = 0;
 #include "connectionFunc.hpp"
 void turnFanOn();
 void turnFanOff();
+void getKaStatus();
 void getStatus();
 
 void setup()
@@ -54,30 +57,38 @@ void loop()
   }
   // send and receive MQTT messages
   mqtt.loop();
-
+  delay(10); // <- fixes some issues with WiFi stability
   /*************** Main Control Functions ***************/
+  getKaStatus();
   // mqtt requested fan off
   if (fanOn and kaCount == 0)
   {
     turnFanOff();
+    mqtt.publish("Garage/Mech/VentFan/Log", "Main control: request off");
   }
   // keep alive timer has expired without refresh so turn fan off
-  else if (fanOn and (millis() - kaTimer > 75000))
+  else if (fanOn and !kaStatus)
   {
     Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
+    mqtt.publish("Garage/Mech/VentFan/Log", "Main control: KaTimer expired");
     turnFanOff();
     lostHMI = true;
   }
   // HMI reconnected
-  else if (lostHMI and kaCount == 0)
+  else if (lostHMI)
   {
-    Serial.println("HMI regained control.");
-    lostHMI = false;
+    if (kaStatus or kaCount == 0)
+    {
+      Serial.println("HMI regained control.");
+      mqtt.publish("Garage/Mech/VentFan/Log", "Main control: HMI back");
+      lostHMI = false;
+    }
   }
   // mqtt requested fan on
-  else if (!fanOn and kaCount > 0 and !lostHMI)
+  else if (!fanOn and kaCount > 0 and !lostHMI and kaStatus)
   {
     turnFanOn();
+    mqtt.publish("Garage/Mech/VentFan/Log", "Main control: request on");
   }
 
   /*************** Get Current Status Functions ***************/
@@ -87,7 +98,7 @@ void loop()
     ii = 0;
   }
 
-  delay(250);
+  vTaskDelay(250);
 }
 
 void turnFanOn()
@@ -141,6 +152,26 @@ void turnFanOff()
   }
   damper2.detach();
   fanOn = false;
+}
+
+// check the keap alive timer
+void getKaStatus()
+{
+  now = millis();
+
+  if (now < kaTimer) // millis() has rolled over
+  {
+    kaTimer = now;
+  }
+
+  if (now - kaTimer > 75000) // keep alive timer has expired
+  {
+    kaStatus = false;
+  }
+  else if (now - kaTimer < 60000) // keep alive timer has not expired
+  {
+    kaStatus = true;
+  }
 }
 
 void getStatus()

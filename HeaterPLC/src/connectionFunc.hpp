@@ -45,7 +45,7 @@ void mqttCallback(String &topic, String &payload)
 
 void mqttCon()
 {
-    //mqtt.disconnect();
+    mqtt.disconnect();
     delay(200);
 
     if (WiFi.status() != WL_CONNECTED)
@@ -56,14 +56,15 @@ void mqttCon()
 
     mqtt.begin(MQTT_SERVER, MQTT_PORT, wifiClient);
     mqtt.onMessage(mqttCallback);
+    mqtt.setWill("Garage/Mech/Heater/Status", "Disconnected", true, 1);
 
     Serial.print("Connecting to mqtt broker...");
-    while (!mqtt.connect("espVentFanPLC", MQTT_USER, MQTT_PASSWORD))
+    while (!mqtt.connect("espHeaterPLC", MQTT_USER, MQTT_PASSWORD))
     {
         Serial.print(F("."));
         delay(500);
     }
     Serial.println("mqtt connected!");
 
-    mqtt.subscribe("Garage/Mech/Heater/KA");
+    mqtt.subscribe("Garage/Mech/Heater/KA", 1);
 }

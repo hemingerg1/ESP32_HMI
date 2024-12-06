@@ -19,6 +19,8 @@ MQTTClient mqtt;
 
 unsigned long kaTimer = 0;
 unsigned int kaCount = 0;
+bool kaStatus = false;
+unsigned long now = 0;
 unsigned long coolDownTimer = 0;
 short int ii = 0;
 short int temp = 0;
@@ -29,12 +31,13 @@ bool heaterStatus = false;
 bool fanStatus = false;
 bool coolDown = false;
 
-String mqttMes = "";
+// String mqttMes = "";
 
 #include "connectionFunc.hpp"
 void turnHeaterOn();
 void turnHeaterOff();
 void heaterCoolDown();
+void getKaStatus();
 void getStatus();
 void getTemp();
 
@@ -61,12 +64,15 @@ void loop()
   ii++;
 
   /*************** MQTT Functions ***************/
-  // send and receive MQTT messages. Returns false if not connected
-  if (!mqtt.loop())
+  if (!mqtt.connected())
   {
     mqttCon();
   }
+  // send and receive MQTT messages.
+  mqtt.loop();
+  delay(10); // <- fixes some issues with WiFi stability
   /*************** Main Control Functions ***************/
+  getKaStatus();
   // mqtt requested heater off
   if (heatOn and kaCount == 0 and !coolDown)
   {
@@ -74,7 +80,7 @@ void loop()
     mqtt.publish("Garage/Mech/Heater/Log", "Main control: request off");
   }
   // keep alive timer has expired without refresh so turn heater off
-  else if (heatOn and (millis() - kaTimer > 120000) and !coolDown)
+  else if (heatOn and !kaStatus and !coolDown)
   {
     Serial.println("Keep alive timer expired without refresh. Lost HMI control.");
     mqtt.publish("Garage/Mech/Heater/Log", "Main control: KaTimer expired");
@@ -84,7 +90,7 @@ void loop()
   // HMI reconnected
   else if (lostHMI)
   {
-    if ((millis() - kaTimer > 75000) or kaCount == 0)
+    if (kaStatus or kaCount == 0)
     {
       Serial.println("HMI regained control.");
       mqtt.publish("Garage/Mech/Heater/Log", "Main control: HMI back");
@@ -92,14 +98,14 @@ void loop()
     }
   }
   // mqtt requested heater on
-  else if (!heatOn and kaCount > 0 and !lostHMI and !coolDown)
+  else if (!heatOn and kaCount > 0 and !lostHMI and !coolDown and kaStatus)
   {
     turnHeaterOn();
     mqtt.publish("Garage/Mech/Heater/Log", "Main control: reuest on");
   }
 
   /*************** Get Current Status Functions ***************/
-  if (ii >= 50)
+  if (ii >= 20)
   {
     getTemp();
     if (coolDown)
@@ -107,12 +113,12 @@ void loop()
       heaterCoolDown();
     }
     getStatus();
-    mqttMes = "kaCount: " + String(kaCount) + ", lostHMI: " + String(lostHMI) + ", heatOn: " + String(heatOn) + ", coolDown: " + String(coolDown);
-    mqtt.publish("Garage/Mech/Heater/Log", mqttMes);
+    // mqttMes = "kaCount: " + String(kaCount) + ", lostHMI: " + String(lostHMI) + ", heatOn: " + String(heatOn) + ", coolDown: " + String(coolDown);
+    // mqtt.publish("Garage/Mech/Heater/Log", mqttMes);
     ii = 0;
   }
 
-  delay(100);
+  vTaskDelay(250);
 }
 
 void turnHeaterOn()
@@ -150,6 +156,26 @@ void heaterCoolDown()
     mqtt.publish("Garage/Mech/Heater/Log", "Cool down: timer expired");
     coolDown = false;
     heatOn = false;
+  }
+}
+
+// check the keap alive timer
+void getKaStatus()
+{
+  now = millis();
+
+  if (now < kaTimer) // millis() has rolled over
+  {
+    kaTimer = now;
+  }
+
+  if (now - kaTimer > 75000) // keep alive timer has expired
+  {
+    kaStatus = false;
+  }
+  else if (now - kaTimer < 60000) // keep alive timer has not expired
+  {
+    kaStatus = true;
   }
 }
 
