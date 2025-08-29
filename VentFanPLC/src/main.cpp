@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <ESP32Servo.h>
 #include <MQTT.h>
+#include <esp_task_wdt.h>
 #include <secrets.h>
 
 WiFiClient wifiClient;
@@ -10,6 +11,7 @@ MQTTClient mqtt;
 Servo damper1;
 Servo damper2;
 
+#define WDT_TIMEOUT 30 // seconds
 #define FANPIN 16
 #define DAMPER1PIN 26
 #define DAMPER2PIN 33
@@ -35,6 +37,9 @@ void setup()
 {
   Serial.begin(115200);
 
+  esp_task_wdt_init(WDT_TIMEOUT, true); // enable panic so ESP32 restarts
+  esp_task_wdt_add(NULL);               // add current thread to WDT watch
+
   pinMode(FANPIN, OUTPUT);
   pinMode(DAMPER1PIN, OUTPUT);
   pinMode(DAMPER2PIN, OUTPUT);
@@ -43,6 +48,7 @@ void setup()
 
   wificon();
   mqttCon();
+  esp_task_wdt_reset();
 }
 
 void loop()
@@ -98,6 +104,7 @@ void loop()
     ii = 0;
   }
 
+  esp_task_wdt_reset();
   vTaskDelay(250);
 }
 

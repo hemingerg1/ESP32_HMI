@@ -1,11 +1,13 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <MQTT.h>
+#include <esp_task_wdt.h>
 #include <secrets.h>
 
 WiFiClient wifiClient;
 MQTTClient mqtt;
 
+#define WDT_TIMEOUT 30 // seconds
 #define HEATERPIN 35
 #define FANPIN 18
 #define STATUSPIN 15
@@ -45,6 +47,9 @@ void setup()
 {
   Serial.begin(115200);
 
+  esp_task_wdt_init(WDT_TIMEOUT, true); // enable panic so ESP32 restarts
+  esp_task_wdt_add(NULL);               // add current thread to WDT watch
+
   pinMode(HEATERPIN, OUTPUT);
   pinMode(FANPIN, OUTPUT);
   pinMode(STATUSPIN, OUTPUT);
@@ -57,6 +62,7 @@ void setup()
 
   wificon();
   mqttCon();
+  esp_task_wdt_reset();
 }
 
 void loop()
@@ -118,6 +124,7 @@ void loop()
     ii = 0;
   }
 
+  esp_task_wdt_reset();
   vTaskDelay(250);
 }
 
